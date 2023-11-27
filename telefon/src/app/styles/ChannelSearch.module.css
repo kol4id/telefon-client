@@ -1,0 +1,48 @@
+:root{
+    --input-container-color: rgba(45, 45, 45, 1) !important;
+    --searchline-focused-color: rgba(127, 112, 214, 0.979) !important;
+    --input-bg-color: rgba(45, 45, 45, 1) !important;
+    --input-text-color: white;
+    --input-clear-bg-color: azure !important;
+}
+
+.channelSearchLine {
+    display: flex;
+    min-height: 30px;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    background-color: var(--input-container-color);
+}
+
+.channelSearchLineFocused {
+    display: flex;
+    min-height: 30px;
+    border-radius: 20px;
+    border: 2px solid var(--searchline-focused-color);
+}
+
+input {
+    color: var(--input-text-color);
+    border: none;
+    outline: none;
+
+    font-size: 16px;
+    margin-left: 10px;
+    padding-right: 10px;
+
+    background-color: var(--input-bg-color);
+}
+
+input:focus {
+    background-color: transparent !important; 
+}
+
+.inputClear {
+    width: 25px;
+    height: 25px;
+    margin-top: 2.5px;
+    margin-right: 1px;
+
+    border-radius: 20px;
+    background-color: var(--input-clear-bg-color);
+}

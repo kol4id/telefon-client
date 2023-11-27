@@ -1,7 +1,11 @@
+:root{
+    /* --border-color: rgb(255, 0, 0); */
+    --border-color: rgb(60, 60, 60);
+}
+
 .leftPane {
     user-select: none;
-    background-color: rgba(30, 30, 3, 0.95);
-    border-right: 0.25px solid rgb(59, 59, 59);
+    border-right: 0.25px solid var(--border-color);
     display: flex;
     flex-direction: column;
 }

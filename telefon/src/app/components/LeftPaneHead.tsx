@@ -1,3 +1,4 @@
+import ChannelSearch from './ChannelSearch'
 
 import styles from '../styles/LeftPaneHead.module.css'
 
@@ -6,7 +7,7 @@ const LeftPaneHead = () =>{
         <div className = {styles.header}>
             <div className = {styles.headerTop}>
                 <div className = {styles.headerTopMenu}/>
-                handler
+                    <ChannelSearch/>
             </div>
         </div>
     )

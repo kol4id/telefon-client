@@ -1,0 +1,7 @@
+.leftPane {
+    user-select: none;
+    background-color: rgba(30, 30, 3, 0.95);
+    border-right: 0.25px solid rgb(59, 59, 59);
+    display: flex;
+    flex-direction: column;
+}

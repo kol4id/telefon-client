@@ -1,0 +1,24 @@
+:root{
+    --left-head-bg-color: rgba(30, 30, 32, 0.25);
+    --left-head-box-shadow: rgba(0, 0, 0, 0.4);
+    --left-head-text-color: gainsboro;
+}
+
+.header {
+    min-height: 94px;  
+    /* margin-top: 5px; */
+
+    color: var(--left-head-text-color);
+    background-color: var(--left-head-bg-color);
+    box-shadow: 0px 2px 3px var(var(--left-head-box-shadow));
+}
+
+.headerTop {
+    display: flex;
+    font-size: 12pt;
+    padding: 5px 0px 0px 5px; 
+}
+
+.headerTopMenu {
+    margin-top: 4px;
+}

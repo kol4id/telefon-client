@@ -1,10 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { IChannelSearch } from "../../app/utils/interfaces/IChannelSearch";
 
-interface ChannelSearch {
-    value: string;
-}
 
-const initialState: ChannelSearch = {
+const initialState: IChannelSearch = {
     value: '',
 }
 

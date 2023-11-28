@@ -1,0 +1,78 @@
+:root{
+    --channel-text-color: white;
+    --channel-hover-bg-color: rgba( 200, 200, 200, 0.05);
+    --channel-selected-bg-color: rgba(127, 112, 214, 0.979) !important;
+    --channel-body-bg-color: rgb(175, 175, 175);
+}
+
+.channel {
+    color: var(--channel-text-color);
+    display: flex;
+    align-items: center;
+
+    height: 72px;
+    width: 273px;
+    
+    border-radius: 15px;
+
+    padding: 0px 0px 0px 10px;
+    margin: 0px 1px 0px 9px;
+
+}
+
+.channel:hover {
+    background-color: var(--channel-hover-bg-color);
+    cursor: pointer;
+}
+
+.channelSelected {
+    /* color: white !important; */
+    display: flex;
+    align-items: center;
+
+    min-height: 72px;
+    
+    border-radius: 15px;
+
+    padding: 0px 0px 0px 10px;
+    margin: 0px 1px 0px 9px;
+    background-color: var(--channel-selected-bg-color);
+}
+
+.channelSelected .channelBody {
+    /* color: white !important; */
+    text-align: left;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.channelImg {
+    
+}
+
+.channelImg img {
+    display: flex;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    
+}
+
+.channelContent {
+    padding: 0px 0px 0px 10px;
+}
+
+.channelHeader {
+    font-weight: 500;
+    text-align: left;
+    margin-bottom: 4px;
+}
+
+.channelBody {
+    color: var(--channel-body-bg-color);
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

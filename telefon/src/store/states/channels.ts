@@ -9,6 +9,7 @@ const initialState: IChannelsLoading & IChannelState = {
     isDataLoading: true,
     currentChannelSelected: '',
     channels: [],
+    lastMesseges: [],
 }
 
 const channelSlice = createSlice({
@@ -23,6 +24,11 @@ const channelSlice = createSlice({
         },
         SetDataLoading(state, action){
             state.isDataLoading = action.payload;
+        },
+        GetChannelsLastMesseges(state, action){
+            state.channels.map((channel) => {
+                state.lastMesseges.push(channel.lastMessageId);
+            })
         }
     }
 })

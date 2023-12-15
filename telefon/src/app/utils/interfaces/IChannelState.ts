@@ -1,12 +1,8 @@
-
-export interface IChannel{
-    id: string,
-    title: string,
-    lastMessage: string,
-}
+import { IChannel } from "./IChannel"
 
 export interface IChannelState extends IChannelSelected{
-    channels: IChannel[]
+    channels: IChannel[];
+    lastMesseges: string[];
 }
 
 interface IChannelSelected{

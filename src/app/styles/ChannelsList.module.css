@@ -1,0 +1,28 @@
+:root{
+    --body-scrollbar-thumb-color: rgba( 200, 200, 200, 0.1) !important;
+}
+
+.channelList{
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-top: 5px;
+}
+
+.channelList::-webkit-scrollbar{
+    width: 6px;
+}
+
+.channelList::-webkit-scrollbar-thumb{
+    background-color: transparent;
+    border-radius: 4px;
+}
+
+.channelList:hover::-webkit-scrollbar{
+    width: 6px;
+}
+
+.channelList:hover::-webkit-scrollbar-thumb{
+    background-color: var(--body-scrollbar-thumb-color);
+    border-radius: 4px;
+}

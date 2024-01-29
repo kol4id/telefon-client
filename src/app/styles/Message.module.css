@@ -1,0 +1,41 @@
+.messageStringFrom {
+    display: flex;
+    width: 100%;
+}
+
+.messageStringTo {
+    display: flex;
+    justify-content: right;
+    width: 100%;
+}
+
+.messageStringFrom .messageBlock {
+    margin: 4px 0px 0px 15%;
+    
+    max-width: 460px;
+    border-radius: 5px;
+    background-color: rgb(59, 59, 59);
+}
+
+.messageStringTo .messageBlock{
+    margin: 4px 10% 0px 0px;
+    max-width: 460px;
+    border-radius: 5px;
+    background-color: rgba(127, 112, 214, 0.979) !important;
+}
+
+.messageStringFrom .messageBlock .messageContent {
+    color: whitesmoke;
+    font-size: 12pt;
+    margin: 0px 5px 3px 5px;
+    text-align: left;    
+    word-wrap: break-word;
+}
+
+.messageStringTo .messageBlock .messageContent {
+    color: whitesmoke;
+    font-size: 12pt;
+    margin: 0px 5px 3px 5px;
+    text-align: left;    
+    word-wrap: break-word;
+}

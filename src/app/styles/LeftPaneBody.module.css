@@ -11,9 +11,7 @@
 }
 
 .bodyMain {
-    position: relative;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    display: flex;
     position: relative;
     margin-bottom: 95px;
 }   
@@ -23,7 +21,7 @@
 }
 
 .bodyMain::-webkit-scrollbar-thumb{
-    background-color: transparent !important;
+    background-color: transparent;
     border-radius: 4px;
 }
 

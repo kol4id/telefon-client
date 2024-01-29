@@ -10,11 +10,11 @@ const searchSlice = createSlice({
     name: 'channelSearch',
     initialState,
     reducers: {
-        setSearchValue: (state, action) =>{
+        SetSearchValue: (state, action) =>{
             state.value = action.payload;
         }
     }
 })
 
-export const {setSearchValue} = searchSlice.actions;
+export const {SetSearchValue} = searchSlice.actions;
 export default searchSlice.reducer;

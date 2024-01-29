@@ -1,8 +1,7 @@
-import { IChannel } from "./IChannel"
+import { IChannel } from "./Channel.dto"
 
 export interface IChannelState extends IChannelSelected{
     channels: IChannel[];
-    lastMesseges: string[];
 }
 
 interface IChannelSelected{

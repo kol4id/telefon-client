@@ -1,0 +1,24 @@
+:root{
+    --middle-head-bg-color: rgba(30, 30, 32, 0.25);
+    --middle-border-bottom: black;
+    --middle-head-text-color: gainsboro;
+}
+
+.head{
+    display: flex;
+    height: 45px;
+    align-items: center;
+    
+    padding-left: 10px;
+
+    border-bottom: 1px solid var(--middle-border-bottom);
+    background-color: var(--middle-head-bg-color);
+    color: var(--middle-head-text-color);    
+}
+
+.head img {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; 
+}

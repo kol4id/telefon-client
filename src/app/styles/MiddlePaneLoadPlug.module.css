@@ -1,0 +1,51 @@
+:root{
+    --middle-head-bg-color: rgba(30, 30, 32, 0.25);
+    --middle-border-bottom: black;
+    --middle-head-text-color: gainsboro;
+    --middle-body-bg-color: rgba( 200, 200, 200, 0.3) !important;
+}
+
+.head{
+    display: flex;
+    height: 45px;
+    align-items: center;
+    
+    padding-left: 10px;
+
+    border-bottom: 1px solid var(--middle-border-bottom);
+    background-color: var(--middle-head-bg-color);
+    color: var(--middle-head-text-color);    
+}
+
+.head img {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; 
+}
+
+.body {
+    display: flex;
+    height: 100%;
+  
+}
+
+.bodyMain {
+    display: flex;
+    width: 100%;
+    flex: 1;
+    flex-direction: column;
+    bottom: 0;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.bodyMain::-webkit-scrollbar {
+    width: 6px;
+}
+
+.bodyMain::-webkit-scrollbar-thumb{
+    background-color: var(--middle-body-bg-color);
+    border-radius: 4px;
+}

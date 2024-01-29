@@ -1,16 +1,22 @@
-import React, { FC, useEffect, useState } from "react"
-import { IChannel } from "../utils/interfaces/IChannelState"
+import React, { useEffect, useState } from "react"
+import { IChannel } from "../utils/interfaces/Channel.dto"
 
-import img from 'src/assets/pig.jpeg'
 import styles from '../styles/Channel.module.css'
+import { useSelector } from "react-redux"
+import { RootState } from "../../store/store"
 
 interface Props{
     channel: IChannel,
     selected: boolean,
-    select: (id: string) => void,
+    select: CallableFunction,
 }
 
-const Channel: FC<Props> = React.memo((props) =>{
+const Channel = React.memo((props: Props) =>{
+
+    console.log(`channel ${props.channel.id} rerender`)
+
+    const width = useSelector((state: RootState) => state.width.channelWidth)
+    const wordWrapWidth = useSelector((state: RootState) => state.width.channelWrapWidth)
 
     const [channelStyle, setChannelStyle] = useState<string>(styles.channel)
 
@@ -19,21 +25,23 @@ const Channel: FC<Props> = React.memo((props) =>{
         ? setChannelStyle(styles.channelSelected)
         : setChannelStyle(styles.channel)
     }, [props.selected])
-
+    
     return(
         <div className = {channelStyle}
-            onClick = {() => {props.select(props.channel.id)}}
+            onClick = {() => props.select(props.channel.id)}
+            style={{width: width}}
         >
             <div className = {styles.channelImg}>
-                <img src = {img}/>
+                <img src = {props.channel.imgUrl}/>
             </div>
 
             <div className = {styles.channelContent}>
                 <div className = {styles.channelHeader}>
                     {props.channel.title}
                 </div>
-                <div className = {styles.channelBody}>
-                    {props.channel.lastMessage}
+                <div className = {styles.channelBody}
+                    style={{maxWidth: wordWrapWidth}}
+                >
                 </div>
             </div>
         </div>

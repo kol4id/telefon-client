@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IChannelState } from "../../app/utils/interfaces/IChannelState";
+import { IChannelState } from "../../app/utils/interfaces/Channel.dto";
 
 interface IChannelsLoading{
     isDataLoading: boolean;

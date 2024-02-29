@@ -4,6 +4,9 @@ import channels from "./states/channels";
 import width from "./states/width";
 import cursorStyle from "./states/cursorStyle";
 import messages from "./states/messages";
+import messageInput from "./states/messageInput";
+import user from "./states/user";
+import portalKey from "./states/portalKey";
 
 export const store = configureStore({
     reducer:{
@@ -11,7 +14,10 @@ export const store = configureStore({
         channelsList: channels,
         width: width,
         cursorStyle: cursorStyle,
-        messages: messages
+        messages: messages,
+        messageInput: messageInput,
+        user: user,
+        portalKey: portalKey,
     }
 })
 

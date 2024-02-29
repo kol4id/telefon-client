@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react"
 import { IChannel } from "../utils/interfaces/Channel.dto"
-
-import styles from '../styles/Channel.module.css'
 import { useSelector } from "react-redux"
 import { RootState } from "../../store/store"
+import React from "react"
+
+import styles from '../styles/Channel.module.css'
 
 interface Props{
     channel: IChannel,
     selected: boolean,
-    select: CallableFunction,
 }
+// select: (id: string) => void,
 
 const Channel = React.memo((props: Props) =>{
 
@@ -17,18 +17,9 @@ const Channel = React.memo((props: Props) =>{
 
     const width = useSelector((state: RootState) => state.width.channelWidth)
     const wordWrapWidth = useSelector((state: RootState) => state.width.channelWrapWidth)
-
-    const [channelStyle, setChannelStyle] = useState<string>(styles.channel)
-
-    useEffect(()=>{
-        props.selected 
-        ? setChannelStyle(styles.channelSelected)
-        : setChannelStyle(styles.channel)
-    }, [props.selected])
     
     return(
-        <div className = {channelStyle}
-            onClick = {() => props.select(props.channel.id)}
+        <div className = {props.selected ? styles.channelSelected : styles.channel}
             style={{width: width}}
         >
             <div className = {styles.channelImg}>

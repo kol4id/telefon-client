@@ -14,38 +14,41 @@ const ChannelsList = memo(() =>{
     const channelState = useSelector((state: RootState) => state.channelsList)
     const searchValue = useSelector((state: RootState) => state.channelSearch.value)
     const [filteredChannels, setFilteredChannels] = useState<IChannel[]>([])
+    const [selected, setSelected] = useState<string>('');
 
     useEffect(()=>{
         setFilteredChannels(channelState.channels)
     },[])
 
-    useEffect(()=>{
+    useEffect(useMemo(()=>{
         const timeout = setTimeout(()=>{
             const filteredChannels = channelState.channels.filter(
                 channel => channel.title.toLowerCase().includes(searchValue.toLowerCase())
             );
             setFilteredChannels(filteredChannels)
-        }, 50)
+        }, 100)
 
         return () =>{
             clearTimeout(timeout)
         }
-    }, [searchValue])
+    }, [searchValue]), [searchValue])
+
 
     const selectChannel = (id: string): void =>{
         dispatch(SetChannelSelected(id));
+        setSelected(id);
     }
 
     return(
         <div className={styles.channelList}>
             {
                 useMemo(()=>
-                filteredChannels.map((channel, index)=>
-                    channelState.currentChannelSelected === channel.id
-                    ? <Channel channel={channel} selected={true} select={selectChannel} key={index}/> 
-                    : <Channel channel={channel} selected={false} select={selectChannel} key={index}/> 
-                )
-                , [filteredChannels, channelState])  
+                    filteredChannels.map((channel)=>
+                        <div onClick={()=>selectChannel(channel.id)}>
+                            <Channel channel={channel} selected={selected === channel.id} key={channel.id}/> 
+                        </div>
+                    )
+                , [filteredChannels, channelState, selected])  
             }
         </div>
     )

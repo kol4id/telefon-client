@@ -1,13 +1,16 @@
 :root{
     --body-text-color: #dcdcdc;
     --body-scrollbar-thumb-color: rgba( 200, 200, 200, 0.1) !important;
+    --left-body-bg-color: rgba(30, 30, 30, 1) !important;
 }
 
 .body {
+    z-index: 0;
     position: relative;
     height: 100%;
     display: flex;
     color: var(--body-text-color);
+    background-color: var(--left-body-bg-color);
 }
 
 .bodyMain {

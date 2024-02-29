@@ -1,0 +1,20 @@
+:root{
+    --modal-widow-bg-color: rgba(35, 35, 35, .75) !important;
+}
+
+
+.modal_wrapper{
+    display: flex;
+    flex-direction: column;
+    transition: .15s ease;
+    position: absolute;
+    z-index: 999;
+    padding: 4px 3px 4px 3px;
+    border-radius: 10px;
+    backdrop-filter: blur(8px);
+    filter: blur(0.2px);
+    box-shadow: 0px 0px 15px 0.1px rgba(0, 0, 0, 0.8);
+    background-color: var(--modal-widow-bg-color);
+    cursor: pointer;
+    user-select: none;
+}

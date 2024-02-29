@@ -1,0 +1,108 @@
+:root{
+    --searchline-focused-color: rgba(127, 112, 214, 0.979) !important;
+    --searchline-default-color: rgba(201, 201, 201, 0.35) !important;
+    --searchline-hover-color: rgba(148, 138, 206, 0.6) !important;
+    --input-text-color: white;
+    --label-bg-color: rgb(35, 35, 35) !important;
+    --label-text-color: rgba(170, 170, 170, 0.7) !important;
+    --label-text-focused-color: rgba(127, 112, 214, 0.979) !important;
+    --label-text-hover-color: rgba(148, 138, 206, 0.6) !important;
+}
+
+.input_container {
+    display: flex;
+    padding-bottom: 20px;
+    background-color: transparent !important; 
+}
+
+.input_custom {
+    transition: .15s ease;
+    color: var(--input-text-color);
+    min-height: 40px;
+    width: 100%;
+    border: 1px solid var(--searchline-default-color);
+    border-radius: 9px;
+    outline: none;
+
+    font-size: 16px;
+    padding-left: 10px;
+    /* padding-right: 50px; */
+
+    background-color: transparent; 
+    z-index: 0;
+}
+
+.input_custom:focus{
+    transition: .25s ease;
+    color: var(--input-text-color);
+    border: 1px solid var(--searchline-focused-color);
+    z-index: 0;
+}
+
+.input_custom:not(:focus):hover{
+    transition: .1s ease;
+    border: 1px solid var(--searchline-hover-color);
+    z-index: 0;
+}
+
+.label_custom{
+    transition: .15s ease;
+    position: absolute;
+    margin-left: 20px;
+    margin-top: 10px;
+    font-size: 18px;
+    background-color: var(--label-bg-color);
+    color: var(--label-text-color);
+    z-index: 1;
+}
+
+.input_container:focus-within .label_custom{
+    transition: .1s ease;
+    position: absolute;
+    margin-left: 15px;
+    margin-top: -9px;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: 12px;
+    background-color: var(--label-bg-color);
+    color: var(--label-text-focused-color);
+    z-index: 1;
+}
+
+.input_container:not(:focus-within):hover .label_custom{
+    transition: .1s ease;
+    position: absolute;
+    margin-left: 20px;
+    margin-top: 10px;
+    font-size: 18px;
+    background-color: var(--label-bg-color);
+    color: var(--label-text-hover-color);
+    z-index: 0;
+}
+
+.img_pass_eye{
+    visibility: hidden;
+    position: absolute;
+    margin-left: -50px;
+    max-height: 40px;
+    max-width: 50px;
+}
+
+.input_container:focus-within .img_pass_eye{
+    visibility: visible;
+    cursor: pointer;
+}
+
+.label_custom_with_content{
+    transition: .1s ease;
+    position: absolute;
+    margin-left: 15px;
+    margin-top: -9px;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: 12px;
+    background-color: var(--label-bg-color);
+    color: var(--label-text-color);
+    z-index: 1;
+}
+

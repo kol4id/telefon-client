@@ -1,3 +1,6 @@
+interface IChannelSelected{
+    currentChannelSelected: string,
+}
 
 export interface IChannel {
     id: string,
@@ -14,3 +17,10 @@ export interface ICreateChannel{
     title: string,
 }
 
+export interface IChannelState extends IChannelSelected{
+    channels: IChannel[];
+}
+
+export interface IChannelSearch {
+    value: string;
+}

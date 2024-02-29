@@ -10,7 +10,7 @@ const MiddlePaneLoadPlug = () =>{
             </div>
             <div className={styles.body}>
                 <div className={styles.bodyMain}/>
-                <InputContainer sendMessageMargin={0}/>
+                <InputContainer/>
             </div>
         </React.Fragment>
     )

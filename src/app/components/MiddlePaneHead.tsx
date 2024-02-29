@@ -23,9 +23,18 @@ const MiddlePaneHead = () =>{
     }, [currentChannel])
 
     return(
-        <div className = {styles.head}>
-            <img src={currentChannel?.imgUrl} />
-            {currentChannel?.title}
+        <div className = {styles.head} id='boshka'>
+            <img className = {styles.img} src={currentChannel?.imgUrl} />
+            <div className = {styles.channel_info}>
+                <div className = {styles.channel_title}>
+                    {currentChannel?.title}
+                </div>
+                <div className = {styles.channel_subscribers}>
+                    {`${currentChannel?.subscribers} subscribers`}
+                </div>
+            </div>
+            
+            
         </div>
     )
 }

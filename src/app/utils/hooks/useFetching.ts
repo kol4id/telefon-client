@@ -1,24 +1,22 @@
 import {useState} from "react";
 import GetErrorMessage from "../errors/errorHandler";
 
-interface IReturnValue {
-    fetching: ()=> Promise<void>,
-    isLoading: boolean,
-}
-
-export const useFethcing = (callback: () => Promise<void>): IReturnValue => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+export const useFetching = (callback: () => Promise<void>): [fetching: ()=> Promise<void>, isLoading: boolean, error: {isObtained: boolean, message: string}] => {
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState({isObtained: false, message: ''});
 
     const fetching = async() => {
+        setIsLoading(true)
         try {
-            setIsLoading(true)
             await callback();
         } catch(error: unknown){
-            await GetErrorMessage(error);
+            const errorMessage = await GetErrorMessage(error);
+            setError({isObtained: true, message: errorMessage});
         }finally {
             setIsLoading(false);
         }
     }
 
-    return {fetching, isLoading}
+    return [fetching, isLoading, error];
+    // return {fetching, isLoading, error}
 }

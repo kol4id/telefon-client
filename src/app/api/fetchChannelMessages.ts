@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IMessage } from "../utils/interfaces/IMessage";
+import { IMessage } from "../utils/interfaces/Message.dto";
 
 const FetchChannelMessages = async(channelId: string, chunkNumber: number): Promise<IMessage[]> =>{
     const response = await axios.get<IMessage[]>('http://localhost:4200/api/messages', {

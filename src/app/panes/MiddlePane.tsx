@@ -5,10 +5,10 @@ import MiddlePaneHead from '../components/MiddlePaneHead'
 import styles from '../styles/MiddlePane.module.css'
 import { RootState } from '../../store/store'
 import React, { useEffect, useState } from 'react'
-import { useFethcing } from '../utils/hooks/useFetching'
+import { useFetching } from '../utils/hooks/useFetching'
 import FetchChannelMessages from '../api/fetchChannelMessages'
 import MiddlePaneLoadPlug from '../components/MiddlePaneLoadPlug'
-import { SetMessages } from '../../store/states/messages'
+import { SetDataLoading, SetMessages } from '../../store/states/messages'
 
 const MiddlePane = React.memo(() =>{
 
@@ -18,16 +18,23 @@ const MiddlePane = React.memo(() =>{
 
     const [isFirstOpen, setIsFirstOpen] = useState(true);
 
-    const {fetching, isLoading} = useFethcing(async()=>{
+    const [GetMessages, messagesIsPending] = useFetching(async()=>{
         const messages = await FetchChannelMessages(currentSelected, 1);
-        dispatch(SetMessages(messages));
-    })    
+        //if ^ code failed code below v will not be executed
+        dispatch(SetMessages({channelId: messages[0].channelId, messages: messages}));
+    });
+
+    const GetChannelsExecutor = async() => {
+        dispatch(SetDataLoading(true));
+        await GetMessages();
+        dispatch(SetDataLoading(false));
+    }
 
     const currentSelected = useSelector((state: RootState) => state.channelsList.currentChannelSelected);
 
     useEffect(()=>{
         if(currentSelected){
-            fetching();
+            GetChannelsExecutor();
             setIsFirstOpen(false);
         }
     }, [currentSelected])
@@ -37,7 +44,7 @@ const MiddlePane = React.memo(() =>{
             {
                 isFirstOpen
                 ?   <div/>
-                :   isLoading 
+                :   messagesIsPending 
                     ?   <MiddlePaneLoadPlug/>
                     :   <React.Fragment>
                             <MiddlePaneHead/>

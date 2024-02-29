@@ -9,7 +9,7 @@ const LeftPane = React.memo(() =>{
 
     console.log("LeftPane rerender")
 
-    const width = useSelector((state: RootState) => state.width.leftPaneWidth)
+    const width = useSelector((state: RootState) => state.width.leftPaneWidth);
 
     return(
         <div className = {styles.leftPane}

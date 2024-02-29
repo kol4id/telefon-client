@@ -1,23 +1,24 @@
 import TextareaAutosize from 'react-textarea-autosize'
-
 import styles from '../styles/MessageInput.module.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../store/store'
+import { SetMessageInput, SetMessageInputHeight } from '../../store/states/messageInput'
+
 const MessageInput = () =>{
 
     console.log("MessageInput rerender")
 
-    // const value = useSelector((state:RootState) => state.messageInput.value)
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const inputValue = useSelector((state:RootState) => state.messageInput.value)
 
     return(
         <TextareaAutosize className={styles.textarea}
+            onChange={(e) => dispatch(SetMessageInput(e.target.value))}
+            onHeightChange = {(height) => dispatch(SetMessageInputHeight(height))}
+            value={inputValue}
             minRows = {1}
             maxRows = {15}
         />
-            // value = {value}
-            // onChange = {(e) => dispatch(setInputValue(e.target.value))}
-            // minRows = {1}
-            // maxRows = {15}
-            // onHeightChange = {(height) => dispatch(setHeightValue(height))}
     )
 }
 export default MessageInput;

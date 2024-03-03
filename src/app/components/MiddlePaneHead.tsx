@@ -20,10 +20,10 @@ const MiddlePaneHead = () =>{
                 setCurrentChannel(channel);
             }
         })
-    }, [currentChannel])
+    }, [currentChannelId])
 
     return(
-        <div className = {styles.head} id='boshka'>
+        <div className = {styles.head}>
             <img className = {styles.img} src={currentChannel?.imgUrl} />
             <div className = {styles.channel_info}>
                 <div className = {styles.channel_title}>

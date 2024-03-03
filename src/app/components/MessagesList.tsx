@@ -12,6 +12,7 @@ const MessagesList = () =>{
 
     const messageRecords = useSelector((state: RootState) => state.messages.messagesRecords);
     const currentChannelSelected = useSelector((state: RootState) => state.channelsList.currentChannelSelected);
+    const userId = useSelector((state: RootState) => state.user.userId);
     
     const [selected, setSelected] = useState<string>('');
     const [isModalOpen, modalPosition, modalContent, openModal, closeModal] = useModal();
@@ -36,7 +37,7 @@ const MessagesList = () =>{
             messageRecords[currentChannelSelected]
             ?   messageRecords[currentChannelSelected].map((message, index) => 
                     <div onContextMenu={(event) => selectMessage(event, message.id, index)}>
-                        <Message message={message} selected={selected === message.id} key={message.id}/>
+                        <Message message={message} self={message.creatorId === userId} selected={selected === message.id} key={message.id}/>
                     </div>  
                 )
             :   <div></div>

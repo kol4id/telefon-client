@@ -4,7 +4,9 @@
     --searchline-hover-color: rgba(148, 138, 206, 0.6) !important;
     --message-text-color: rgba(255, 255, 255, 0.9);
     --message-bg-from-color: rgb(45, 45, 45) !important;
+    --message-bg-self-color:  rgba(127, 112, 214, 0.979) !important;
     --message-time-text-color: rgb(120, 120, 120) !important;
+    --message-time-text-self-color: rgb(200, 200, 200) !important;
     --message-string-bg-selected-color: rgba(0, 0, 0, 0.6);
 }
 
@@ -58,7 +60,30 @@
     
 }
 
+.message_string_self {
+    transition: .2s ease;
+    display: flex;
+    justify-content: right;
+}
 
+.message_string_self_selected{
+    transition: .2s ease;
+    display: flex;
+    justify-content: right;
+    backdrop-filter: blur(0.5px);
+    background-color: var(--message-string-bg-selected-color);
+}
+
+.message_string_self .message_block, .message_string_self_selected .message_block{
+    display: flex;
+    background-color: var(--message-bg-self-color);
+    border-radius: 0.9375rem 0.375rem 0.375rem 0.9375rem;
+    margin-right: 25%;
+}
+
+.message_string_self .send_time, .message_string_self_selected .send_time{
+    color: var(--message-time-text-self-color)
+}
 /* .messageStringFrom {
     display: flex;
     width: 100%;

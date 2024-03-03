@@ -1,6 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IMessage } from "../../app/utils/interfaces/Message.dto";
-import { inPlaceSort } from "fast-sort";
+import FetchChannelMessages from "../../app/api/fetchChannelMessages";
+import { HandleFetching } from "../../app/utils/fetch/HandleFetching";
+import FetchLastMessages from "../../app/api/fetchLastMessages";
+
 
 
 interface ISetMessagesDTO{
@@ -31,6 +34,44 @@ const initialState: IMessageState = {
     messagesRecords: {},
 }
 
+// const [FetchChannelsCall, , channelsError] = HandleFetching(async(): Promise<any>=>{
+//     return(await FetchChannelMessages());
+// });
+
+const [FetchLastMessagesCall, , lastMessagesError] = HandleFetching(async(): Promise<any> => {
+    return(await FetchLastMessages());
+})
+
+const HandleMessageFetch = (channelId: string, chunkNumber: number) =>{
+    const [FetchMessagesCall, , messagesError] = HandleFetching(async(): Promise<any> => {
+        return (await FetchChannelMessages(channelId, chunkNumber));
+    });
+    return {FetchMessagesCall, messagesError}
+} 
+
+export const fetchLastMessages = createAsyncThunk(
+    'messages/fetchLast',
+    async function(_, {rejectWithValue}){
+        const data = await FetchLastMessagesCall();
+        if(lastMessagesError.isObtained){
+            return rejectWithValue(lastMessagesError.message);
+        }
+        return data;
+    }
+)
+
+export const fetchMessages = createAsyncThunk(
+    'messages/fetch',
+    async function(args: {channelId: string, chunkNumber: number}, {rejectWithValue}){
+        const {FetchMessagesCall, messagesError} = HandleMessageFetch(args.channelId, args.chunkNumber);
+        const data = await FetchMessagesCall();
+        if(messagesError.isObtained){
+            return rejectWithValue(messagesError.message);
+        }
+        return data;
+    }
+)
+
 const messageSlice = createSlice({
     name: 'messagesList',
     initialState,
@@ -57,6 +98,38 @@ const messageSlice = createSlice({
                                 findIndex(message => message.id === action.payload.messageId)
             state.messagesRecords[action.payload.channelId].splice(elementIndx, 1);
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchLastMessages.pending, (state) =>{
+                state.isLoading = true;
+            })
+            .addCase(fetchLastMessages.fulfilled, (state, action) =>{
+                const messagesArray = action.payload as IMessage[][]
+                messagesArray.forEach(messages => {
+                    if(messages.length){
+                        state.messagesRecords[messages[0].channelId] = messages;
+                    }
+                });
+                state.isLoading = false;
+            })
+            .addCase(fetchLastMessages.rejected, (state) =>{
+                state.isLoading = false;
+            })
+            .addCase(fetchMessages.pending, (state) =>{
+                state.isLoading = true;
+            })
+            .addCase(fetchMessages.fulfilled, (state, action) =>{
+                const messages = action.payload as IMessage[]
+                if(messages.length){
+                    state.messagesRecords[messages[0].channelId] = messages;    
+                }
+                state.isLoading = false;
+            })
+            .addCase(fetchMessages.rejected, (state) =>{
+                state.isLoading = false;
+            })
+            
     }
 })
 

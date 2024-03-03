@@ -1,40 +1,29 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import MiddlePaneBody from '../components/MiddlePaneBody'
 import MiddlePaneHead from '../components/MiddlePaneHead'
 
 import styles from '../styles/MiddlePane.module.css'
-import { RootState } from '../../store/store'
+import { RootState, useAppDispatch } from '../../store/store'
 import React, { useEffect, useState } from 'react'
 import { useFetching } from '../utils/hooks/useFetching'
 import FetchChannelMessages from '../api/fetchChannelMessages'
 import MiddlePaneLoadPlug from '../components/MiddlePaneLoadPlug'
-import { SetDataLoading, SetMessages } from '../../store/states/messages'
+import { SetDataLoading, SetMessages, fetchMessages } from '../../store/states/messages'
 
 const MiddlePane = React.memo(() =>{
 
     console.log("MiddlePane rerender")
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    const [isFirstOpen, setIsFirstOpen] = useState(true);
-
-    const [GetMessages, messagesIsPending] = useFetching(async()=>{
-        const messages = await FetchChannelMessages(currentSelected, 1);
-        //if ^ code failed code below v will not be executed
-        dispatch(SetMessages({channelId: messages[0].channelId, messages: messages}));
-    });
-
-    const GetChannelsExecutor = async() => {
-        dispatch(SetDataLoading(true));
-        await GetMessages();
-        dispatch(SetDataLoading(false));
-    }
+    const [isFirstOpen, setIsFirstOpen] = useState<boolean>(true);
 
     const currentSelected = useSelector((state: RootState) => state.channelsList.currentChannelSelected);
+    // const messagesIsLoading = useSelector((state: RootState) => state.messages.isLoading);
 
     useEffect(()=>{
         if(currentSelected){
-            GetChannelsExecutor();
+            dispatch(fetchMessages({channelId: currentSelected, chunkNumber: 1}))
             setIsFirstOpen(false);
         }
     }, [currentSelected])
@@ -44,12 +33,16 @@ const MiddlePane = React.memo(() =>{
             {
                 isFirstOpen
                 ?   <div/>
-                :   messagesIsPending 
-                    ?   <MiddlePaneLoadPlug/>
-                    :   <React.Fragment>
+                // :   messagesIsLoading 
+                //     ?   <MiddlePaneLoadPlug/>
+                //     :   <React.Fragment>
+                //             <MiddlePaneHead/>
+                //             <MiddlePaneBody/>
+                //         </React.Fragment>
+                :   <React.Fragment>
                             <MiddlePaneHead/>
                             <MiddlePaneBody/>
-                        </React.Fragment>
+                    </React.Fragment>
             }  
         </div>
     )

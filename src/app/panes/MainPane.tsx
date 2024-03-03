@@ -6,25 +6,26 @@ import LeftPane from './LeftPane';
 import MiddlePane from './MiddlePane';
 import React from 'react';
 import useLeftPaneResize from '../utils/hooks/useLeftPaneResize';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '../../store/store';
 import { SetCursorStyle } from '../../store/states/cursorStyle';
 import { io } from 'socket.io-client';
 import AuthPane from './AuthPane';
 import RefreshUser from '../api/refreshUser';
-import { SetUserAuthorized, SetUserLoading } from '../../store/states/user';
+import { SetUserAuthorized, SetUserLoading, fetchUserRefresh } from '../../store/states/user';
 
 import image from '../../assets/chat-bg-pattern-dark.png';
 import HandleSocketEvent from '../api/handleSocketEvent';
 import { ISocketData } from '../utils/interfaces/Socket.dto';
 import { useFetching } from '../utils/hooks/useFetching';
+import { fetchLastMessages } from '../../store/states/messages';
 
 
 const MainPane: FC = () =>{
     
     // console.log("MainPane rerender")
     let socket = undefined;
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const cursorStyle = useSelector((state: RootState) => state.cursorStyle.value)
     const user = useSelector((state: RootState) => state.user)
 
@@ -34,20 +35,15 @@ const MainPane: FC = () =>{
 
     const {inResizePosition, currentlyResizing} = useLeftPaneResize();
 
-    const [UserRefresh] = useFetching(async()=>{
-        await RefreshUser();
-        //if ^ code failed code below v will not be executed
-        dispatch(SetUserAuthorized(true));    
-    });
-
-    const UserRefreshExecutor = async() => {
-        await UserRefresh();
-        dispatch(SetUserLoading(false));
-    }
+    useEffect(()=>{
+        dispatch(fetchUserRefresh());
+    }, [])
 
     useEffect(()=>{
-        UserRefreshExecutor()
-    }, [])
+        if(user.isAuthorized){
+            dispatch(fetchLastMessages());
+        }
+    }, [user.isAuthorized])
 
     useEffect(()=>{
         if(user.isAuthorized){

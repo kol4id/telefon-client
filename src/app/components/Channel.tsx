@@ -9,35 +9,60 @@ interface Props{
     channel: IChannel,
     selected: boolean,
 }
-// select: (id: string) => void,
 
 const Channel = React.memo((props: Props) =>{
+    console.log(`channel ${props.channel.id} rerender`) 
 
-    console.log(`channel ${props.channel.id} rerender`)
-
-    const width = useSelector((state: RootState) => state.width.channelWidth)
-    const wordWrapWidth = useSelector((state: RootState) => state.width.channelWrapWidth)
+    const isLastLoading = useSelector((state: RootState) => state.messages.isLastLoading);
+    const lastMessage = useSelector((state: RootState) => state.messages.lastMessages[props.channel.id]);
     
     return(
-        <div className = {props.selected ? styles.channelSelected : styles.channel}
-            style={{width: width}}
-        >
+        <div className = {props.selected ? styles.channelSelected : styles.channel}>
             <div className = {styles.channelImg}>
                 <img src = {props.channel.imgUrl}/>
             </div>
 
             <div className = {styles.channelContent}>
-                <div className = {styles.channelHeader}>
-                    {props.channel.title}
-                </div>
-                <div className = {styles.channelBody}
-                    style={{maxWidth: wordWrapWidth}}
-                >
-                </div>
+                {
+                    isLastLoading || 
+                        <>
+                            <ChannelHeader title={props.channel.title} messageTime={props.channel.updatedAt}/>          
+                            <ChannelBody lastMessage={lastMessage}/>
+                        </>
+                }
+                
             </div>
         </div>
     )
 })
 
 export default Channel
+
+
+
+const ChannelHeader = ({...props}) => {
+    return(
+        <div className = {styles.channelHeader}>
+            <div className={styles.channel_name}>
+                {props.title}
+            </div>
+            <div className={styles.channel_message_date}>
+                {`${String(new Date(props.messageTime).getHours()).padStart(2, '0')}:${String(new Date(props.messageTime).getMinutes()).padStart(2, '0')}`}
+            </div>
+        </div>
+    )
+}
+
+const ChannelBody = ({...props}) => {
+    return(
+        <div className = {styles.channelBody}>
+            <div className={styles.channel_body_content}>
+                {props.lastMessage.content}
+            </div>
+            <div className={styles.channel_body_unread_count}>
+                1
+            </div>
+        </div>
+    )
+}
 

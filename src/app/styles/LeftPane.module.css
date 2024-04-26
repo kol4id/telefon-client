@@ -4,8 +4,19 @@
 }
 
 .leftPane {
+    position: relative;
+    display: grid;
+    flex: 1;
+    grid-template-columns: 1fr;
+    grid-template-rows: 3.5rem 1fr;
     user-select: none;
     border-right: 0.25px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
+    overflow: hidden;
+}
+
+@media (max-width: 600px)
+{
+    .leftPane{
+        max-width: 0px;
+    }
 }

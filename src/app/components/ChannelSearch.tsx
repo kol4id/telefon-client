@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { SetSearchValue } from '../../store/states/channelSearch';
 
 import styles from '../styles/ChannelSearch.module.css'
 import { RootState } from '../../store/store';
+
+import searchImage from '../../assets/search.png';
+import clearImage from '../../assets/close.png'
 
 const ChannelSearch = () =>{
 
@@ -12,29 +14,21 @@ const ChannelSearch = () =>{
     const dispatch = useDispatch();
 
     const searchValue = useSelector((state:RootState) => state.channelSearch.value);
-    const width = useSelector((state: RootState) => state.width.searchWidth)
-
-    const [focus, setFocus] = useState<boolean>(false);
-    const [searchStyle, setSearchStyle] = useState<string>(styles.ChannelSearchLine)
-
-    useEffect(() => {
-        focus
-        ? setSearchStyle(styles.channelSearchLineFocused)
-        : setSearchStyle(styles.channelSearchLine)
-    }, [focus])
-
+    
     return(
-        <div className = {searchStyle}>
-            <input
-                onFocus={() => setFocus(true)}
-                onBlur={() => setFocus(false)}
-                onChange={(e) => dispatch(SetSearchValue(e.target.value))}
-                value={searchValue}
-                style={{width: width}}
-            />
-            <div className = {styles.inputClear}
-                onClick={() => dispatch(SetSearchValue(''))}           
-            ></div>
+        <div className={styles.search_container}>
+                <img className={styles.search_img} src={searchImage}></img>
+                <input className={styles.search_input} 
+                    type='text'
+                    value={searchValue}
+                    onChange={(e) => dispatch(SetSearchValue(e.target.value))}
+                />
+                <div className={styles.search_clear_container}
+                    style={{visibility: searchValue ? 'visible' : 'hidden'}}
+                    onClick={() => dispatch(SetSearchValue(''))}
+                >
+                    <img className={styles.search_clear_img} src={clearImage}/>
+                </div>
         </div>
     )
 }

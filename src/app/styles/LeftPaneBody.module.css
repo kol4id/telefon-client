@@ -5,34 +5,13 @@
 }
 
 .body {
-    z-index: 0;
-    position: relative;
-    height: 100%;
-    display: flex;
     color: var(--body-text-color);
     background-color: var(--left-body-bg-color);
+    height: 100%;
 }
 
 .bodyMain {
     display: flex;
-    position: relative;
-    margin-bottom: 95px;
+    height: calc(100vh - 3.5rem);
+    flex: 1;
 }   
-
-.bodyMain::-webkit-scrollbar{
-    width: 6px;
-}
-
-.bodyMain::-webkit-scrollbar-thumb{
-    background-color: transparent;
-    border-radius: 4px;
-}
-
-.bodyMain:hover::-webkit-scrollbar{
-    width: 6px;
-}
-
-.bodyMain:hover::-webkit-scrollbar-thumb{
-    background-color: var(--body-scrollbar-thumb-color);
-    border-radius: 4px;
-}

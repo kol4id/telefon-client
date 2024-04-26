@@ -31,7 +31,7 @@ const ChannelsList = memo(() =>{
         return () =>{
             clearTimeout(timeout)
         }
-    }, [searchValue]), [searchValue])
+    }, [searchValue, channelState]), [searchValue, channelState])
 
 
     const selectChannel = (id: string): void =>{

@@ -8,11 +8,8 @@
 
 .head{
     display: flex;
-    height: 45px;
+    flex: 1;
     align-items: center;
-    
-    padding: 5px 0px 5px 30px;
-
     border-bottom: 1px solid var(--middle-border-bottom);
     background-color: var(--middle-head-bg-color);
     /* color: var(--middle-head-text-color);     */
@@ -24,18 +21,19 @@
     height: 40px;
     border-radius: 50%; 
     box-shadow: 0px 0px 5px var(--middle-head-img-box-shadow) !important;
-    /* padding-right: 10px; */
-    margin-right: 10px;
+    margin-left: 30px;
 }
 
 .channel_info{
-    display: flex;
+    /* display: flex; */
+    align-items: center;
+    display: grid;
+    grid-template-columns: 80px auto;
     flex-direction: column;
-    padding: 0;
-    margin: 0;
 }
 
 .channel_title{
+    margin-top: -4px;
     font-size: 18px;
     font-weight: 600;
     color: var(--middle-head-text-color) !important;
@@ -44,5 +42,4 @@
 .channel_subscribers{
     font-size: 15px;   
     color: var(--middle-head-subs-text-color) !important;
-    margin-top: -2px;
 }

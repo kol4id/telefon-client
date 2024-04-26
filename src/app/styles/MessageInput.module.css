@@ -1,5 +1,7 @@
 .textarea {
-    width: 600px;
+    display: flex;
+    flex: 1;
+    overflow-y: auto;
     border: none;
     outline: none;
     resize: none;

@@ -3,17 +3,24 @@
 }
 
 .body {
-    display: flex;
-    height: 100%;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: calc(.2% + 2px) 1fr;
+    width: 100%;
 }
 
-.bodyMain {
-    display: flex;
-    width: 100%;
-    flex: 1;
-    flex-direction: column-reverse;
-    bottom: 0;
+.body_transition {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    grid-template-columns: 1fr;
+    height: calc(100vh - 3.5rem);
+} 
 
+.bodyMain {
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
     overflow-y: scroll;
     overflow-x: hidden;
 }

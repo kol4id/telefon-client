@@ -1,0 +1,10 @@
+.resize_bar{
+    /* position: absolute; */
+    /* width: calc(.2% + 2px);  */
+    height: 100%;
+}
+
+.resize_bar:hover{
+    /* border-left: 1px solid grey; */
+    cursor: w-resize;
+}

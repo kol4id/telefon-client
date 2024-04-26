@@ -1,20 +1,18 @@
 .inputContainer { 
-    position: absolute;
-    display: flex;
-    width: 100%;
     height: auto;
-
-    
-    margin-bottom: 15px;
-    bottom: 0;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    margin: 5px 0px 15px 0px;
+}   
 
 .inputBox {
-    margin-left: 15%;
+    display: flex;
+    background-color: rgb(59, 59, 59); 
     border-radius: 15px;
-    overflow: hidden;
-
-    background-color: rgb(59, 59, 59);
+    padding-bottom: 10px;
+    width: calc(100% - 50vw + 150px);
 }
 
 .sendMessageButton {
@@ -25,4 +23,10 @@
     border-radius: 50px;
     background-color: rgb(59, 59, 59);                     
     
+}
+
+@media(max-width: 1000px){
+    .inputBox{
+        width: calc(100% - 45vw + 150px);
+    }
 }

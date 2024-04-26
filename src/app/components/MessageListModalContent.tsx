@@ -10,6 +10,7 @@ import { IMessage } from "../utils/interfaces/Message.dto"
 import DeleteMessageApi from "../api/messageAPI"
 import { useDispatch } from "react-redux"
 import { DeleteMessage } from "../../store/states/messages"
+import { useRef } from 'react'
 
 interface IProps{
     message: IMessage,
@@ -19,6 +20,7 @@ interface IProps{
 const MessageListModalContent = (props: IProps) =>{
 
     const dispatch = useDispatch();
+    const ref = useRef(null);
 
     const HandleMessageDelete = async(message: IMessage) => {
         const responce = await DeleteMessageApi(message.id, message.channelId);
@@ -29,16 +31,14 @@ const MessageListModalContent = (props: IProps) =>{
     }
 
     return(
-        <>
-            <ModalMenuButton text={'Reply'} img_url={reply_img}/>
-            <ModalMenuButton text={'Copy Text'} img_url={copy_text}/>
-            <ModalMenuButton text={'Pin'} img_url={push_pin}/>
-            <ModalMenuButton text={'Forward'} img_url={forward_img}/> 
-            <ModalMenuButton text={'Select'} img_url={select_message}/>
-            <div onClick={() => HandleMessageDelete(props.message)}>
-                <ModalMenuButton text={'Delete'} img_url={trash_box_img} style={{color: 'rgb(255, 50, 50)'}}/>
-            </div>
-        </>
+        <div ref={ref}>
+            <ModalMenuButton text={'Reply'} img_url={reply_img} callback={()=>{}}/>
+            <ModalMenuButton text={'Copy Text'} img_url={copy_text} callback={()=>{}}/>
+            <ModalMenuButton text={'Pin'} img_url={push_pin} callback={()=>{}}/>
+            <ModalMenuButton text={'Forward'} img_url={forward_img} callback={()=>{}}/> 
+            <ModalMenuButton text={'Select'} img_url={select_message} callback={()=>{}}/>
+            <ModalMenuButton text={'Delete'} img_url={trash_box_img} style={{color: 'rgb(255, 50, 50)'}} callback={()=>{HandleMessageDelete(props.message)}}/>
+        </div>
     )
 }
 

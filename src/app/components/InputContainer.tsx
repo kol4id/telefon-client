@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import styles from '../styles/InputContainer.module.css'
 import MessageInput from './MessageInput';
 import { SetMessageInput } from '../../store/states/messageInput';
 import { RootState } from '../../store/store';
 import postMessage from '../api/postMessage';
+
+import styles from '../styles/InputContainer.module.css'
 
 const InputContainer = () =>{
 
@@ -20,14 +21,24 @@ const InputContainer = () =>{
         dispatch(SetMessageInput(''))
     }
 
+    const sendMessageOnEnter = async(event: any) => {
+        if (!messageInputValue) return;
+        if (event.key === "Enter" && !event.ctrlKey && !event.altKey && !event.shiftKey){
+            sendMessage();
+        }
+    }
+
     return(
-        <div className = {styles.inputContainer}>
+        <div className = {styles.inputContainer}
+            onKeyDown={(event) => sendMessageOnEnter(event)}
+        >
             <div className = {styles.inputBox}>
                 <MessageInput/>
             </div>
+
             <div className = {styles.sendMessageButton}
                 onClick={() => sendMessage()}
-                style={{marginTop: sendMessageMargin - 20}}
+                style={{marginTop: sendMessageMargin - 20}}  
             >
             </div>
         </div>

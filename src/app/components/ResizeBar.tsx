@@ -26,12 +26,7 @@ const ResizeBar: FC = React.memo(() => {
     }, [windowWidth])
 
     useEffect(() => {
-        if (currentlyResizing){
-            dispatch(SetCursorStyle('ew-resize'))
-        } else {
-            dispatch(SetCursorStyle(''))
-        }
-        
+        dispatch(SetCursorStyle(currentlyResizing ? 'ew-resize' : ''))
     }, [currentlyResizing])
 
     return(

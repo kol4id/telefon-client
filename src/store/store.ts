@@ -6,7 +6,6 @@ import cursorStyle from "./states/cursorStyle";
 import messages from "./states/messages";
 import messageInput from "./states/messageInput";
 import user from "./states/user";
-import portalKey from "./states/portalKey";
 import { useDispatch } from "react-redux";
 
 export const store = configureStore({
@@ -18,7 +17,6 @@ export const store = configureStore({
         messages: messages,
         messageInput: messageInput,
         user: user,
-        portalKey: portalKey,
     }
 })
 

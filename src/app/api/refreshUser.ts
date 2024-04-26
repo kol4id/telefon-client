@@ -6,7 +6,6 @@ const RefreshUser = async(): Promise<number> =>{
     if (response.status !== 200) {
         console.log(response.status)
     }
-    console.log(response.data)
     return response.data
 }
 

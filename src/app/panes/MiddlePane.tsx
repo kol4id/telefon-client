@@ -5,10 +5,7 @@ import MiddlePaneHead from '../components/MiddlePaneHead'
 import styles from '../styles/MiddlePane.module.css'
 import { RootState, useAppDispatch } from '../../store/store'
 import React, { useEffect, useState } from 'react'
-import { useFetching } from '../utils/hooks/useFetching'
-import FetchChannelMessages from '../api/fetchChannelMessages'
-import MiddlePaneLoadPlug from '../components/MiddlePaneLoadPlug'
-import { SetDataLoading, SetMessages, fetchMessages } from '../../store/states/messages'
+import { fetchMessages } from '../../store/states/messages'
 
 const MiddlePane = React.memo(() =>{
 
@@ -19,7 +16,6 @@ const MiddlePane = React.memo(() =>{
     const [isFirstOpen, setIsFirstOpen] = useState<boolean>(true);
 
     const currentSelected = useSelector((state: RootState) => state.channelsList.currentChannelSelected);
-    // const messagesIsLoading = useSelector((state: RootState) => state.messages.isLoading);
 
     useEffect(()=>{
         if(currentSelected){
@@ -29,22 +25,16 @@ const MiddlePane = React.memo(() =>{
     }, [currentSelected])
 
     return(
-        <div className={styles.middlePane}>
+        <React.Fragment>
             {
                 isFirstOpen
                 ?   <div/>
-                // :   messagesIsLoading 
-                //     ?   <MiddlePaneLoadPlug/>
-                //     :   <React.Fragment>
-                //             <MiddlePaneHead/>
-                //             <MiddlePaneBody/>
-                //         </React.Fragment>
-                :   <React.Fragment>
-                            <MiddlePaneHead/>
-                            <MiddlePaneBody/>
-                    </React.Fragment>
+                :   <div className={styles.middlePane}>
+                        <MiddlePaneHead/>
+                        <MiddlePaneBody/>
+                    </div>
             }  
-        </div>
+        </React.Fragment>
     )
 })
 export default MiddlePane

@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import { IPosition } from '../interfaces/MousePos';
 
 
-const useMouseDown = () =>{
+const useMouseDown = (enabled: boolean = false) =>{
     const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
     const [mouseDownPosition, setMouseDownPosition] = useState<IPosition>({x: 0, y:0});
     
@@ -12,14 +12,19 @@ const useMouseDown = () =>{
     }
 
     useEffect(() =>{
-        window.addEventListener('mousedown', HandleMouseClick);
-        window.addEventListener('mouseup', () => setIsMouseDown(false));
+        if (enabled){
+            window.addEventListener('mousedown', HandleMouseClick);
+            window.addEventListener('mouseup', () => setIsMouseDown(false));
+        } else {
+            window.removeEventListener('mousedown', HandleMouseClick);
+            window.removeEventListener('mouseup', () => setIsMouseDown(false));
+        }
 
         return () => {
             window.removeEventListener('mousedown', HandleMouseClick);
             window.removeEventListener('mouseup', () => setIsMouseDown(false));
         }
-    }, [])
+    }, [enabled])
 
     return {isMouseDown, mouseDownPosition};
 }

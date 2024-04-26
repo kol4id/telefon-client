@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { IPosition } from "../interfaces/MousePos";
 
-const useMousePosition = () =>{
+const useMousePosition = (enabled: boolean = false) =>{
     const [position, setPosition] = useState<IPosition>({x: 0, y: 0});
 
     const HandleMouseMove = (event: MouseEvent): void =>{
@@ -9,12 +9,16 @@ const useMousePosition = () =>{
     }
 
     useEffect(() => {
-        window.addEventListener('mousemove', HandleMouseMove);
+        if (enabled){
+            window.addEventListener('mousemove', HandleMouseMove);
+        } else {
+            window.removeEventListener('mousemove', HandleMouseMove);
+        }
 
         return () => {
             window.removeEventListener('mousemove', HandleMouseMove);
         };
-    }, []);
+    }, [enabled]);
 
     return position;
 };

@@ -7,9 +7,10 @@ export interface IChannel {
     title: string,
     imgUrl?: string,
     subscribers: number,
+    totalMessages: number,
     moderatorsId: string[],
     lastMessageId?: string,
-    updatedAt: string,
+    updatedAt: Date,
     creatorId: string,
 }
 

@@ -16,14 +16,19 @@ export interface IMessageDeleteDto{
 };
 
 
+
+
 export interface IMessage{
     id: string;
     channelId: string;
     creatorId: string;
     content: string;
+    isRead: string;
+    readTime: Date;
     edited: boolean;
     createdAt: Date;
     hasMedia: boolean;
+    mediaLenght: number;
     mediaUrls?: string[];
 };
 

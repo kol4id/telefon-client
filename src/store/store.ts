@@ -7,6 +7,8 @@ import messages from "./states/messages";
 import messageInput from "./states/messageInput";
 import user from "./states/user";
 import { useDispatch } from "react-redux";
+import socket from "./states/socket";
+import socketMiddleware from "./middleware/socketMiddleware";
 
 export const store = configureStore({
     reducer:{
@@ -17,7 +19,11 @@ export const store = configureStore({
         messages: messages,
         messageInput: messageInput,
         user: user,
-    }
+        socket: socket,
+    },
+    middleware(getDefaultMiddleware) {
+        return getDefaultMiddleware().concat([socketMiddleware]);
+    },
 })
 
 export type RootState = ReturnType<typeof store.getState>;

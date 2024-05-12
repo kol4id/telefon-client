@@ -7,15 +7,15 @@ import FetchOneLastMessageEach from "../../app/api/fetchOneLastMessageEach";
 
 
 
-interface ISetMessagesDTO{
-    channelId: string,
-    messages: IMessage[],
-};
+// interface ISetMessagesDTO{
+//     channelId: string,
+//     messages: IMessage[],
+// };
 
-interface IPushMessageDTO{
-    channelId: string,
-    message: IMessage,
-};
+// interface IPushMessageDTO{
+//     channelId: string,
+//     message: IMessage,
+// };
 
 interface IDeleteMessageDTO
 {
@@ -106,55 +106,66 @@ const messageSlice = createSlice({
     name: 'messagesList',
     initialState,
     reducers: {
-        SetMessages(state, action: {payload: ISetMessagesDTO}){
-            state.messagesRecords[action.payload.channelId] = action.payload.messages;
+        messageSetMessages(state, action: {payload: IMessage[]}){
+            const messages = action.payload;
+            state.messagesRecords[messages[0]?.channelId] = messages;
         },
-        SetMessageSelected(state, action){
+        messageSetMessageSelected(state, action){
             state.messageSelected = action.payload
         },
-        SetDataLoading(state, action){
+        messageSetDataLoading(state, action){
             state.isLoading = action.payload
         },
-        PushMessage(state, action: {payload: IPushMessageDTO}){
-            if(!state.messagesRecords[action.payload.channelId]){
-                state.messagesRecords[action.payload.channelId] = [];
-            }
-            state.messagesRecords[action.payload.channelId].push(action.payload.message);
+        messagePushMessage(state, action: {payload: IMessage | IMessage[]}){
+            const messages = Array.isArray(action.payload) ? action.payload : [action.payload];
+        
+            messages.forEach((message)=>{
+                if(!state.messagesRecords[message.channelId]){
+                    state.messagesRecords[message.channelId] = [];
+                }
+                state.messagesRecords[message.channelId].push(message);
+            })
         },
-        PushMessages(state, action: {payload: ISetMessagesDTO}){
-            if(!state.messagesRecords[action.payload.channelId]){
-                state.messagesRecords[action.payload.channelId] = [];
-            }
-            state.messagesRecords[action.payload.channelId].push(...action.payload.messages);
+        messageShiftMessage(state, action: {payload: IMessage}){
+            const messages = Array.isArray(action.payload) ? action.payload : [action.payload];
+            
+            messages.forEach((message)=>{
+                if(!state.messagesRecords[message.channelId]){
+                    state.messagesRecords[message.channelId] = [];
+                }
+                state.messagesRecords[message.channelId] = [message, ...state.messagesRecords[message.channelId]];
+            })  
         },
-        ShiftMessage(state, action: {payload: IPushMessageDTO}){
-            if(!state.messagesRecords[action.payload.channelId]){
-                state.messagesRecords[action.payload.channelId] = [];
-            }
-            state.messagesRecords[action.payload.channelId] = [action.payload.message, ...state.messagesRecords[action.payload.channelId]];
-        },
-        ShiftMessages(state, action: {payload: ISetMessagesDTO}){
-            if(!state.messagesRecords[action.payload.channelId]){
-                state.messagesRecords[action.payload.channelId] = [];
-            }
-            state.messagesRecords[action.payload.channelId] = [...action.payload.messages, ...state.messagesRecords[action.payload.channelId]];
-        },
-        UpdateLastMessage(state, action: {payload: IMessage}){
+        messageUpdateLastMessage(state, action: {payload: IMessage}){
             if(action.payload.content){
                 state.lastMessages[action.payload.channelId] = action.payload;
             }
         },
-        DeleteMessage(state, action: {payload: IDeleteMessageDTO}){
-            const elementIndx = state.messagesRecords[action.payload.channelId].
-                                findIndex(message => message.id === action.payload.messageId)
-            state.messagesRecords[action.payload.channelId].splice(elementIndx, 1);
+        messageDeleteMessage(state, action: {payload: IDeleteMessageDTO}){
+            const message = action.payload;
+            const elementIndx = state.messagesRecords[message.channelId].
+                                findIndex(msg => msg.id === message.messageId)
+            state.messagesRecords[message.channelId].splice(elementIndx, 1);
         },
-        LastReadsQueuePush(state, action){
+        messageLastReadsQueuePush(state, action){
             state.lastReadsQueue.push(action.payload);
         },
-        ClearLastReadQueue(state){
-            state.lastReadsQueue = [];
-        }
+        messageClearLastReadQueue(state, action: {payload: IMessage | IMessage[]}){
+            const messages = Array.isArray(action.payload) ? action.payload : [action.payload];
+            const messagesToRemoveIds = new Set(messages.map(message => message.id));
+            
+            const newLastReadQueue = state.lastReadsQueue.filter(message => !messagesToRemoveIds.has(message.id));
+            state.lastReadsQueue = newLastReadQueue;
+        },
+        messageUpdateMessage(state, action: {payload: IMessage | IMessage[]}){
+            const messages = Array.isArray(action.payload) ? action.payload : [action.payload];
+
+            messages.forEach((message)=>{
+                const messageIndex = state.messagesRecords[message.channelId].findIndex((msg) => msg.id === message.id)
+                state.messagesRecords[message.channelId][messageIndex] = message;
+            })
+        },
+        
     },
     extraReducers: (builder) => {
         builder
@@ -208,7 +219,7 @@ const messageSlice = createSlice({
 })
 
 export const {
-    SetMessages, SetMessageSelected, SetDataLoading, PushMessages, PushMessage, 
-    ShiftMessages, ShiftMessage, UpdateLastMessage, DeleteMessage, LastReadsQueuePush,
-    ClearLastReadQueue} = messageSlice.actions;
+    messageSetMessages, messageSetMessageSelected, messageSetDataLoading, messagePushMessage, 
+    messageShiftMessage, messageUpdateLastMessage, messageDeleteMessage, messageLastReadsQueuePush,
+    messageClearLastReadQueue, messageUpdateMessage} = messageSlice.actions;
 export default messageSlice.reducer;

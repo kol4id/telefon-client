@@ -24,10 +24,7 @@ const InfiniteScroll: React.FC<IProps> = React.memo(({callback}) =>{
     })
 
     return(
-        <div 
-        ref={infiniteRef}>
-
-        </div>
+        <div ref={infiniteRef}/>
     )
 })
 

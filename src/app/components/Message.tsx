@@ -5,7 +5,7 @@ import { IMessage } from '../utils/interfaces/Message.dto';
 import send from '../../assets/send.png';
 import read from '../../assets/read.png';
 import { useAppDispatch } from '../../store/store';
-import { LastReadsQueuePush } from '../../store/states/messages';
+import { messageLastReadsQueuePush } from '../../store/states/messages';
 
 interface IProps{
     message: IMessage,
@@ -28,7 +28,7 @@ const Message = React.memo((props: IProps) =>{
 
     const handleObserve = () => {
         console.log(`message ${props.message.id} has been read`)
-        dispatch(LastReadsQueuePush(props.message));
+        dispatch(messageLastReadsQueuePush(props.message));
     }
 
     const observer: IntersectionObserver = new IntersectionObserver(entries =>{
@@ -39,6 +39,7 @@ const Message = React.memo((props: IProps) =>{
     });
 
     const startObserving = () =>{
+        if(props.self) return
         if(props.message.isRead) return
         observer.observe(messageRef.current);
     }

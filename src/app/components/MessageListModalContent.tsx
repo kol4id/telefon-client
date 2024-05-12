@@ -9,7 +9,7 @@ import ModalMenuButton from "./ModalMenuButton"
 import { IMessage } from "../utils/interfaces/Message.dto"
 import DeleteMessageApi from "../api/messageAPI"
 import { useDispatch } from "react-redux"
-import { DeleteMessage } from "../../store/states/messages"
+import { messageDeleteMessage } from "../../store/states/messages"
 import { useRef } from 'react'
 
 interface IProps{
@@ -26,7 +26,7 @@ const MessageListModalContent = (props: IProps) =>{
         const responce = await DeleteMessageApi(message.id, message.channelId);
         if (responce === 200){
             props.close()   
-            dispatch(DeleteMessage({channelId: message.channelId, messageId: message.id}));
+            dispatch(messageDeleteMessage({channelId: message.channelId, messageId: message.id}));
         }
     }
 

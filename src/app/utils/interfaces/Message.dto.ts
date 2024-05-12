@@ -15,9 +15,6 @@ export interface IMessageDeleteDto{
     messageChannelId: string,
 };
 
-
-
-
 export interface IMessage{
     id: string;
     channelId: string;

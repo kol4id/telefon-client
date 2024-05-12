@@ -87,6 +87,7 @@
 }
 
 .read_status {
+    margin-left: 2px;
     width: 15px;
     height: 15px;
 }

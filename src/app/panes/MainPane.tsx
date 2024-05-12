@@ -14,29 +14,20 @@ import image from '../../assets/chat-bg-pattern-dark.png';
 import HandleSocketEvent from '../api/handleSocketEvent';
 import { ISocketData } from '../utils/interfaces/Socket.dto';
 import { fetchLastMessages, fetchOneLastMessage } from '../../store/states/messages';
+import { socketInit } from '../../store/states/socket';
 
 
 const MainPane: FC = () =>{
     
     // console.log("MainPane rerender")
-    const [socket, setSocket] = useState<Socket>();
     const dispatch = useAppDispatch();
     const cursorStyle = useSelector((state: RootState) => state.cursorStyle.value)
     const user = useSelector((state: RootState) => state.user)
 
-    const handleDispatch = (action: any) =>{
-        dispatch(action)
-    }
-
     const handleAfterAuth = () =>{
         if (!user.isAuthorized) return
 
-        setSocket(
-            io('http://localhost:4200', {
-                transports: ['websocket'],
-                withCredentials: true
-        }))   
-
+        dispatch(socketInit());
         dispatch(fetchLastMessages());
         dispatch(fetchOneLastMessage());
         dispatch(fetchUser());
@@ -50,15 +41,6 @@ const MainPane: FC = () =>{
     useEffect(()=>{
         handleAfterAuth();
     }, [user.isAuthorized])
-
-    useEffect(()=>{
-        if (socket){
-            socket.on('personalMessage', (data: ISocketData) => {
-                console.log(data)
-                HandleSocketEvent(data, handleDispatch)
-            });
-        }    
-    }, [socket])
 
     return(
         <div className = {styles.main}

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { IPosition } from "../utils/interfaces/MousePos"
+import { IPosition } from "../global/types/MousePos"
 import ReactDOM from "react-dom"
 
 import styles from '../styles/ModalWrapper.module.css'

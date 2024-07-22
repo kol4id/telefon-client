@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MessageInput from './MessageInput';
 import { SetMessageInput } from '../../store/states/messageInput';
 import { RootState } from '../../store/store';
-import postMessage from '../api/postMessage';
+import { PostMessage } from '../api/messageAPI';
 
 import styles from '../styles/InputContainer.module.css'
 
@@ -16,8 +16,7 @@ const InputContainer = () =>{
     const currentChannelSelected = useSelector((state:RootState) => state.channelsList.currentChannelSelected);
 
     const sendMessage = async() =>{
-        postMessage(currentChannelSelected, messageInputValue, false)
-        // await FetchChannelMessages(currentChannelSelected, 1);
+        PostMessage(currentChannelSelected, messageInputValue, false)
         dispatch(SetMessageInput(''))
     }
 

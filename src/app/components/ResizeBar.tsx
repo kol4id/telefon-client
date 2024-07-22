@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useEffect, useState } from "react"
+import {FC, useEffect, useState } from "react"
 import { useAppDispatch } from "../../store/store";
 import useResize, { ResizeParams } from "../utils/hooks/useResize";
 import { Resize } from "../../store/states/width";

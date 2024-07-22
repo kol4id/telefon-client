@@ -1,24 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IMessage } from "../../app/utils/interfaces/Message.dto";
-import FetchChannelMessages from "../../app/api/fetchChannelMessages";
-import { HandleFetching } from "../../app/utils/fetch/HandleFetching";
-import FetchLastMessages from "../../app/api/fetchLastMessages";
-import FetchOneLastMessageEach from "../../app/api/fetchOneLastMessageEach";
+import { IMessage } from "../../app/global/types/Message.dto";
 
+import { fetchWrapper } from "../../app/utils/fetch/fetchWrapper";
+import { IFetchMessages, MessageApi } from "../../app/api/api";
 
-
-// interface ISetMessagesDTO{
-//     channelId: string,
-//     messages: IMessage[],
-// };
-
-// interface IPushMessageDTO{
-//     channelId: string,
-//     message: IMessage,
-// };
-
-interface IDeleteMessageDTO
-{
+interface IDeleteMessageDTO{
     channelId: string,
     messageId: string,
 };
@@ -30,7 +16,7 @@ interface IMessageState{
     messagesRecords: Record<string, IMessage[]>,
     lastMessages: Record<string, IMessage>,
     lastReadsQueue: IMessage[];
-}
+};
 
 const initialState: IMessageState = {
     isLoading: false,
@@ -39,66 +25,28 @@ const initialState: IMessageState = {
     messagesRecords: {},
     lastMessages: {},
     lastReadsQueue: [],
-}
+};
 
-// const [FetchChannelsCall, , channelsError] = HandleFetching(async(): Promise<any>=>{
-//     return(await FetchChannelMessages());
-// });
-const [FetchOneLastMessagesCall, , lastOneMessagesError] = HandleFetching(async(): Promise<any>=>{
-    return(FetchOneLastMessageEach());
-});
-
-const [FetchLastMessagesCall, , lastMessagesError] = HandleFetching(async(): Promise<any> => {
-    return(await FetchLastMessages());
-})
-
-const HandleMessageFetch = (channelId: string, chunkNumber: number) =>{
-    const [FetchMessagesCall, , messagesError] = HandleFetching(async(): Promise<any> => {
-        return (await FetchChannelMessages(channelId, chunkNumber));
-    });
-    return {FetchMessagesCall, messagesError}
-} 
-
-// const HandleMessageFetch = (channelId: string, chunkNumber: number) =>{
-//     const [FetchMessagesCall, , messagesError] = HandleFetching(async(): Promise<any> => {
-//         return (await FetchChannelMessages(channelId, chunkNumber));
-//     });
-//     return {FetchMessagesCall, messagesError}
-// }
-
+const api = new MessageApi();
 
 export const fetchLastMessages = createAsyncThunk(
     'messages/fetchLast',
-    async function(_, {rejectWithValue}){
-        const data = await FetchLastMessagesCall();
-        if(lastMessagesError.isObtained){
-            return rejectWithValue(lastMessagesError.message);
-        }
-        return data;
+    async (_, {rejectWithValue}) => {
+        return fetchWrapper(() => api.fetchLastReadMessages(25), rejectWithValue);
     }
-)
+);
 
 export const fetchMessages = createAsyncThunk(
     'messages/fetch',
-    async function(args: {channelId: string, chunkNumber: number}, {rejectWithValue}){
-        const {FetchMessagesCall, messagesError} = HandleMessageFetch(args.channelId, args.chunkNumber);
-        const data = await FetchMessagesCall();
-        if(messagesError.isObtained){
-            return rejectWithValue(messagesError.message);
-        }
-        return data;
+    async (args: IFetchMessages, {rejectWithValue}) => {
+        return fetchWrapper(() => api.fetchMessages(args), rejectWithValue);
     }
 )
 
-export const fetchOneLastMessage = createAsyncThunk(
+export const fetchLastOneMessages = createAsyncThunk(
     'channels/fetch/lastOne',
-    async function(_, {rejectWithValue}){
-        
-        const data = await FetchOneLastMessagesCall();
-        if(lastOneMessagesError.isObtained){
-            return rejectWithValue(lastOneMessagesError.message);
-        }
-        return data;
+    async (_, {rejectWithValue}) => {
+        return fetchWrapper(() => api.fetchLastOneMessages(), rejectWithValue);
     }
 )
 
@@ -126,14 +74,14 @@ const messageSlice = createSlice({
                 state.messagesRecords[message.channelId].push(message);
             })
         },
-        messageShiftMessage(state, action: {payload: IMessage}){
+        messageShiftMessage(state, action: {payload: IMessage | IMessage[]}){
             const messages = Array.isArray(action.payload) ? action.payload : [action.payload];
             
             messages.forEach((message)=>{
                 if(!state.messagesRecords[message.channelId]){
                     state.messagesRecords[message.channelId] = [];
                 }
-                state.messagesRecords[message.channelId] = [message, ...state.messagesRecords[message.channelId]];
+                state.messagesRecords[message.channelId].unshift(message);
             })  
         },
         messageUpdateLastMessage(state, action: {payload: IMessage}){
@@ -176,8 +124,8 @@ const messageSlice = createSlice({
                 const messagesArray = action.payload as IMessage[][]
                 messagesArray.forEach(messages => {
                     if(messages.length){
-                        const reversedMessages = messages.reverse();
-                        state.messagesRecords[messages[0].channelId] = reversedMessages;
+                        // const reversedMessages = messages.reverse();
+                        state.messagesRecords[messages[0].channelId] = messages;
                     }
                 });
                 state.isLoading = false;
@@ -190,18 +138,25 @@ const messageSlice = createSlice({
             })
             .addCase(fetchMessages.fulfilled, (state, action) =>{
                 const messages = action.payload as IMessage[]
-                if(messages.length){
-                    state.messagesRecords[messages[0].channelId] = messages;    
+                if(!messages?.length) return;
+
+                const messagesLength = state.messagesRecords[messages[0].channelId].length - 1;
+                if (messages[messages.length - 1].createdAt < state.messagesRecords[messages[0].channelId][0].createdAt){
+                    state.messagesRecords[messages[0].channelId].unshift(...messages);
+                } else if (messages[0].createdAt > state.messagesRecords[messages[0].channelId][messagesLength].createdAt){
+                    state.messagesRecords[messages[0].channelId].push(...messages);
                 }
+                else state.messagesRecords[messages[0].channelId] = messages;
+                
                 state.isLoading = false;
             })
             .addCase(fetchMessages.rejected, (state) =>{
                 state.isLoading = false;
             })
-            .addCase(fetchOneLastMessage.pending, (state) => {
+            .addCase(fetchLastOneMessages.pending, (state) => {
                 state.isLastLoading = true;
             })
-            .addCase(fetchOneLastMessage.fulfilled, (state, action) => {
+            .addCase(fetchLastOneMessages.fulfilled, (state, action) => {
                 const messagesArray = action.payload as IMessage[][]
                 console.log(messagesArray)
                 messagesArray.forEach(messages => {
@@ -211,7 +166,7 @@ const messageSlice = createSlice({
                 });
                 state.isLastLoading = false;
             })
-            .addCase(fetchOneLastMessage.rejected, (state) => {
+            .addCase(fetchLastOneMessages.rejected, (state) => {
                 state.isLastLoading = false;
             })
             

@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IChannel, IChannelState } from "../../app/utils/interfaces/Channel.dto";
+import { IChannel, IChannelState } from "../../app/global/types/Channel.dto";
+import { fetchWrapper } from "../../app/utils/fetch/fetchWrapper";
 import FetchChannelsData from "../../app/api/fetchChannelsData";
-import { HandleFetching } from "../../app/utils/fetch/HandleFetching";
+import { ChannelApi } from "../../app/api/api";
 
 interface IChannelsLoading{
     isDataLoading: boolean;
@@ -11,21 +12,29 @@ const initialState: IChannelsLoading & IChannelState = {
     isDataLoading: true,
     currentChannelSelected: '',
     channels: [],
+    currentChannel: {} as IChannel
 }
 
-const [FetchChannelsCall, , channelsError] = HandleFetching(async(): Promise<any>=>{
-    return(FetchChannelsData());
-});
+const channels = new ChannelApi();
 
 export const fetchChannels = createAsyncThunk(
     'channels/fetch',
-    async function(_, {rejectWithValue}){
-        
-        const data = await FetchChannelsCall();
-        if(channelsError.isObtained){
-            return rejectWithValue(channelsError.message);
-        }
-        return data;
+    async (_, {rejectWithValue}) => {
+        return fetchWrapper(() => channels.getForUser(), rejectWithValue);
+    }
+)
+
+export const fetchChannel = createAsyncThunk(
+    'channel/fetch',
+    async (channelId: string, {rejectWithValue}) => {
+        return fetchWrapper(() => channels.get(channelId), rejectWithValue);
+    }
+)
+
+export const searchChannels = createAsyncThunk(
+    'channels/search',
+    async (subString: string, {rejectWithValue}) => {
+        return fetchWrapper(() => channels.search(subString), rejectWithValue);
     }
 )
 
@@ -43,7 +52,11 @@ const channelSlice = createSlice({
             state.channels = action.payload;
         },
         SetChannelSelected(state, action){
-            state.currentChannelSelected = action.payload;
+            const id = action.payload;
+            state.currentChannelSelected = id;
+            if (state.channels.includes(id)){
+                state.currentChannel = state.channels[id];
+            }
         },
         SetDataLoading(state, action){
             state.isDataLoading = action.payload;
@@ -63,10 +76,23 @@ const channelSlice = createSlice({
             .addCase(fetchChannels.fulfilled, (state, action) => {
                 const channels = action.payload as IChannel[];
                 const channelsSorted = channels.sort((a, b) => sortDates(a.updatedAt, b.updatedAt));
+                if (!state.channels) state.channels = [];
                 state.channels = channelsSorted;
                 state.isDataLoading = false;
             })
             .addCase(fetchChannels.rejected, (state) => {
+                state.isDataLoading = false;
+            }) 
+            .addCase(fetchChannel.pending, (state) => {
+                // state.isDataLoading = true;
+            })
+            .addCase(fetchChannel.fulfilled, (state, action) => {
+                const channel = action.payload as IChannel;
+                if (!state.channels) state.channels = [];
+                state.currentChannel = channel;
+                state.isDataLoading = false;
+            })
+            .addCase(fetchChannel.rejected, (state) => {
                 state.isDataLoading = false;
             }) 
     }

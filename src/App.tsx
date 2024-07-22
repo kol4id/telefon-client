@@ -1,6 +1,5 @@
-import MainPane from './app/panes/MainPane'
-
 import './App.css'
+import MainPane from './app/panes/MainPane/MainPane'
 
 function App() {
   return (

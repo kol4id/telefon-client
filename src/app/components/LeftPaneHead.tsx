@@ -10,9 +10,9 @@ const LeftPaneHead = React.memo(() =>{
 
     return(
         <div className = {styles.header}>
-            <div className={styles.header_menu_button}>
+            <button className={styles.header_menu_button} aria-label='hamburger menu'>
                 <img src={menuImage} style={{width: '18px', height: '16px'}}></img>
-            </div>
+            </button>
             <ChannelSearch/>
         </div>
     )

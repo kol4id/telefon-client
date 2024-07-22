@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import { useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import { fetchChannels } from '../../store/states/channels';
 import { RootState, useAppDispatch } from '../../store/store';
-import ChannelsList from './ChannelsList';
 
-import styles from '../styles/LeftPaneBody.module.css'
+import styles from '../styles/LeftPaneBody.module.css';
+import { fetchLastOneMessages } from '../../store/states/messages';
+import ChannelsManager from './ChannelsManager';
 
 const LeftPaneBody = () =>{
     console.log("LeftPaneBody rerender")
@@ -13,8 +14,9 @@ const LeftPaneBody = () =>{
     const channels = useSelector((state: RootState) => state.channelsList);
 
     useEffect(()=>{
-        dispatch(fetchChannels())
-    },[dispatch])
+        dispatch(fetchChannels());
+        dispatch(fetchLastOneMessages());
+    },[])
 
     return(
         <div className = {styles.body}>
@@ -22,7 +24,7 @@ const LeftPaneBody = () =>{
                 {
                     channels.isDataLoading
                     ? <div></div>
-                    : <ChannelsList/>
+                    : <ChannelsManager/>
                 }        
             </div>
         </div>

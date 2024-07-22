@@ -1,5 +1,6 @@
 import axios from "axios"
-import { IMessage } from "../utils/interfaces/Message.dto";
+import { IMessage } from "../global/types/Message.dto";
+import { IFetchMessages } from "./api";
 
 export const DeleteMessageApi = async(messageId: string, channelId: string): Promise<number> =>{
     const response = await axios.delete('http://localhost:4200/api/messages/delete', {
@@ -9,10 +10,6 @@ export const DeleteMessageApi = async(messageId: string, channelId: string): Pro
         },
         withCredentials: true
     });
-
-    if (response.status !== 200){
-        console.log(`${response.statusText} error: ${response.status}`)
-    }
     return response.status;
 }
 
@@ -23,23 +20,13 @@ export const PostMessage = async(channelIdArg: string, messageArg: string, hasMe
         hasMedia: hasMediaArg
     }
 
-    const response = await axios.post('http://localhost:4200/api/messages/create', requestData, {
+    await axios.post('http://localhost:4200/api/messages/create', requestData, {
         withCredentials: true,
-    });
-    
-    if (response.status !== 200){
-        console.log(`${response.statusText} error: ${response.status}`)
-    }
+    }); 
 }
 
-export interface IFetchMessages {
-    channelId: string,
-    limit: number, 
-    startDate?: Date, 
-    endDate?: Date
-};
 
-export const FetchMessagesForChannel = async(args: IFetchMessages): Promise<IMessage[]> =>{
+export const fetchMessages = async(args: IFetchMessages): Promise<IMessage[]> =>{
     const response = await axios.get<IMessage[]>('http://localhost:4200/api/messages', {
         params:{
             channelId: args.channelId,
@@ -49,10 +36,6 @@ export const FetchMessagesForChannel = async(args: IFetchMessages): Promise<IMes
         },
         withCredentials: true,
     });
-    
-    if (response.status !== 200){
-        console.log(`${response.statusText} error: ${response.status}`)
-    }
     return response.data || [];
 }
 
@@ -63,10 +46,6 @@ export const FetchLastMessages = async(limit: number) => {
         },
         withCredentials: true,
     });
-
-    if (response.status !== 200){
-        console.log(`${response.statusText} error: ${response.status}`)
-    }
     return response.data;
 }
 
@@ -74,9 +53,5 @@ export const FetchOneLastMessageEach = async() => {
     const response = await axios.get<IMessage[][]>('http://localhost:4200/api/messages/last/one', {
         withCredentials: true,
     });
-
-    if (response.status !== 200){
-        console.log(`${response.statusText} error: ${response.status}`)
-    }
     return response.data;
 }

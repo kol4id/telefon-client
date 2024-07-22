@@ -6,8 +6,9 @@ import select_message from '../../assets/select.png'
 import trash_box_img from '../../assets/trash.png'
 
 import ModalMenuButton from "./ModalMenuButton"
-import { IMessage } from "../utils/interfaces/Message.dto"
-import DeleteMessageApi from "../api/messageAPI"
+import { IMessage } from "../global/types/Message.dto"
+
+import { DeleteMessageApi } from '../api/messageAPI'
 import { useDispatch } from "react-redux"
 import { messageDeleteMessage } from "../../store/states/messages"
 import { useRef } from 'react'

@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from '../styles/Message.module.css';
-import { IMessage } from '../utils/interfaces/Message.dto';
+import { IMessage } from '../global/types/Message.dto';
 
 import send from '../../assets/send.png';
 import read from '../../assets/read.png';
-import { useAppDispatch } from '../../store/store';
+import { RootState, useAppDispatch } from '../../store/store';
 import { messageLastReadsQueuePush } from '../../store/states/messages';
+import { SetUserLastRead, updateUser } from '../../store/states/user';
+import { useSelector } from 'react-redux';
 
 interface IProps{
     message: IMessage,
@@ -13,12 +15,13 @@ interface IProps{
     selected: boolean,
 };
 
-const Message = React.memo((props: IProps) =>{
-
+const Message = (props: IProps) =>{
     console.log(`message ${props.message.id} rerender`) 
     const messageRef = useRef<HTMLDivElement>(null!);
 
     const dispatch = useAppDispatch();
+
+    const userLastRead = useSelector((state: RootState) => state.user.userData.lastReads);
 
     const [messageStyle] = useState(
         props.self
@@ -28,6 +31,9 @@ const Message = React.memo((props: IProps) =>{
 
     const handleObserve = () => {
         console.log(`message ${props.message.id} has been read`)
+        dispatch(SetUserLastRead({channelId: props.message.channelId, date: props.message.createdAt}));
+        dispatch(updateUser());
+        if(props.self) return
         dispatch(messageLastReadsQueuePush(props.message));
     }
 
@@ -39,8 +45,7 @@ const Message = React.memo((props: IProps) =>{
     });
 
     const startObserving = () =>{
-        if(props.self) return
-        if(props.message.isRead) return
+        if(userLastRead?.[props.message.channelId] >= props.message.createdAt) return
         observer.observe(messageRef.current);
     }
 
@@ -49,7 +54,6 @@ const Message = React.memo((props: IProps) =>{
         return () => observer.disconnect();
     }, [])
      
-
     return(
         <div className = {props.selected ? messageStyle.selected : messageStyle.default }
             onContextMenu={(e) => {e.preventDefault()}}
@@ -68,5 +72,5 @@ const Message = React.memo((props: IProps) =>{
             </div>
         </div>
     )
-});
+};
 export default Message;

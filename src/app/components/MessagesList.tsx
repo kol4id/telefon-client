@@ -1,81 +1,30 @@
-import React, {useCallback, useEffect,useState} from "react"
-import { useSelector } from "react-redux"
-import { RootState, } from "../../store/store"
-import Message from "./Message"
-import ModalWrapper from "./ModalWrapper"
-import useModal from "../utils/hooks/useModal"
-import MessageListModalContent from "./MessageListModalContent"
-import InfiniteScroll from "./InfiniteScroll"
-
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { FC, memo } from "react";
+import Message from "./Message";
+import EmptyMessageList from "./EmptyMessageList";
 import styles from '../styles/MessageList.module.css'
-import MessageBroker from "./MessageBroker"
+interface IProps{
+    callback: (p1: any, p2: any, p3: any)=>void;
+    selected: string
+}
 
-const MessagesList = React.memo(() =>{
-
-    console.log("MessageList rerender")
-
+const MessagesList: FC<IProps> = memo((props) => {
     const messageRecords = useSelector((state: RootState) => state.messages.messagesRecords);
     const currentChannelSelected = useSelector((state: RootState) => state.channelsList.currentChannelSelected);
-    const userId = useSelector((state: RootState) => state.user.userData.id);
-    
-
-    // const [lastReadQ, setLastReadQ] = useState<IMessage[]>([]);
-    
-    const [selected, setSelected] = useState<string>('');
-    const [isModalOpen, modalPosition, modalContent, openModal, closeModal] = useModal();
-
-    // const handleObserve = useCallback((message: IMessage) =>{
-    //     console.log(`message ${message.id} has been read`)
-    //     setLastReadQ([...lastReadQ, message]);
-    // }, [])
-
-    const SelectMessage = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string, index: number): void  =>{   
-        event.preventDefault();
-        if(selected === id){
-            setSelected('');
-            closeModal();
-        } else {
-            setSelected(id);
-            openModal(
-                <MessageListModalContent message={messageRecords[currentChannelSelected][index]} close={closeModal}/>,
-                {x: event.clientX, y: event.clientY}
-            );
-        }     
-    }
-
-    const firstElement = useCallback(() => {
-        console.log('first')
-    }, [])
-
-    const lastElement = useCallback(() => {
-        console.log('last')
-    }, [])
-
-    useEffect(()=>{
-        closeModal()
-    }, [currentChannelSelected])
-
-    
+    const user = useSelector((state: RootState) => state.user.userData);
 
     return(
-        <div id="transition" className={styles.message_list_main}>
-            <MessageBroker>
-                <InfiniteScroll callback={lastElement}/>
-                {
-                    messageRecords[currentChannelSelected].map((message, index)=>
-                        <div onContextMenu={(event) => SelectMessage(event, message.id, index)}>
-                            <Message message={message} self={message.creatorId === userId} selected={selected === message.id} key={message.id}/>
-                        </div>                               
-                    )
-                } 
-                <InfiniteScroll callback={firstElement}/>
-            </MessageBroker>
+        <section className={styles.message_list_main}>
         {
-            <ModalWrapper isModalOpen={isModalOpen} modalPosition={modalPosition} modalContent={modalContent}/>   
+            messageRecords[currentChannelSelected]?.map((message, index)=>
+                <div onContextMenu={(event) => props.callback(event, message.id, index)} key={message.id}>
+                    <Message message={message} self={message.creatorId === user.id} selected={props.selected === message.id} />
+                </div>                               
+            )
         }
-        </div>
+        </section>
     )
 })
+
 export default MessagesList
-
-

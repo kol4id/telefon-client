@@ -3,6 +3,8 @@ import { RootState, useAppDispatch } from "../../store/store";
 import { useEffect } from "react";
 
 import { socketSendRead } from "../../store/states/socket";
+import { useDebounce } from "../utils/hooks/useDebounce";
+
 
 interface IProps {
     children: React.ReactNode;
@@ -10,16 +12,16 @@ interface IProps {
   
 const MessageBroker: React.FC<IProps> = ({ children }) => {
     const dispatch = useAppDispatch();
+    
+    const debounceRead = useDebounce(() => {
+        dispatch(socketSendRead())
+    }, 200)
+
     const lastReadsQueue = useSelector((state: RootState) => state.messages.lastReadsQueue);
 
     useEffect(()=>{
-        let intervalId: number;
-        if(lastReadsQueue.length){
-            intervalId = setInterval(()=>{
-                dispatch(socketSendRead());
-            }, 200)
-        }
-        return () => clearInterval(intervalId);
+        if(lastReadsQueue.length) debounceRead();
+        
     }, [lastReadsQueue])
 
     return (

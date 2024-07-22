@@ -1,0 +1,188 @@
+:root{
+    --main-bg-color: rgb(35, 35, 35);
+    --button-bg-default-color: rgba(147, 135, 216, 1) !important;
+    --button-bg-hover-color: rgba(127, 112, 214, 1) !important;
+    --photo-select-border-color: rgba(255, 255, 255, 0.25);
+    --modal-bg-color:  rgb(35, 35, 35);
+}
+
+.global{
+    background-color: var(--main-bg-color);
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    overflow: auto;
+}
+
+.wraper{
+    display: flex;
+    flex: 1;
+    max-width: 400px;
+    min-width: 180px;
+}
+
+.main{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--main-bg-color);
+    height: 100vh;
+    width: 100%;
+}
+
+h1{
+    font-size: 20pt;
+    align-self: center;
+    color: white;
+}
+
+.photo{
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    border-radius: 50%;
+    width: 140px;
+    height: 140px;
+    margin: 10px auto 50px;
+}
+
+.photo img{
+    display: flex;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+}
+
+.photo_container{
+    position: relative;
+    display: flex;
+    width: 140px;
+    height: 140px;
+}
+
+
+.photo_select{
+    box-sizing: border-box;
+    left: 7px;
+    top: 7px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .2s ease;
+    border-radius: 50%;
+    width: 90%;
+    height: 90%;
+    border: 1.5px var(--photo-select-border-color) dashed;
+}
+
+.photo_select:hover{
+    cursor: pointer;
+    transition: .1s ease;
+    border: 2px white dashed;
+}
+
+.text_block{
+    transition: .1s ease-in;
+    color: var(--photo-select-border-color);
+}
+
+.photo_select:hover .text_block{
+    transition: .1s ease-in;
+    color: white;
+}
+
+
+.inputs{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    margin-right: 20px;
+    /* flex: 1; */
+}
+
+footer{
+    display: flex;
+    justify-content: center;
+}
+
+footer button{
+    transition: .15s ease;
+    /* margin: 15px auto 0; */
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 200px;
+    height: 40px;
+    border-radius: 8px;
+    border: none;
+    font-size: 20pt;
+    color: var(--input-text-color);
+    background-color: var(--button-bg-default-color);
+}
+
+.photo_edit{
+    position: relative;
+    display: flex;
+    /* flex-direction: column; */
+    background-color: var(--modal-bg-color);
+    width: 450px;
+    height: 520px;
+    justify-content: center;
+}
+
+.photo_edit h2{
+    position: absolute;
+    left: 25px;
+    margin: 10px 0px;
+    /* display: block; */
+    display: flex;
+    font-size: 16pt;
+    height: auto;
+    color: white;
+}
+
+.crop{
+    position: absolute;
+    margin-top: 50px;
+    width: 400px;
+    height: 400px;
+}
+
+.controls {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    width: 50%;
+    transform: translateX(-50%);
+    height: 80px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.slider {
+    padding: 22px 0px;
+    width: 100%;
+}
+
+.submit_button{
+    display: flex;
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+}
+
+.submit_button button{
+    cursor: pointer;
+    padding: 5px 0px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--button-bg-hover-color);
+    border: none;
+}
+
+.submit_button_img{
+    width: 40px;
+    height: 40px;
+}

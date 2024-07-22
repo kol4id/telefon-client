@@ -1,0 +1,57 @@
+:root{
+    --create-bg-color: rgba(149, 131, 249, 0.979) !important;
+    --create-bg-hover-color: rgba(115, 102, 196, 0.979) !important;
+}
+
+.main{
+    animation: slideIn 0.5s forwards;
+    position: absolute;
+    bottom: 20px;
+    right: 15px;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background-color: var(--create-bg-color);
+    overflow: hidden;
+}
+
+.main:hover{
+    background-color: var(--create-bg-hover-color);
+}
+
+.main button{
+    /* display: flex; */
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    height: 50px;
+    width: 50px;
+}
+
+.main img{
+    height: 30px;
+    width: 30px;
+}
+
+
+@keyframes slideIn {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideOut {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }

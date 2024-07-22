@@ -56,7 +56,7 @@
     z-index: 1;
 }
 
-.input_container:focus-within .label_custom{
+.input_container:focus-within  .label_custom{
     transition: .1s ease;
     position: absolute;
     margin-left: 15px;
@@ -66,6 +66,19 @@
     font-size: 12px;
     background-color: var(--label-bg-color);
     color: var(--label-text-focused-color);
+    z-index: 1;
+}
+
+.input_container:not(:placeholder-shown) + .label_custom{
+    transition: .1s ease;
+    position: absolute;
+    margin-left: 15px;
+    margin-top: -9px;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: 12px;
+    background-color: var(--label-bg-color);
+    color: var(--label-text-color);
     z-index: 1;
 }
 

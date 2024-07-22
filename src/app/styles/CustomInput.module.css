@@ -1,0 +1,105 @@
+:root{
+    --searchline-focused-color: rgba(127, 112, 214, 0.979) !important;
+    --searchline-default-color: rgba(201, 201, 201, 0.35) !important;
+    --searchline-hover-color: rgba(148, 138, 206, 0.6) !important;
+    --input-text-color: white;
+    --label-bg-color: rgb(35, 35, 35) !important;
+    --label-text-color: rgba(170, 170, 170, 0.7) !important;
+    --label-text-focused-color: rgba(127, 112, 214, 0.979) !important;
+    --label-text-hover-color: rgba(148, 138, 206, 0.6) !important;
+}
+
+* *::before *::after{
+    box-sizing: border-box;
+}
+
+.mutable_input{
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 45px;
+}
+
+.inputText{
+    flex: 1;    
+    min-width: 0px;
+    outline: none;
+    border-radius: 0.575rem;
+    background-color: transparent;
+    border: 1px var(--searchline-default-color) solid;
+    padding: 0px 10px;
+    font-size: 12pt;
+    color: var(--input-text-color);
+    caret-color: var(--searchline-focused-color);
+    z-index: 2;
+}
+
+.inputText:hover{
+    border: 1px var(--searchline-hover-color) solid;
+}
+
+.inputText:focus{
+    border: 1px var(--searchline-focused-color) solid;
+}
+
+.floating_label{
+    transition: .085s ease;
+    position: absolute;
+    align-self: center;
+    left: 20px;
+    font-size: 14pt;
+    font-weight: 400;
+    color: var(--label-text-color);
+    z-index: 1;
+    border: none !important;
+}
+
+.inputText:hover:not(:placeholder-shown):not(:focus) + .floating_label,
+.inputText:hover + .floating_label{
+    color: var(--label-text-hover-color);
+}
+
+.inputText:not(:placeholder-shown) + .floating_label,
+.inputText:focus + .floating_label{
+    transform: translateY(-25px);
+    left: 12px;
+    background-color: var(--label-bg-color);
+    font-size: 10pt;
+    color: var(--label-text-focused-color);
+    padding: 0px 3px;
+    z-index: 3;
+}
+
+.inputText:not(:placeholder-shown):not(:focus):not(:hover) + .floating_label {
+    color: var(--label-text-color);
+}
+
+.input_extender_wrapper{
+    letter-spacing: 0.5px;
+    position: relative;  
+    width: 100%;
+    min-height: 45px;
+    display: flex;
+}
+
+.show_pass{
+    position: absolute;
+    background: none;
+    outline: none;
+    border: none;
+    width: 40px;
+    height: 35px;
+    right: 20px;
+    z-index: 4;
+}
+
+.img_pass{
+    padding: 0;
+    margin: 0;
+    max-width: 50px;
+    max-height: 45px;
+    top: 0;
+}
+
+
+

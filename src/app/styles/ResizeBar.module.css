@@ -1,4 +1,6 @@
 .resize_bar{
+    /* position: fixed; */
+    /* background-color: aqua; */
     /* position: absolute; */
     /* width: calc(.2% + 2px);  */
     height: 100%;

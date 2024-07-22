@@ -50,6 +50,8 @@
     width: 34px;
     height: 34px; 
     border-radius: 1.375rem;
+    background: none;
+    border: none;
 }
 
 .search_clear_container:hover{

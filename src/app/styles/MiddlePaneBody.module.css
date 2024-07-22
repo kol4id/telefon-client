@@ -3,33 +3,35 @@
 }
 
 .body {
-    box-sizing: border-box;
-    display: grid;
-    grid-template-columns: calc(.2% + 2px) 1fr;
-    width: 100%;
+    /* background-color: rgba( 200, 200, 200, 0.4); */
+    position: relative;
+    height: 100%;
+    max-height: calc(100vh - 3.5rem);
 }
 
-.body_transition {
-    box-sizing: border-box;
-    display: grid;
-    grid-template-rows: 1fr auto;
-    grid-template-columns: 1fr;
-    height: calc(100vh - 3.5rem);
-} 
+.re_bar {
+    position: absolute;
+    width: calc(.2% + 2px);
+    height: 100%;
+}
 
-.bodyMain {
-    width: 100%;
+.transition {
     display: flex;
-    flex-direction: column-reverse;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    flex-direction: column;
+    height: 100%;
 }
 
-.bodyMain::-webkit-scrollbar {
+.messages_transition {
+    flex: 1;
+    overflow-y: auto;
+    max-height: calc(100vh - 3.5rem);
+}
+
+.messages_transition::-webkit-scrollbar {
     width: 6px;
 }
 
-.bodyMain::-webkit-scrollbar-thumb{
+.messages_transition::-webkit-scrollbar-thumb{
     background-color: var(--middle-body-bg-color);
     border-radius: 4px;
 }

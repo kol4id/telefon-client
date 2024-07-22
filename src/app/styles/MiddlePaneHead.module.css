@@ -12,6 +12,9 @@
     align-items: center;
     border-bottom: 1px solid var(--middle-border-bottom);
     background-color: var(--middle-head-bg-color);
+    min-height: 3.5rem;
+    max-height: 3.5rem;
+    box-sizing: border-box;
     /* color: var(--middle-head-text-color);     */
 }
 

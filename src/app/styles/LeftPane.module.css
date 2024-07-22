@@ -1,17 +1,28 @@
 :root{
     /* --border-color: rgb(255, 0, 0); */
     --border-color: rgb(50, 50, 50);
+    --left-body-bg-color: rgba(30, 30, 30, 1) !important;
 }
 
 .leftPane {
     position: relative;
-    display: grid;
     flex: 1;
-    grid-template-columns: 1fr;
-    grid-template-rows: 3.5rem 1fr;
     user-select: none;
+    background-color: var(--left-body-bg-color);
     border-right: 0.25px solid var(--border-color);
     overflow: hidden;
+}
+
+.channels{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 3.5rem 1fr;
+}
+
+.channels_create{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 3.5rem 1fr;
 }
 
 @media (max-width: 600px)

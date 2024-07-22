@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { IPosition } from "../interfaces/MousePos";
+import { IPosition } from "../../global/types/MousePos";
 
 const useMousePosition = (enabled: boolean = false) =>{
     const [position, setPosition] = useState<IPosition>({x: 0, y: 0});

@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import { IPosition } from '../interfaces/MousePos';
+import { IPosition } from '../../global/types/MousePos';
 
 
 const useMouseDown = (enabled: boolean = false) =>{

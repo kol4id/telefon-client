@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IPosition } from "../interfaces/MousePos";
+import { IPosition } from "../../global/types/MousePos";
 
 
 const useModal = (): [isOpen: boolean, position: IPosition, content: React.ReactNode, open: (content: React.ReactNode, position?: IPosition) => void , close: () => void] => {

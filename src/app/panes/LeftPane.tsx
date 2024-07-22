@@ -1,25 +1,20 @@
 import { useSelector } from 'react-redux'
-import LeftPaneBody from '../components/LeftPaneBody'
-import LeftPaneHead from '../components/LeftPaneHead'
 import styles from '../styles/LeftPane.module.css'
 import { RootState } from '../../store/store'
 import React from 'react'
+import LeftPaneManager from '../components/LeftPaneManager'
 
 const LeftPane = React.memo(() =>{
-
     console.log("LeftPane rerender")
-
     const width = useSelector((state: RootState) => state.width.leftPaneWidth);
-
+    
     return(
-        <div className = {styles.leftPane}
-            style={{
-                width: width,
-            }}
+        <section className = {styles.leftPane}
+            id='left_pane'
+            style={{width: width}}
         >
-            <LeftPaneHead/>
-            <LeftPaneBody/>
-        </div>
+            <LeftPaneManager/>
+        </section>
     )
 })
 export default LeftPane

@@ -1,4 +1,4 @@
-import { IMessage, IMessageDeleteEventDto } from "./Message.dto";
+import { IMessage, IMessageDeleteEventDto } from "../../global/types/Message.dto";
 
 type eventType = 
    | "onMessageCreate"

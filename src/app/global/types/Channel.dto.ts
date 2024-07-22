@@ -4,6 +4,7 @@ interface IChannelSelected{
 
 export interface IChannel {
     id: string,
+    channelName: string,
     title: string,
     imgUrl?: string,
     subscribers: number,
@@ -12,6 +13,10 @@ export interface IChannel {
     lastMessageId?: string,
     updatedAt: Date,
     creatorId: string,
+    description: string,
+    isPrivate: boolean,
+    channelType: string,
+    lastLogin: Date,
 }
 
 export interface ICreateChannel{
@@ -19,6 +24,7 @@ export interface ICreateChannel{
 }
 
 export interface IChannelState extends IChannelSelected{
+    currentChannel: IChannel;
     channels: IChannel[];
 }
 

@@ -15,15 +15,18 @@ const socketSlice = createSlice({
     name: 'socket',
     initialState,
     reducers: {
-        socketInit(state){
+        socketInit(){
             return
         },
-        socketSendRead(state){
+        socketSendRead(){
+            return
+        },
+        socketSendLastRead(){
             return
         }
     }
 
 })
 
-export const {socketInit, socketSendRead} = socketSlice.actions;
+export const {socketInit, socketSendRead, socketSendLastRead} = socketSlice.actions;
 export default socketSlice.reducer;

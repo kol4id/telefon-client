@@ -13,9 +13,7 @@ const socketMiddleware: Middleware = (store) => {
             }
         }
 
-        if (socketSendRead.match(action) && socket){
-            socket.sendReadMessages(store)
-        }
+        if (socketSendRead.match(action) && socket){ socket.sendReadMessages() }
 
         next(action);
     }

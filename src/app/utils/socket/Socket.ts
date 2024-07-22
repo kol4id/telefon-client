@@ -1,16 +1,16 @@
 import { AnyAction, Dispatch, MiddlewareAPI } from "redux";
 import { Socket, io } from "socket.io-client";
 import { messageClearLastReadQueue, messageShiftMessage, messageUpdateLastMessage, messageUpdateMessage } from "../../../store/states/messages";
-import { IMessage } from "../interfaces/Message.dto";
+import { IMessage } from "../../global/types/Message.dto";
 import { UpdateChannels } from "../../../store/states/channels";
-import { RootState } from "../../../store/store";
+import { RootState, store } from "../../../store/store";
 
 let socketConnection: SocketConnection | undefined;
 
 export enum SocketEvent {
     MessageUpdate = 'messageUpdate',
     MessageCreate = 'messageCreate',
-    MessagesRead = 'messagesRead'
+    MessagesRead = 'messagesRead',
 }
 
 /*
@@ -44,11 +44,12 @@ export class SocketConnection {
         })
     }
 
-    public sendReadMessages(store: MiddlewareAPI<Dispatch<AnyAction>, any>): void {
-        const state: RootState = store.getState();
-        this.socket.emit(SocketEvent.MessagesRead, state.messages.lastReadsQueue);
+    public sendReadMessages(): void {
+        console.log("message-read")
+        this.socket.emit(SocketEvent.MessagesRead, this.state.messages.lastReadsQueue);
     }
 
+    private state: RootState = store.getState();
     private socketEndpoint = 'http://localhost:4200';
 }
 

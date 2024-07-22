@@ -1,39 +1,33 @@
-import { useSelector } from 'react-redux'
-import MiddlePaneBody from '../components/MiddlePaneBody'
 import MiddlePaneHead from '../components/MiddlePaneHead'
 
 import styles from '../styles/MiddlePane.module.css'
+import React, { useEffect } from 'react'
+import MiddlePaneBody from '../components/MiddlePaneBody'
 import { RootState, useAppDispatch } from '../../store/store'
-import React, { useEffect, useState } from 'react'
-import { fetchMessages } from '../../store/states/messages'
+import { fetchLastMessages } from '../../store/states/messages'
+import { fetchChannel } from '../../store/states/channels'
+import { useSelector } from 'react-redux'
+
 
 const MiddlePane = React.memo(() =>{
-
     console.log("MiddlePane rerender")
 
     const dispatch = useAppDispatch();
-
-    const [isFirstOpen, setIsFirstOpen] = useState<boolean>(true);
-
-    const currentSelected = useSelector((state: RootState) => state.channelsList.currentChannelSelected);
+    const selectedChannel = useSelector((state: RootState) => state.channelsList.currentChannelSelected);
 
     useEffect(()=>{
-        if(currentSelected){
-            dispatch(fetchMessages({channelId: currentSelected, chunkNumber: 1}))
-            setIsFirstOpen(false);
+        if (selectedChannel){
+            dispatch(fetchChannel(selectedChannel));
         }
-    }, [currentSelected])
+        dispatch(fetchLastMessages());
+    }, [selectedChannel])
 
     return(
         <React.Fragment>
-            {
-                isFirstOpen
-                ?   <div/>
-                :   <div className={styles.middlePane}>
-                        <MiddlePaneHead/>
-                        <MiddlePaneBody/>
-                    </div>
-            }  
+            <div className={styles.middlePane}>
+                <MiddlePaneHead/>
+                <MiddlePaneBody/>
+            </div>
         </React.Fragment>
     )
 })

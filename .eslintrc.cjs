@@ -5,6 +5,9 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
+    'eslint:recommended/react',
+    'plugin:@typescript-eslint/recommended-react',
+    'plugin:react-hooks/recommended/react'
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',

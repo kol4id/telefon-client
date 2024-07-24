@@ -1,12 +1,14 @@
 import { createContext, useEffect, useState } from "react";
 import LeftPaneChannels from "./LeftPaneChannels";
 import LeftPaneCreateChannel from "./LeftPaneCreateChannel";
+import ProfileEdit from "../panes/ProfileEdit/ProfileEdit";
+import AppMenuProfileEdit from "./AppMenuProfileEdit";
 
-export type LeftPaneType = |'channels'|'setings'|'channel-create';
+export type LeftPaneType = |'channels'|'settings'|'channel-create';
 
 enum LeftPaneT {
     channels = 'channels',
-    setings = 'setings',
+    settings = 'settings',
     channelCreate = 'channel-create'
 }
 
@@ -25,6 +27,7 @@ const LeftPaneManager = () =>{
         switch(paneType){
             case LeftPaneT.channels: setComponent(<LeftPaneChannels/>); break 
             case LeftPaneT.channelCreate: setComponent(<LeftPaneCreateChannel/>); break 
+            case LeftPaneT.settings: setComponent(<AppMenuProfileEdit/>); break
         }
     },[paneType])
 

@@ -45,7 +45,10 @@ const ChannelsManager = memo(() =>{
                 channel.channelName?.toLowerCase().includes(searchValue.toLowerCase()))
         );
 
-        if (filteredChannels[0]) return;
+        if (filteredChannels[0]){
+            setFilteredChannels(filteredChannels);
+            return;
+        }
 
         setFilteredChannels(channelState.filteredChannels);
         debouncedFetchData(searchValue);

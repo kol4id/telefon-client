@@ -11,7 +11,8 @@ interface IChannelsLoading{
 const initialState: IChannelsLoading & IChannelState = {
     isDataLoading: true,
     currentChannelSelected: '',
-    channels: [],
+    userChannels: [],
+    filteredChannels: [],
     currentChannel: {} as IChannel
 }
 
@@ -49,23 +50,26 @@ const channelSlice = createSlice({
     initialState,
     reducers: {
         SetChannels(state, action){
-            state.channels = action.payload;
+            state.userChannels = action.payload;
+        },
+        channelSetFiltered(state, action){
+            state.filteredChannels = action.payload
         },
         SetChannelSelected(state, action){
             const id = action.payload;
             state.currentChannelSelected = id;
-            if (state.channels.includes(id)){
-                state.currentChannel = state.channels[id];
+            if (state.userChannels.includes(id)){
+                state.currentChannel = state.userChannels[id];
             }
         },
         SetDataLoading(state, action){
             state.isDataLoading = action.payload;
         },
         UpdateChannels(state, action){
-            const elementIndx = state.channels.
+            const elementIndx = state.userChannels.
                                 findIndex((channel) => channel.id === action.payload)
-            const channel = state.channels.splice(elementIndx, 1);
-            state.channels.unshift(channel[0]);
+            const channel = state.userChannels.splice(elementIndx, 1);
+            state.userChannels.unshift(channel[0]);
         }
     },
     extraReducers: (builder) => {
@@ -76,8 +80,8 @@ const channelSlice = createSlice({
             .addCase(fetchChannels.fulfilled, (state, action) => {
                 const channels = action.payload as IChannel[];
                 const channelsSorted = channels.sort((a, b) => sortDates(a.updatedAt, b.updatedAt));
-                if (!state.channels) state.channels = [];
-                state.channels = channelsSorted;
+                if (!state.userChannels) state.userChannels = [];
+                state.userChannels = channelsSorted;
                 state.isDataLoading = false;
             })
             .addCase(fetchChannels.rejected, (state) => {
@@ -88,7 +92,7 @@ const channelSlice = createSlice({
             })
             .addCase(fetchChannel.fulfilled, (state, action) => {
                 const channel = action.payload as IChannel;
-                if (!state.channels) state.channels = [];
+                if (!state.userChannels) state.userChannels = [];
                 state.currentChannel = channel;
                 state.isDataLoading = false;
             })
@@ -98,5 +102,5 @@ const channelSlice = createSlice({
     }
 })
 
-export const {SetChannels, SetChannelSelected, SetDataLoading, UpdateChannels} = channelSlice.actions;
+export const {SetChannels, SetChannelSelected, SetDataLoading, UpdateChannels, channelSetFiltered} = channelSlice.actions;
 export default channelSlice.reducer;

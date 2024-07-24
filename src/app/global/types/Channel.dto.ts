@@ -16,7 +16,6 @@ export interface IChannel {
     description: string,
     isPrivate: boolean,
     channelType: string,
-    lastLogin: Date,
 }
 
 export interface ICreateChannel{
@@ -25,7 +24,8 @@ export interface ICreateChannel{
 
 export interface IChannelState extends IChannelSelected{
     currentChannel: IChannel;
-    channels: IChannel[];
+    userChannels: IChannel[];
+    filteredChannels: IChannel[],
 }
 
 export interface IChannelSearch {

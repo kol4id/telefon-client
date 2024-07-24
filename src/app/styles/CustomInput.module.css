@@ -3,7 +3,7 @@
     --searchline-default-color: rgba(201, 201, 201, 0.35) !important;
     --searchline-hover-color: rgba(148, 138, 206, 0.6) !important;
     --input-text-color: white;
-    --label-bg-color: rgb(35, 35, 35) !important;
+    --label-bg-color: rgba(30, 30, 30, 1) !important;
     --label-text-color: rgba(170, 170, 170, 0.7) !important;
     --label-text-focused-color: rgba(127, 112, 214, 0.979) !important;
     --label-text-hover-color: rgba(148, 138, 206, 0.6) !important;

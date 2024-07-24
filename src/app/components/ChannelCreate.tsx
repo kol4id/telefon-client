@@ -14,7 +14,6 @@ const ChannelCreate: FC<IProps> = ({visible}) => {
     const createButton = useRef<HTMLButtonElement>(null);
 
     useEffect(()=>{
-        console.log(createButton.current?.getBoundingClientRect())
         if (!visible) setIsOpen(false)
     },[isOpen, visible])
 

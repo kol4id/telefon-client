@@ -14,9 +14,16 @@ const LeftPaneBody = () =>{
     const channels = useSelector((state: RootState) => state.channelsList);
 
     useEffect(()=>{
-        dispatch(fetchChannels());
-        dispatch(fetchLastOneMessages());
+        if (!channels.userChannels.length){
+            dispatch(fetchChannels());
+            dispatch(fetchLastOneMessages());
+        }        
     },[])
+
+    useEffect(()=>{
+
+        console.log(channels.isDataLoading)
+    },[channels.isDataLoading])
 
     return(
         <div className = {styles.body}>

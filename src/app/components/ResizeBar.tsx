@@ -15,7 +15,7 @@ const ResizeBar: FC = React.memo(() => {
 
     const resizeParams: ResizeParams = {
         defaultWindowWidth: 300,
-        minWindowWidth: 200,
+        minWindowWidth: 230,
         maxWindowWidth: 3.3,
     }
 

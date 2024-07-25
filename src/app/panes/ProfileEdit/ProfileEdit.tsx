@@ -7,6 +7,7 @@ import Modal from "../../components/Modal";
 import ImageCrop from "./ImageCrop";
 import { getUser, updateUser, userSet } from "../../../store/states/user";
 import ProfileInputs from "./ProfileInputs";
+import PhotoEdit from "./PhotoEdit";
 
 const ProfileEdit = () => {
     const dispatch = useAppDispatch();
@@ -61,21 +62,7 @@ const ProfileEdit = () => {
 
     return(
         <main className={styles.main}>
-            <h1>Edit profile</h1>
-                <section className={styles.photo}>
-                    <section className={styles.photo_container}>
-                        <label htmlFor="file-upload" style={{display:'flex'}}>
-                            {user.photoUrl && <img src={user.photoUrl}/>}
-                            <section className={styles.photo_select}>
-                                <section className={styles.text_block}>
-                                    edit photo
-                                </section>   
-                            </section>
-                        </label>
-                    </section>
-                    
-                </section>
-
+            <PhotoEdit/>
             <input
                 type="file"
                 accept=".jpg, .jpeg, .png, .webp"
@@ -89,10 +76,17 @@ const ProfileEdit = () => {
                 children={<ImageCrop src={src} onCropComplete={() => setIsOpen(false)}/>}
                 onClose={()=>onModalClose()}
             />
-            <ProfileInputs isLoading={false} userData={userData} isValid={isValid} setUserData={_setUserData} validCheck={validCheck} />
-            <footer style={{marginBottom: '30px'}}>
-                <button onClick={onSubmit}>next</button>
-            </footer>
+            <form
+                onSubmit={e => {
+                    e.preventDefault;
+                    e.stopPropagation;
+                }}
+            >
+                <ProfileInputs isLoading={false} userData={userData} isValid={isValid} setUserData={_setUserData} validCheck={validCheck} />
+                <footer style={{marginBottom: '30px'}}>
+                    <button onClick={onSubmit}>next</button>
+                </footer>
+            </form>
         </main>
     )
 }

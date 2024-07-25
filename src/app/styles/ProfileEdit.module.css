@@ -16,6 +16,7 @@
 
 .wraper{
     display: flex;
+    flex-direction: column;
     flex: 1;
     max-width: 400px;
     min-width: 180px;

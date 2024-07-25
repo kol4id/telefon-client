@@ -21,11 +21,11 @@ const ProfileInputs: FC<IProps> = ({isLoading, userData, setUserData, validCheck
     const user = useSelector((state: RootState) => state.user.userData)
     const [isLoad, setIsLoad] = useState(false);
     
-    const debouncedCheck = useCallback(async (val: string)=>{      
+    const debouncedCheck = async (val: string)=>{      
         const valid = await userApi.isUsernameExist(val ?? '');
         validCheck(!valid);
         setIsLoad(false);
-    }, [userData.userName])
+    }
 
     const [debouncedFetchData, cancelDebounce] = useDebounce(debouncedCheck, 200);
 
@@ -53,7 +53,7 @@ const ProfileInputs: FC<IProps> = ({isLoading, userData, setUserData, validCheck
         <section className={styles.inputs}>
             {
                 isLoading || 
-                <section style={{display: 'flex', flexDirection: 'column', gap: '15px', paddingBottom: '40px'}}>
+                <section style={{display: 'flex', flexDirection: 'column', gap: '20px', paddingBottom: '40px'}}>
                     <CustomInput type="text" label="First name" initValue={userData.firstName} callback={setFName}/>
                     <CustomInput type="text" label="Last name" initValue={userData.lastName} callback={setLName}/>
                     <CustomInput 

@@ -1,6 +1,21 @@
 :root{
     --context-bg-color: rgba(30, 30, 30, .85) !important;
 }
+
+.context_overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: inherit;
+    width: inherit;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
   
 .context_content {
     display: flex;

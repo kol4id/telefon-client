@@ -30,6 +30,7 @@ const ChannelCreate: FC<IProps> = ({visible}) => {
                     y: createButton.current?.getBoundingClientRect().y! - 75
                 }}
                 children={<CreateChannelModalContent close={()=>setIsOpen(false)}/>}
+                overlay={true}
             />
         </section>
     )

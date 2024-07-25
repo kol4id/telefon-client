@@ -7,10 +7,12 @@ interface IProps{
     isOpen: boolean,
     onClose?: () =>void,
     position?: {x: number, y: number},
-    children: React.ReactNode;
+    children: React.ReactNode,
+    overlay?: boolean,
+    ancor?: HTMLElement
 }
 
-const Context: FC<IProps> = ({isOpen, onClose, position, children}) => {
+const Context: FC<IProps> = ({isOpen, onClose, position, children, overlay, ancor}) => {
     const [portalElement] = useState<HTMLElement | null>(document.getElementById('portal'))
     
     const contextStyle = {
@@ -22,10 +24,14 @@ const Context: FC<IProps> = ({isOpen, onClose, position, children}) => {
     return (
         <>
         {isOpen && ReactDOM.createPortal(
-            <div className={styles.context_content} style={contextStyle} onClick={(e) => e.stopPropagation()}>
-                {children}
-            </div>,
-            portalElement || document.body
+            <>
+                <div className={styles.context_overlay} onClick={onClose} onContextMenu={onClose} style={{display: overlay ? undefined : "none"}}/>
+                <div className={styles.context_content} style={contextStyle} onClick={(e) => e.stopPropagation()}>
+                    {children}
+                </div>
+            </>
+            ,
+            ancor ?? (portalElement || document.body)
         )}
         </>
     );

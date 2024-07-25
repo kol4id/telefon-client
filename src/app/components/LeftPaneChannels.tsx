@@ -10,8 +10,8 @@ const LeftPaneChannels = () => {
     const [hover, setHover] = useState(false);
     return(
         <nav className={styles.channels}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
         >
             <LeftPaneHead/>
             <LeftPaneBody/>

@@ -13,6 +13,7 @@ const LeftPane = React.memo(() =>{
             id='left_pane'
             style={{width: width}}
         >
+            <div id="left-portal"></div>
             <LeftPaneManager/>
         </section>
     )

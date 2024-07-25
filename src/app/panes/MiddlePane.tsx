@@ -25,6 +25,7 @@ const MiddlePane = React.memo(() =>{
     return(
         <React.Fragment>
             <div className={styles.middlePane}>
+                <div id="middle-portal"></div>
                 <MiddlePaneHead/>
                 <MiddlePaneBody/>
             </div>

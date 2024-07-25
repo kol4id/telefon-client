@@ -1,0 +1,14 @@
+
+.back_button{
+    display: flex;
+    transition: .1s ease-out;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    align-items: center;
+    justify-content: center;   
+}
+
+.back_button:hover{
+    background-color: rgba(255, 255, 255, 0.1);
+}

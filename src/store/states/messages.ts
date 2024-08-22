@@ -137,17 +137,37 @@ const messageSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(fetchMessages.fulfilled, (state, action) =>{
+                /*  NOTE (@kol4id): messages records stored in reversed order
+                    from new to old ones
+                    -example-
+                    15.02.2024 - old
+                    16.02.2024 - new 
+                    -example-
+                    messagesRecods[channelId][0] - newest record 
+                    messagesRecods[channelId][messagesRecords[channelId].lenght - 1] - oldest record 
+                    <TEMP>21.08.2024<TEMP> 
+                    messages from server come exactly same 
+                */
                 const messages = action.payload as IMessage[]
                 if(!messages?.length) return;
 
-                const messagesLength = state.messagesRecords[messages[0].channelId].length - 1;
-                if (messages[messages.length - 1].createdAt < state.messagesRecords[messages[0].channelId][0].createdAt){
-                    state.messagesRecords[messages[0].channelId].unshift(...messages);
-                } else if (messages[0].createdAt > state.messagesRecords[messages[0].channelId][messagesLength].createdAt){
-                    state.messagesRecords[messages[0].channelId].push(...messages);
-                }
-                else state.messagesRecords[messages[0].channelId] = messages;
+                const channelId = messages[0].channelId;
                 
+                if (!state.messagesRecords[channelId]) {
+                    state.messagesRecords[channelId] = messages;
+                    return;
+                }
+
+                const recordLength = state.messagesRecords[channelId].length;
+                
+                if (messages[messages.length - 1].createdAt > state.messagesRecords[channelId][0].createdAt){
+                    state.messagesRecords[channelId].unshift(...messages);
+                }
+
+                if (messages[0].createdAt < state.messagesRecords[channelId][recordLength - 1].createdAt){
+                    state.messagesRecords[channelId].push(...messages);
+                }
+
                 state.isLoading = false;
             })
             .addCase(fetchMessages.rejected, (state) =>{

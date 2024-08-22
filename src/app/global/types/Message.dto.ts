@@ -1,14 +1,8 @@
-
-// interface IMessageCreateDto{
-//     messageId: string,
-//     messageContent: string,
-//     messageHasMedia: boolean,
-// };
-
-// interface IMessageUpdateDto{
-//     messageId: string,
-//     messageContent: string,
-// }
+export interface IMessageCreateDto{
+    channelId: string,
+    content: string,
+    hasMadia: boolean
+};
 
 export interface IMessageDeleteDto{
     messageId: string,

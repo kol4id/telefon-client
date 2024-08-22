@@ -78,13 +78,14 @@ const ProfileEdit = () => {
             />
             <form
                 onSubmit={e => {
-                    e.preventDefault;
-                    e.stopPropagation;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onSubmit()
                 }}
             >
                 <ProfileInputs isLoading={false} userData={userData} isValid={isValid} setUserData={_setUserData} validCheck={validCheck} />
                 <footer style={{marginBottom: '30px'}}>
-                    <button onClick={onSubmit}>next</button>
+                    <button type="submit" onSubmit={onSubmit}>next</button>
                 </footer>
             </form>
         </main>

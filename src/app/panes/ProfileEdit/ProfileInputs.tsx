@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useState } from "react";
 import styles from "../../styles/ProfileEdit.module.css";
 import CustomInput from "../../components/customInput/CustomInput";
 import { UserApi } from "../../api/api";
@@ -54,15 +54,17 @@ const ProfileInputs: FC<IProps> = ({isLoading, userData, setUserData, validCheck
             {
                 isLoading || 
                 <section style={{display: 'flex', flexDirection: 'column', gap: '20px', paddingBottom: '40px'}}>
-                    <CustomInput type="text" label="First name" initValue={userData.firstName} callback={setFName}/>
+                    <CustomInput type="text" label="First name (required)" required={true} initValue={userData.firstName} callback={setFName}/>
                     <CustomInput type="text" label="Last name" initValue={userData.lastName} callback={setLName}/>
                     <CustomInput 
                         type="text" 
-                        label={isLoad || isValid ? "Username" : "Username already exist"} 
+                        label={isLoad || isValid ? "Username (required)" : "Username already exist"} 
+                        required={true}
                         initValue={userData.userName} 
                         event={isLoad || isValid ? undefined : 'error'} 
                         callback={setUName}
                     />
+                    <p>Username will help other users find you</p>
                 </section>
             }
         </section>

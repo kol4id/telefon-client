@@ -12,12 +12,22 @@ const AuthInputForm: FC = () => {
     const dispatch = useAppDispatch()
     const [error, setError] = useState('');
 
+    /*
+    NOTE(@kol4id): error message can be in 1 of 2 forms
+    plain string or array of strings
+    from array we only need first message
+    */
     const call = async (email: string, password: string) =>{
         dispatch(SetUserLoading(true))
         try{
             dispatch(userSet(await api.authUser(email, password)));
         } catch(err: any){
-            setError(err.response.data.message)
+            const errorMsgs = err.response.data.message;
+            if (Array.isArray(errorMsgs)){
+                setError(errorMsgs?.[0]);
+            } else {
+                setError(errorMsgs);
+            }
         }
         dispatch(SetUserLoading(false))
     }

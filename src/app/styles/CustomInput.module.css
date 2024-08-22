@@ -46,8 +46,8 @@
     transition: .085s ease;
     position: absolute;
     align-self: center;
-    left: 20px;
-    font-size: 14pt;
+    left: 15px;
+    font-size: 12pt;
     font-weight: 400;
     color: var(--label-text-color);
     z-index: 1;
@@ -64,7 +64,7 @@
     transform: translateY(-25px);
     left: 12px;
     background-color: var(--label-bg-color);
-    font-size: 10pt;
+    font-size: 9pt;
     color: var(--label-text-focused-color);
     padding: 0px 3px;
     z-index: 3;

@@ -33,18 +33,6 @@ export class MessageApi{
         return response.status;
     }
 
-    async createMessage(channelId: string, content: string, hasMedia: boolean): Promise<void>{
-        const requestData = {
-            channelId,
-            content,
-            hasMedia
-        }
-    
-        await axios.post(`${baseUrl}/messages/create`, requestData, {
-            withCredentials: true,
-        }); 
-    }
-
     async fetchLastReadMessages(limit: number): Promise<IMessage[][]>{
         const response = await axios.get<IMessage[][]>(`${baseUrl}/messages/lastreads`, {
             params: {
@@ -134,5 +122,19 @@ export class ChannelApi{
             withCredentials: true
         });
         return response.data || [];
+    }
+
+    async subscribe(channelId: string):Promise<IChannel[]>{
+        const requestData = {
+            channelId
+        }
+
+        const responce = await axios.put(`${baseUrl}/channels/subscribe`, requestData, {
+            // params: {
+            //     channelId
+            // },
+            withCredentials: true
+        });
+        return responce.data;
     }
 }

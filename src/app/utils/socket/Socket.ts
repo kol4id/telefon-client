@@ -1,7 +1,7 @@
 import { AnyAction, Dispatch, MiddlewareAPI } from "redux";
 import { Socket, io } from "socket.io-client";
 import { messageClearLastReadQueue, messageShiftMessage, messageUpdateLastMessage, messageUpdateMessage } from "../../../store/states/messages";
-import { IMessage } from "../../global/types/Message.dto";
+import { IMessage, IMessageCreateDto } from "../../global/types/Message.dto";
 import { UpdateChannels } from "../../../store/states/channels";
 import { RootState, store } from "../../../store/store";
 
@@ -47,6 +47,10 @@ export class SocketConnection {
     public sendReadMessages(): void {
         console.log("message-read")
         this.socket.emit(SocketEvent.MessagesRead, this.state.messages.lastReadsQueue);
+    }
+
+    public messageCreate(messageData: IMessageCreateDto): void{
+        this.socket.emit(SocketEvent.MessageCreate, messageData);
     }
 
     private state: RootState = store.getState();

@@ -1,22 +1,40 @@
 import { useDispatch, useSelector } from 'react-redux';
 import MessageInput from './MessageInput';
 import { SetMessageInput } from '../../store/states/messageInput';
-import { RootState } from '../../store/store';
+import { RootState, useAppDispatch } from '../../store/store';
 import { PostMessage } from '../api/messageAPI';
 
 import styles from '../styles/InputContainer.module.css'
+import { socketCreateMessage } from '../../store/states/socket';
+import { IChannel } from '../global/types/Channel.dto';
+import { subscribeToChannel } from '../../store/states/channels';
 
 const InputContainer = () =>{
 
     console.log("InputContainer rerender")
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const messageInputValue = useSelector((state:RootState) => state.messageInput.value);
     const sendMessageMargin = useSelector((state:RootState) => state.messageInput.height);
     const currentChannelSelected = useSelector((state:RootState) => state.channelsList.currentChannelSelected);
+    const userChannels = useSelector((state: RootState) => state.channelsList.userChannels);
+
+    const isSubscribed = (channels: IChannel[]): Boolean => {
+        const indx = channels.findIndex(channel => channel.id == currentChannelSelected);
+        if (indx < 0) return false
+        return true
+    }
 
     const sendMessage = async() =>{
-        PostMessage(currentChannelSelected, messageInputValue, false)
+        if (!isSubscribed(userChannels)){
+            await dispatch(subscribeToChannel(currentChannelSelected))
+        }
+
+        dispatch(socketCreateMessage({
+            channelId: currentChannelSelected, 
+            content: messageInputValue, 
+            hasMadia: false
+        }))
         dispatch(SetMessageInput(''))
     }
 

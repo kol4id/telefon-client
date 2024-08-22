@@ -6,16 +6,14 @@ import { FC } from 'react'
 
 interface IProps{
     handleClick: ()=>void,
-    enabled: boolean,
     clicked: boolean
 }
 
 const PasswordExtender: FC<IProps> = (props) =>{
     return(
         <section style={{position: 'relative', display: 'flex', width: '100%', height: '100%'}}>
-            <button className={styles.show_pass} onClick={props.handleClick} 
-                    aria-label='show/hide password'
-                    style={{display: props.enabled ? undefined : 'none'}}
+            <button type='button' className={styles.show_pass} onClick={props.handleClick} 
+                aria-label='show/hide password'
             >
                 <img className={styles.img_pass}
                     src={props.clicked ? eye_open : eye_closed}

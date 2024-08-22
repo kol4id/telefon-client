@@ -11,31 +11,32 @@ interface IProps{
     labelStyle?: React.CSSProperties,
     callback: (input: string) => void,
     initValue?: string,
+    required?: boolean
 }
-
-const MutableInput: FC<IProps> = ({type, label, event, maxLenght, inputStyle, labelStyle, callback, initValue}) => {  
-    const [input, setInput] = useState(initValue ?? '');
+const MutableInput: FC<IProps> = (props) => {  
+    const [input, setInput] = useState(props.initValue ?? '');
 
     const handleChange = (val: string) =>{
         setInput(val)
-        callback(val)
+        props.callback(val)
     }
 
     return(
         <section className={styles.mutable_input}>
-            <input type={type} className={styles.inputText} maxLength={maxLenght}
+            <input type={props.type} className={styles.inputText} maxLength={props.maxLenght}
+                required={props.required ?? false}
                 value={input}
                 onChange={e => handleChange(e.target.value)}
                 placeholder=''
                 style={{
-                    border: event == 'error' ? '1px red solid' : '',
-                    caretColor: event == 'error' ? 'red' : '',
-                    ...inputStyle
+                    border: props.event == 'error' ? '1px red solid' : '',
+                    caretColor: props.event == 'error' ? 'red' : '',
+                    ...props.inputStyle
             }}/>
             <span className={styles.floating_label} style={{
-                color: event == 'error' ? 'red' : '',
-                ...labelStyle
-            }}>{label}</span>
+                color: props.event == 'error' ? 'red' : '',
+                ...props.labelStyle
+            }}>{props.label}</span>
         </section>
     )
 }

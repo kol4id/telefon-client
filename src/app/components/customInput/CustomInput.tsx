@@ -13,6 +13,7 @@ interface IProps{
     event?: | 'error',
     callback: (input: string) => void,
     initValue?: string,
+    required?: boolean
 }
 
 const CustomInput: FC<IProps> = (props) =>{
@@ -39,8 +40,12 @@ const CustomInput: FC<IProps> = (props) =>{
                 event={props.event}
                 maxLenght={props.maxLenght}
                 initValue={props.initValue}
+                required={props.required}
             />
-            <PasswordExtender enabled={props.type == 'password' ? true : false} clicked={clicked} handleClick={handleClick}/>
+            {
+                props.type == 'password' && 
+                <PasswordExtender clicked={clicked} handleClick={handleClick}/>
+            }
         </section>
     )
 }

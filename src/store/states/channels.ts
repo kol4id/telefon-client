@@ -3,6 +3,11 @@ import { IChannel, IChannelState } from "../../app/global/types/Channel.dto";
 import { fetchWrapper } from "../../app/utils/fetch/fetchWrapper";
 import FetchChannelsData from "../../app/api/fetchChannelsData";
 import { ChannelApi } from "../../app/api/api";
+import SocketFactory from "../../app/utils/socket/Socket";
+import { sort } from "fast-sort";
+import { store } from "../store";
+import { userSetSubscriptions } from "./user";
+import Channel from "../../app/components/Channel";
 
 interface IChannelsLoading{
     isDataLoading: boolean;
@@ -39,6 +44,15 @@ export const searchChannels = createAsyncThunk(
     }
 )
 
+export const subscribeToChannel = createAsyncThunk(
+    'socket/subscribeToChannel',
+    async (channelId: string, {rejectWithValue}) => {
+        const socket = SocketFactory.create();
+        return await socket.subscribeToChannel(channelId);
+    }
+)
+
+
 const sortDates = (date1: any, date2: any) =>{
     const newDate1 = new Date(date1).getTime();
     const newDate2 = new Date(date2).getTime();
@@ -66,10 +80,18 @@ const channelSlice = createSlice({
             state.isDataLoading = action.payload;
         },
         UpdateChannels(state, action){
-            const elementIndx = state.userChannels.
+            const channelIndx = state.userChannels.
+                                findIndex((channel) => channel.id === action.payload);
+            const filteredIndx = state.filteredChannels.
                                 findIndex((channel) => channel.id === action.payload)
-            const channel = state.userChannels.splice(elementIndx, 1);
-            state.userChannels.unshift(channel[0]);
+            if (channelIndx >= 0) {
+                const channel = state.userChannels.splice(channelIndx, 1);
+                state.userChannels.unshift(channel[0]);
+            }
+            if (filteredIndx >= 0) {
+                const filterChannel = state.filteredChannels.splice(filteredIndx, 1);
+                state.filteredChannels.unshift(filterChannel[0]);
+            }
         }
     },
     extraReducers: (builder) => {
@@ -87,9 +109,6 @@ const channelSlice = createSlice({
             .addCase(fetchChannels.rejected, (state) => {
                 state.isDataLoading = false;
             }) 
-            .addCase(fetchChannel.pending, (state) => {
-                // state.isDataLoading = true;
-            })
             .addCase(fetchChannel.fulfilled, (state, action) => {
                 const channel = action.payload as IChannel;
                 if (!state.userChannels) state.userChannels = [];
@@ -98,7 +117,15 @@ const channelSlice = createSlice({
             })
             .addCase(fetchChannel.rejected, (state) => {
                 state.isDataLoading = false;
-            }) 
+            })
+            .addCase(subscribeToChannel.fulfilled, (state, action) => {
+                const channels = action.payload as IChannel[];
+                const channelsSorted = channels.sort((a, b) => sortDates(a.updatedAt, b.updatedAt));
+                const channelsIds = channels.map(channel=>channel.id);
+                if (!state.userChannels) state.userChannels = [];
+                store.dispatch(userSetSubscriptions(channelsIds));
+                state.userChannels = channelsSorted;
+            })
     }
 })
 

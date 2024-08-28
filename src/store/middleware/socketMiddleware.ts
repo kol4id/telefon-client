@@ -1,6 +1,6 @@
 import { Middleware } from "redux";
 import SocketFactory, {SocketConnection } from "../../app/utils/socket/Socket";
-import { socketCreateMessage, socketInit, socketSendRead } from "../states/socket";
+import { socketCreateMessage, socketInit, socketSendRead, socketSubscribeToChannel, subscribeToChannel } from "../states/socket";
 
 const socketMiddleware: Middleware = (store) => {
     let socket: SocketConnection;
@@ -14,9 +14,12 @@ const socketMiddleware: Middleware = (store) => {
         }
 
         if (socket){
-            if (socketSendRead.match(action)){ socket.sendReadMessages() }
-            if (socketCreateMessage.match(action)){ socket.messageCreate(action.payload) }
+            if (socketSendRead.match(action)) socket.sendReadMessages();
+            if (socketCreateMessage.match(action)) socket.messageCreate(action.payload);
+            // if (socketSubscribeToChannel.match(action)) socket.subscribeToChannel(action.payload);
         }
+
+
         
         next(action);
     }

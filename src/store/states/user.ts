@@ -4,7 +4,6 @@ import { updateUserAPI } from "../../app/api/userApi";
 import { store } from "../store";
 import { fetchWrapper } from "../../app/utils/fetch/fetchWrapper";
 import { UserApi } from "../../app/api/api";
-import { baseUrl } from "../../state";
 
 let intervalId: ReturnType<typeof setTimeout> | undefined;
 
@@ -71,17 +70,6 @@ export const updateUserPhoto = createAsyncThunk(
     }
 )
 
-// export const fetchUser = createAsyncThunk(
-//     'user/fetch',
-//     async function(_, {rejectWithValue}){
-//         const data = await FetchUserCall();
-//         if(fetchError.isObtained){
-//             return rejectWithValue(fetchError.message);
-//         }
-//         return data;
-//     }
-// )
-
 export const refreshUser = createAsyncThunk(
     'user/refresh',
     async function(_, {rejectWithValue}){
@@ -130,6 +118,9 @@ const userSlice = createSlice({
         SetUserLastRead(state, action: {payload: IUpdateLastRead}){
             if (action.payload.date <= state.userData.lastReads[action.payload.channelId]) return;
             state.userData.lastReads[action.payload.channelId] = action.payload.date;
+        },
+        userSetSubscriptions(state, action: PayloadAction<string[]>){
+
         }
     },
     extraReducers: (builder)=>{
@@ -186,5 +177,5 @@ const userSlice = createSlice({
     },
 })
 
-export const {userSet, SetUserAuthorized, SetUserLoading, SetUserLastRead} = userSlice.actions;
+export const {userSet, SetUserAuthorized, SetUserLoading, SetUserLastRead, userSetSubscriptions} = userSlice.actions;
 export default userSlice.reducer;

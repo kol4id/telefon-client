@@ -1,13 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import MessageInput from './MessageInput';
 import { SetMessageInput } from '../../store/states/messageInput';
 import { RootState, useAppDispatch } from '../../store/store';
-import { PostMessage } from '../api/messageAPI';
 
-import styles from '../styles/InputContainer.module.css'
-import { socketCreateMessage } from '../../store/states/socket';
+import styles from '../styles/InputContainer.module.css';
+import { socketCreateMessage} from '../../store/states/socket';
 import { IChannel } from '../global/types/Channel.dto';
 import { subscribeToChannel } from '../../store/states/channels';
+
 
 const InputContainer = () =>{
 

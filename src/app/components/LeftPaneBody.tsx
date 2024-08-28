@@ -21,7 +21,6 @@ const LeftPaneBody = () =>{
     },[])
 
     useEffect(()=>{
-
         console.log(channels.isDataLoading)
     },[channels.isDataLoading])
 

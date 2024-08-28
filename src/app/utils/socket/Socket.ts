@@ -4,6 +4,7 @@ import { messageClearLastReadQueue, messageShiftMessage, messageUpdateLastMessag
 import { IMessage, IMessageCreateDto } from "../../global/types/Message.dto";
 import { UpdateChannels } from "../../../store/states/channels";
 import { RootState, store } from "../../../store/store";
+import { IChannel } from "../../global/types/Channel.dto";
 
 let socketConnection: SocketConnection | undefined;
 
@@ -11,6 +12,7 @@ export enum SocketEvent {
     MessageUpdate = 'messageUpdate',
     MessageCreate = 'messageCreate',
     MessagesRead = 'messagesRead',
+    ChannelSubscribe = 'channelSubscribe'
 }
 
 /*
@@ -33,6 +35,8 @@ export class SocketConnection {
         })
 
         this.socket.on(SocketEvent.MessageCreate, (data: IMessage) => {
+            console.log('messageCreate')
+            console.log(data)
             store.dispatch(messageShiftMessage(data));
             store.dispatch(UpdateChannels(data.channelId));
             store.dispatch(messageUpdateLastMessage(data));
@@ -53,6 +57,11 @@ export class SocketConnection {
         this.socket.emit(SocketEvent.MessageCreate, messageData);
     }
 
+    public async subscribeToChannel(channelId: string): Promise<IChannel[]>{
+        return await this.socket.emitWithAck(SocketEvent.ChannelSubscribe, channelId)
+        
+    }
+
     private state: RootState = store.getState();
     private socketEndpoint = 'http://localhost:4200';
 }
@@ -60,7 +69,8 @@ export class SocketConnection {
 class SocketFactory{
     public static create(): SocketConnection {
         if (socketConnection) return socketConnection;
-        return new SocketConnection();
+        socketConnection = new SocketConnection();
+        return socketConnection;
     }
 }
 

@@ -26,6 +26,8 @@ const ChannelsManager = memo(() =>{
 
     const debouncedSearch = useCallback(async (value: string)=>{      
         const searched = await channels.search(value);
+
+        // const filtered = [...filteredChannels, ...searched];
         dispatch(channelSetFiltered(searched));
         setFilteredChannels(searched);
     }, [])
@@ -34,30 +36,36 @@ const ChannelsManager = memo(() =>{
 
     const debounceSearch = () => {
         cancelDebounce()
+
         if (!searchValue) {
             setFilteredChannels(channelState.userChannels)
             return
         }
 
-        const filteredChannels = channelState.userChannels.filter(
+        const filtered = channelState.userChannels.filter(
             channel => 
                 (channel.title.toLowerCase().includes(searchValue.toLowerCase()) ||
                 channel.channelName?.toLowerCase().includes(searchValue.toLowerCase()))
         );
 
-        if (filteredChannels[0]){
-            setFilteredChannels(filteredChannels);
+        if (filtered[0]){
+            setFilteredChannels(filtered);
+            if (filtered.length < 4) debouncedFetchData(searchValue);
             return;
         }
-
-        setFilteredChannels(channelState.filteredChannels);
-        debouncedFetchData(searchValue);
     }
 
-    useEffect(useMemo(()=>{
+    useEffect(()=>{
         debounceSearch()
-        return () =>{}
-    }, [searchValue, debouncedFetchData]), [searchValue,  debouncedFetchData])
+    }, [searchValue]);
+
+    useEffect(()=>{
+        if(searchValue){
+            setFilteredChannels(channelState.filteredChannels);
+        } else {
+            setFilteredChannels(channelState.userChannels);
+        }
+    }, [channelState])
 
     return(
         <div className={styles.channelList}>

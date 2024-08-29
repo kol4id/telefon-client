@@ -6,7 +6,7 @@ interface IProps {
     // children: React.ReactNode;
 }
 
-const threshold = [0.1,0.9];
+const threshold = [0.1];
 
 const InfiniteScroll: React.FC<IProps> = ({callback, direction}) =>{
     const infiniteRef = useRef(null!);
@@ -47,7 +47,7 @@ const InfiniteScroll: React.FC<IProps> = ({callback, direction}) =>{
 
     return(
         <div ref={infiniteRef}
-        style={{ top: direction == "top" ? "0px" : "", padding: "70px", position: "absolute", border: "1px solid red"}}/>
+        style={{ top: direction == "top" ? "0px" : "", padding: "100px", position: "absolute", border: "1px solid red"}}/>
     )
 }
 

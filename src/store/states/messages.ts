@@ -76,7 +76,6 @@ const messageSlice = createSlice({
         },
         messageShiftMessage(state, action: {payload: IMessage | IMessage[]}){
             const messages = Array.isArray(action.payload) ? action.payload : [action.payload];
-            
             messages.forEach((message)=>{
                 if(!state.messagesRecords[message.channelId]){
                     state.messagesRecords[message.channelId] = [];
@@ -162,10 +161,14 @@ const messageSlice = createSlice({
                 
                 if (messages[messages.length - 1].createdAt > state.messagesRecords[channelId][0].createdAt){
                     state.messagesRecords[channelId].unshift(...messages);
+                    if (state.messagesRecords[channelId].length > 125)
+                        state.messagesRecords[channelId].splice(-25);
                 }
 
                 if (messages[0].createdAt < state.messagesRecords[channelId][recordLength - 1].createdAt){
                     state.messagesRecords[channelId].push(...messages);
+                    if (state.messagesRecords[channelId].length > 125)
+                        state.messagesRecords[channelId].splice(0, 25);
                 }
 
                 state.isLoading = false;

@@ -19,26 +19,22 @@ const MessagesList: FC<IProps> = memo((props) => {
     const user = useSelector((state: RootState) => state.user.userData);
 
     // const [messageList] = useState<IMessage[]>(messageRecords[currentChannelSelected]);
-    const messageList = useMemo(() => messageRecords[currentChannelSelected], [messageRecords, currentChannelSelected]);
+    // const messageList = useMemo(() => messageRecords[currentChannelSelected], [messageRecords, currentChannelSelected]);
     const messageRecordsRef = useRef(messageRecords);
     const currentChannelSelectedRef = useRef(currentChannelSelected);
-    const messageListRef = useRef(messageList);
+    const messageListRef = useRef(messageRecordsRef.current[currentChannelSelectedRef.current]);
 
     messageRecordsRef.current = messageRecords;
     currentChannelSelectedRef.current = currentChannelSelected;
-    messageListRef.current = messageList;
-    
-    const defaultOptions: IFetchMessages = {
-        channelId: currentChannelSelected, 
-        limit: 25
-    }
+    messageListRef.current = messageRecordsRef.current[currentChannelSelectedRef.current];
 
     //NOTE(@kol4id): automaticly add 1ms to start date and remove 1ms to end date
     const fetchMessagesIScroll = async(startD?: Date, endD?: Date) =>{
         const startDate = startD ? new Date(new Date(startD).getTime() + 1) : undefined;
         const endDate = endD ? new Date(new Date(endD).getTime() - 1) : undefined;
         await dispatch(fetchMessages({
-            ...defaultOptions,
+            channelId: currentChannelSelectedRef.current,
+            limit: 25,
             startDate,
             endDate 
         }))
@@ -46,18 +42,18 @@ const MessagesList: FC<IProps> = memo((props) => {
 
     const handleFetchMessagesBottom = useCallback(() => {
         fetchMessagesIScroll(messageListRef.current?.[0]?.createdAt);
-    }, []);
+    }, [currentChannelSelectedRef.current]);
 
     const handleFetchMessagesTop = useCallback(() => {
         fetchMessagesIScroll(undefined, messageListRef.current?.[messageListRef.current.length - 1]?.createdAt);
-    }, []);
+    }, [currentChannelSelectedRef.current]);
 
     //NOTE(@kol4id): inf scroll reversed because list is reversed
     return(
         <section id="message_list_main" className={styles.message_list_main}>
             <InfiniteScroll direction="bottom" callback={handleFetchMessagesBottom}/> 
             {
-                messageList?.map((message, index)=>
+                messageListRef.current?.map((message, index)=>
                     <div onContextMenu={(event) => props.callback(event, message.id, index)} key={message.id}>
                         <Message message={message} self={message.creatorId === user.id} selected={props.selected === message.id} />
                     </div>                               

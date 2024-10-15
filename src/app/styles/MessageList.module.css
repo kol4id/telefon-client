@@ -6,3 +6,22 @@
     display: flex;
     flex-direction: column-reverse;   
 }
+
+.date_string{
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-self: center;
+    margin-bottom: 15px;
+}
+
+.date_box{
+    margin-top: 10px;
+    display: flex;
+    align-self: center;
+    color: white;
+    box-sizing: border-box;
+    border-radius: 25px;
+    padding: 3px 10px;
+    background-color: rgba(5, 5, 5, .5);
+}

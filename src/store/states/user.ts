@@ -18,7 +18,7 @@ interface IUserState{
 }
 
 interface IUpdateLastRead{
-    channelId: string,
+    chatId: string,
     date: Date,
 }
 
@@ -41,7 +41,9 @@ const initialState: IUserLoading & IUserState = {
         subscriptions: ['undefined'],
         favorite: ['undefined'],
         blacklist: ['undefined'],
-        lastReads: {'undefined': new Date()},
+        lastReads: {'undefined': new Date(1)},
+        // dmChats: {'undefined': 'undefined'},
+        personalChannel: ''
     }
 }
 
@@ -52,7 +54,7 @@ const debounceUpdateUser = async(data: IUser)=> {
 
     intervalId = setTimeout(()=>{
         updateUserAPI(data);
-    }, 250)
+    }, 550)
 }
 
 export const updateUser = createAsyncThunk(
@@ -98,6 +100,13 @@ export const getUser = createAsyncThunk(
     }
 )
 
+export const logoutUser = createAsyncThunk(
+    'user/logout',
+    async function (_, {rejectWithValue}){
+        return fetchWrapper(() => user.logout(), rejectWithValue);
+    }
+)
+
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -116,11 +125,17 @@ const userSlice = createSlice({
             state.isAuthorized = action.payload;
         },
         SetUserLastRead(state, action: {payload: IUpdateLastRead}){
-            if (action.payload.date <= state.userData.lastReads[action.payload.channelId]) return;
-            state.userData.lastReads[action.payload.channelId] = action.payload.date;
+            if(!state.userData.lastReads){
+                state.userData.lastReads = {};
+                state.userData.lastReads[action.payload.chatId] = action.payload.date;
+                return;
+            }
+            if (action.payload.date <= state.userData.lastReads[action.payload.chatId]) return;
+            state.userData.lastReads[action.payload.chatId] = action.payload.date;
         },
         userSetSubscriptions(state, action: PayloadAction<string[]>){
-
+            console.log(action.payload);
+            return state;
         }
     },
     extraReducers: (builder)=>{
@@ -173,6 +188,9 @@ const userSlice = createSlice({
             })
             .addCase(updateUserPhoto.rejected, (state)=>{
                 state.isUserDataLoading = false;
+            })
+            .addCase(logoutUser.fulfilled, ()=>{
+                window.location.reload();
             })            
     },
 })

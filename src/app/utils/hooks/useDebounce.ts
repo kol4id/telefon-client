@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 export const useDebounce = (callback: () => void, delay: number) => {
     const [isMounted, setIsMounted] = useState(true);
-    const timeoutRef = useRef<number | null>(null);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         setIsMounted(true);

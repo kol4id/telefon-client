@@ -1,8 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../../store/store";
 import { channelSetFiltered, SetChannelSelected } from "../../store/states/channels";
 import styles from '../styles/ChannelsList.module.css';
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { IChannel } from "../global/types/Channel.dto";
 import { useParams } from "react-router-dom";
 import ChannelsList from "./ChannelsList";
@@ -15,13 +15,14 @@ const ChannelsManager = memo(() =>{
     let { channelId } = useParams<string>();
     console.log("ChannelsList rerender")
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const channelState = useSelector((state: RootState) => state.channelsList)
     const searchValue = useSelector((state: RootState) => state.channelSearch.value)
     const [filteredChannels, setFilteredChannels] = useState<IChannel[]>(channelState.filteredChannels.length ? channelState.filteredChannels : channelState.userChannels)
+    const personalChannel = useSelector((state: RootState) => state.user.userData.personalChannel);
 
     useEffect(()=>{
-        dispatch(SetChannelSelected(channelId));
+        dispatch(SetChannelSelected({id: channelId!, personalChannel}))
     }, [channelId])
 
     const debouncedSearch = useCallback(async (value: string)=>{      
@@ -36,7 +37,6 @@ const ChannelsManager = memo(() =>{
 
     const debounceSearch = () => {
         cancelDebounce()
-
         if (!searchValue) {
             setFilteredChannels(channelState.userChannels)
             return
@@ -53,6 +53,7 @@ const ChannelsManager = memo(() =>{
             if (filtered.length < 4) debouncedFetchData(searchValue);
             return;
         }
+        debouncedFetchData(searchValue);
     }
 
     useEffect(()=>{

@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import LeftPaneChannels from "./LeftPaneChannels";
 import LeftPaneCreateChannel from "./LeftPaneCreateChannel";
-import ProfileEdit from "../panes/ProfileEdit/ProfileEdit";
 import AppMenuProfileEdit from "./AppMenuProfileEdit";
 
 export type LeftPaneType = |'channels'|'settings'|'channel-create';
@@ -12,9 +11,12 @@ enum LeftPaneT {
     channelCreate = 'channel-create'
 }
 
-export const LeftPaneTypeContext = createContext({
-    paneType: "",
-    setPaneType: (value: LeftPaneType) => {}
+export const LeftPaneTypeContext = createContext<{
+    paneType: LeftPaneType;
+    setPaneType: (value: LeftPaneType) => void;
+}>({
+    paneType: 'channels', // Укажите значение по умолчанию
+    setPaneType: () => {}, // Пустая реализация для инициализации контекста
 });
 
 const LeftPaneManager = () =>{

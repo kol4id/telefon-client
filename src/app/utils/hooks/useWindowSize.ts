@@ -1,18 +1,23 @@
-import {useState, useEffect} from 'react'
+import { useState, useLayoutEffect } from 'react';
 
 const useWindowSize = () =>{
-    const [size, setSize] = useState<{height: number, width: number}>({height: window.innerHeight , width: window.innerWidth});
+    const [size, setSize] = useState<{height: number, width: number}>({
+        height: typeof window !== 'undefined' ? window.innerHeight : 0,
+        width: typeof window !== 'undefined' ? window.innerWidth : 0
+    });
     
-    const HandleResize = (): void =>{
-        setSize({height: window.innerHeight , width: window.innerWidth});
-    }
+    const handleResize = (): void => {
+        setSize({height: window.innerHeight, width: window.innerWidth});
+    };
 
-    useEffect(() =>{
-        window.addEventListener('resize', HandleResize);
+    useLayoutEffect(() => {
+        if (typeof window !== 'undefined') {
+            window.addEventListener('resize', handleResize, {passive: false});
 
-        return() =>{
-            window.removeEventListener('resize', HandleResize)
-        };
+            return () => {
+                window.removeEventListener('resize', handleResize);
+            };
+        }
     }, []);
 
     return size;

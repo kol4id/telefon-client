@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../store/store";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { socketSendRead } from "../../store/states/socket";
 import { useDebounce } from "../utils/hooks/useDebounce";
@@ -12,12 +12,13 @@ interface IProps {
   
 const MessageBroker: React.FC<IProps> = ({ children }) => {
     const dispatch = useAppDispatch();
-    
-    const debounceRead = useDebounce(() => {
-        dispatch(socketSendRead())
-    }, 200)
-
     const lastReadsQueue = useSelector((state: RootState) => state.messages.lastReadsQueue);
+    const readsQueueRef = useRef(lastReadsQueue)
+    readsQueueRef.current = lastReadsQueue
+
+    const debounceRead = useDebounce(() => {
+        dispatch(socketSendRead(readsQueueRef.current))
+    }, 200)
 
     useEffect(()=>{
         if(lastReadsQueue.length) debounceRead();

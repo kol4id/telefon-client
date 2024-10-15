@@ -24,22 +24,23 @@ const MessageListModalContent = (props: IProps) =>{
     const ref = useRef(null);
 
     const HandleMessageDelete = async(message: IMessage) => {
-        const responce = await DeleteMessageApi(message.id, message.channelId);
+        console.log(message)
+        const responce = await DeleteMessageApi(message.id, message.chatId);
         if (responce === 200){
             props.close()   
-            dispatch(messageDeleteMessage({channelId: message.channelId, messageId: message.id}));
+            dispatch(messageDeleteMessage({chatId: message.chatId, messageId: message.id}));
         }
     }
 
     return(
-        <div ref={ref}>
+        <section style={{padding: '5px', boxSizing: 'border-box'}} ref={ref}>
             <ModalMenuButton text={'Reply'} img_url={reply_img} callback={()=>{}}/>
             <ModalMenuButton text={'Copy Text'} img_url={copy_text} callback={()=>{}}/>
             <ModalMenuButton text={'Pin'} img_url={push_pin} callback={()=>{}}/>
             <ModalMenuButton text={'Forward'} img_url={forward_img} callback={()=>{}}/> 
             <ModalMenuButton text={'Select'} img_url={select_message} callback={()=>{}}/>
             <ModalMenuButton text={'Delete'} img_url={trash_box_img} style={{color: 'rgb(255, 50, 50)'}} callback={()=>{HandleMessageDelete(props.message)}}/>
-        </div>
+        </section>
     )
 }
 

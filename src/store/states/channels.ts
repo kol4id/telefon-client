@@ -1,13 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IChannel, IChannelState } from "../../app/global/types/Channel.dto";
 import { fetchWrapper } from "../../app/utils/fetch/fetchWrapper";
-import FetchChannelsData from "../../app/api/fetchChannelsData";
-import { ChannelApi } from "../../app/api/api";
-import SocketFactory from "../../app/utils/socket/Socket";
-import { sort } from "fast-sort";
-import { store } from "../store";
-import { userSetSubscriptions } from "./user";
-import Channel from "../../app/components/Channel";
+import { ChannelApi, ChatApi } from "../../app/api/api";
+import { IChat } from "app/global/types/Chat.dto";
 
 interface IChannelsLoading{
     isDataLoading: boolean;
@@ -17,11 +12,14 @@ const initialState: IChannelsLoading & IChannelState = {
     isDataLoading: true,
     currentChannelSelected: '',
     userChannels: [],
+    currentChat: {} as IChat,
     filteredChannels: [],
-    currentChannel: {} as IChannel
+    currentChannel: {} as IChannel,
+    chats: []
 }
 
 const channels = new ChannelApi();
+const chats = new ChatApi();
 
 export const fetchChannels = createAsyncThunk(
     'channels/fetch',
@@ -44,11 +42,25 @@ export const searchChannels = createAsyncThunk(
     }
 )
 
-export const subscribeToChannel = createAsyncThunk(
-    'socket/subscribeToChannel',
-    async (channelId: string, {rejectWithValue}) => {
-        const socket = SocketFactory.create();
-        return await socket.subscribeToChannel(channelId);
+// export const subscribeToChannel = createAsyncThunk(
+//     'socket/subscribeToChannel',
+//     async (channelId: string, {rejectWithValue}) => {
+//         const socket = SocketFactory.create();
+//         return await socket.subscribeToChannel(channelId);
+//     }
+// )
+
+export const fetchChats = createAsyncThunk(
+    'channels/chats',
+    async (_, {rejectWithValue}) =>{
+        return fetchWrapper(() => chats.getAll(), rejectWithValue);
+    }
+)
+
+export const fetchChat = createAsyncThunk(
+    'channels/chat',
+    async (channelId: string, {rejectWithValue}) =>{
+        return fetchWrapper(() => chats.getByChannel(channelId), rejectWithValue);
     }
 )
 
@@ -69,28 +81,68 @@ const channelSlice = createSlice({
         channelSetFiltered(state, action){
             state.filteredChannels = action.payload
         },
-        SetChannelSelected(state, action){
-            const id = action.payload;
-            state.currentChannelSelected = id;
-            if (state.userChannels.includes(id)){
-                state.currentChannel = state.userChannels[id];
+        channelPushNew(state, action : PayloadAction<IChannel>){
+            if (!state.userChannels.find(channel => channel.id == action.payload.id)){
+                state.userChannels.push(action.payload);
             }
+        },
+        chatPushNew(state, action : PayloadAction<IChat>){
+            if (!state.chats.find(chat => chat.id == action.payload.id)){
+                state.chats.push(action.payload);
+            }
+        },
+        SetChannelSelected(state, action: PayloadAction<{id: string, personalChannel: string}>){
+            const id = action.payload.id;
+            state.currentChannelSelected = id;
+            if (state.userChannels.some(channel => channel.id == id)){
+                state.currentChannel = state.userChannels.find(channel => channel.id == id)!;
+            }
+    
+            const valuesToFind = [action.payload.personalChannel, id]
+            let chat = undefined;
+            switch(state.currentChannel.channelType){
+                case 'user': 
+                    chat = state.chats.filter(chat => {
+                        if (chat.owner.length < 2) return false;
+                        return valuesToFind.every(value => chat.owner.includes(value))
+                    })[0]
+                    break;
+                default: 
+                    chat = state.chats.find(chat => {
+                        if (chat.owner.length != 1) return false;
+                        if (chat.owner[0] == id) return true;
+                    });
+            }
+            
+            if (chat) state.currentChat = chat as any as IChat
+            // const chats = state.chats.filter(chat => chat.)
         },
         SetDataLoading(state, action){
             state.isDataLoading = action.payload;
         },
-        UpdateChannels(state, action){
+        SetChatSelected(state, action: PayloadAction<IChat>){
+            state.currentChat = action.payload;
+        },
+        UpdateChannels(state, action: PayloadAction<IChat>){
+            const chat = action.payload;
             const channelIndx = state.userChannels.
-                                findIndex((channel) => channel.id === action.payload);
+                                findIndex((channel) => chat.owner.includes(channel.id));
             const filteredIndx = state.filteredChannels.
-                                findIndex((channel) => channel.id === action.payload)
+                                findIndex((channel) => chat.owner.includes(channel.id))
+
+            let channel;
+            let filterChannel;
             if (channelIndx >= 0) {
-                const channel = state.userChannels.splice(channelIndx, 1);
+                channel = state.userChannels.splice(channelIndx, 1);
                 state.userChannels.unshift(channel[0]);
             }
             if (filteredIndx >= 0) {
-                const filterChannel = state.filteredChannels.splice(filteredIndx, 1);
+                filterChannel = state.filteredChannels.splice(filteredIndx, 1);
                 state.filteredChannels.unshift(filterChannel[0]);
+            }
+
+            if (state.currentChannel.id == channel?.[0].id || state.currentChannel.id == filterChannel?.[0].id){
+                state.currentChat = chat;
             }
         }
     },
@@ -118,16 +170,44 @@ const channelSlice = createSlice({
             .addCase(fetchChannel.rejected, (state) => {
                 state.isDataLoading = false;
             })
-            .addCase(subscribeToChannel.fulfilled, (state, action) => {
-                const channels = action.payload as IChannel[];
-                const channelsSorted = channels.sort((a, b) => sortDates(a.updatedAt, b.updatedAt));
-                const channelsIds = channels.map(channel=>channel.id);
-                if (!state.userChannels) state.userChannels = [];
-                store.dispatch(userSetSubscriptions(channelsIds));
-                state.userChannels = channelsSorted;
+            // .addCase(subscribeToChannel.fulfilled, (state, action) => {
+            //     const channels = action.payload as IChannel[];
+            //     const channelsSorted = channels.sort((a, b) => sortDates(a.updatedAt, b.updatedAt));
+            //     const channelsIds = channels.map(channel=>channel.id);
+            //     if (!state.userChannels) state.userChannels = [];
+            //     store.dispatch(userSetSubscriptions(channelsIds));
+            //     state.userChannels = channelsSorted;
+            // })
+            .addCase(fetchChats.pending, () => {
+                // state.isDataLoading = true;
             })
+            .addCase(fetchChats.fulfilled, (state, action) => {
+                const chats = action.payload as IChat[];
+                state.chats = chats;
+                // state.isDataLoading = false;
+            })
+            .addCase(fetchChats.rejected, () => {
+                // state.isDataLoading = false;
+            })
+            .addCase(fetchChat.pending, () => {
+                // state.isDataLoading = true;
+            })
+            .addCase(fetchChat.fulfilled, (state, action) => {
+                if (action.payload == undefined || action.payload == null){
+                    state.currentChat = undefined;
+                    return;
+                }
+                if (!state.chats.find(chat => chat.id == action.payload.id)){
+                    state.chats.push(action.payload);
+                }
+                state.currentChat = action.payload;
+                // state.isDataLoading = false;
+            })
+            .addCase(fetchChat.rejected, () => {
+                // state.isDataLoading = false;
+            }) 
     }
 })
 
-export const {SetChannels, SetChannelSelected, SetDataLoading, UpdateChannels, channelSetFiltered} = channelSlice.actions;
+export const {SetChannels, SetChannelSelected, SetDataLoading, SetChatSelected, UpdateChannels, channelSetFiltered, channelPushNew, chatPushNew} = channelSlice.actions;
 export default channelSlice.reducer;

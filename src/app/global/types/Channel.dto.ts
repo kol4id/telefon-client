@@ -1,3 +1,5 @@
+import { IChat } from "./Chat.dto";
+
 interface IChannelSelected{
     currentChannelSelected: string,
 }
@@ -24,8 +26,10 @@ export interface ICreateChannel{
 
 export interface IChannelState extends IChannelSelected{
     currentChannel: IChannel;
+    currentChat: IChat | undefined;
     userChannels: IChannel[];
     filteredChannels: IChannel[],
+    chats: IChat[],
 }
 
 export interface IChannelSearch {

@@ -16,12 +16,13 @@
     width: 100vw;
     height: 100vh;
     display: grid;
-    grid-template-rows: 220px 90px auto 80px;
+    grid-template-rows: 220px 90px 300px 80px;
     flex: 1;
     background-color: var(--auth-main-bg-color);
     justify-content: center;
     overflow-y: auto;
     margin: 10 auto 10;
+    margin-bottom: 20px;
 }
 
 .static_section{
@@ -90,8 +91,8 @@
 
 .auth_form{
     display: flex;
-    /* display: grid;
-    grid-template-rows: 200px auto; */
+    display: grid;
+    grid-template-rows: 200px auto;
     flex-direction: column;
     position: relative;
     justify-content: center;
@@ -100,8 +101,8 @@
 
 .auth_form form{
     display: grid;
-    width: 300px;
-    grid-template-rows: 65px 65px 70px;
+    /* width: 300px; */
+    /* grid-template-rows: 65px 65px 70px; */
     margin: 0px auto 0px;
 }
 
@@ -127,7 +128,8 @@
     margin: 0px auto;
     display: grid;
     grid-template-rows: 30px auto;
-    padding-bottom: 20px;
+    padding-bottom: 50px;
+    height: 100px;
 }
 
 .custom_button{

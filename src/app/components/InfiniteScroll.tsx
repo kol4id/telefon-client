@@ -47,7 +47,7 @@ const InfiniteScroll: React.FC<IProps> = ({callback, direction}) =>{
 
     return(
         <div ref={infiniteRef}
-        style={{ top: direction == "top" ? "0px" : "", padding: "100px", position: "absolute", border: "1px solid red"}}/>
+        style={{ top: direction == "top" ? "0px" : "", padding: "100px", position: "absolute", border: "1px solid red", zIndex: '-1'}}/>
     )
 }
 

@@ -3,9 +3,10 @@ import { IMessage } from "../global/types/Message.dto";
 import { IUser } from "../global/types/User.dto";
 import { baseUrl } from "../../state";
 import { IChannel } from "../global/types/Channel.dto";
+import { IChat } from "app/global/types/Chat.dto";
 
 export interface IFetchMessages {
-    channelId: string,
+    chatId: string,
     limit: number, 
     startDate?: Date, 
     endDate?: Date
@@ -22,11 +23,11 @@ export class MessageApi{
         return response.data || [];
     }
 
-    async deleteMessage(messageId: string, channelId: string): Promise<number>{
+    async deleteMessage(messageId: string, chatId: string): Promise<number>{
         const response = await axios.delete(`${baseUrl}/messages/delete`, {
             params: {
                 messageId,
-                channelId,
+                chatId,
             },
             withCredentials: true
         });
@@ -93,13 +94,18 @@ export class UserApi{
     }
 
     async isUsernameExist(username: string): Promise<boolean>{
-        const responce = await axios.get<boolean>(`${baseUrl}/user/username`, {
+        const response = await axios.get<boolean>(`${baseUrl}/user/username`, {
             params: {
                 username
             },
             withCredentials: true
         })
-        return responce.data;
+        return response.data;
+    }
+
+    async logout(): Promise<IUser>{
+        const response = await axios.get<IUser>(`${baseUrl}/auth/logout`,{withCredentials: true});
+        return response.data || undefined;
     }
 }
 
@@ -123,18 +129,21 @@ export class ChannelApi{
         });
         return response.data || [];
     }
+}
 
-    async subscribe(channelId: string):Promise<IChannel[]>{
-        const requestData = {
-            channelId
-        }
+export class ChatApi{
+    async get(chatId: string):Promise<IChat[]>{
+        const response = await axios.get<IChat[]>(`${baseUrl}/chats/${chatId}`, {withCredentials: true});
+        return response.data || undefined;
+    }
 
-        const responce = await axios.put(`${baseUrl}/channels/subscribe`, requestData, {
-            // params: {
-            //     channelId
-            // },
-            withCredentials: true
-        });
-        return responce.data;
+    async getAll():Promise<IChat[]>{
+        const response = await axios.get<IChat[]>(`${baseUrl}/chats/user`, {withCredentials: true});
+        return response.data || [];
+    }
+
+    async getByChannel(channelId: string):Promise<IChat>{
+        const response = await axios.get<IChat>(`${baseUrl}/chats/channel/${channelId}`, {withCredentials: true});
+        return response.data || undefined;
     }
 }

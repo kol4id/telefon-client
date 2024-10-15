@@ -7,10 +7,11 @@ interface IProps{
     isOpen: boolean,
     onClose?: () =>void,
     position?: {x: number, y: number},
+    overlayClickClose?: boolean,
     children: React.ReactNode;
 }
 
-const Modal: FC<IProps> = ({isOpen, onClose, position, children}) => {
+const Modal: FC<IProps> = ({isOpen, onClose, position, overlayClickClose, children}) => {
     const [portalElement] = useState<HTMLElement | null>(document.getElementById('portal'))
     
     const modalStyle = {
@@ -22,7 +23,7 @@ const Modal: FC<IProps> = ({isOpen, onClose, position, children}) => {
     return (
         <>
         {isOpen && ReactDOM.createPortal(
-            <div className={styles.modal_overlay} onClick={onClose}>
+            <div className={styles.modal_overlay} onClick={overlayClickClose ? onClose : ()=>{}}>
                 <div className={styles.modal_content} style={modalStyle} onClick={(e) => e.stopPropagation()}>
                 {/* <button className="modal-close" onClick={closeModal}>×</button> */}
                 {children}

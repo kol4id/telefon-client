@@ -1,7 +1,8 @@
 export interface IMessageCreateDto{
     channelId: string,
     content: string,
-    hasMadia: boolean
+    hasMedia: boolean,
+    media?: ArrayBuffer[]
 };
 
 export interface IMessageDeleteDto{
@@ -11,7 +12,7 @@ export interface IMessageDeleteDto{
 
 export interface IMessage{
     id: string;
-    channelId: string;
+    chatId: string;
     creatorId: string;
     content: string;
     isRead: string;

@@ -8,6 +8,7 @@ import { RootState, useAppDispatch } from '../../store/store';
 import { messageLastReadsQueuePush } from '../../store/states/messages';
 import { SetUserLastRead, updateUser } from '../../store/states/user';
 import { useSelector } from 'react-redux';
+import MessageMedia from './MessageMedia';
 
 interface IProps{
     message: IMessage,
@@ -31,7 +32,7 @@ const Message = (props: IProps) =>{
 
     const handleObserve = () => {
         console.log(`message ${props.message.id} has been read`)
-        dispatch(SetUserLastRead({channelId: props.message.channelId, date: props.message.createdAt}));
+        dispatch(SetUserLastRead({chatId: props.message.chatId, date: props.message.createdAt}));
         dispatch(updateUser());
         if(props.self) return
         dispatch(messageLastReadsQueuePush(props.message));
@@ -45,7 +46,7 @@ const Message = (props: IProps) =>{
     });
 
     const startObserving = () =>{
-        if(userLastRead?.[props.message.channelId] >= props.message.createdAt) return
+        if(userLastRead?.[props.message.chatId] >= props.message.createdAt) return
         observer.observe(messageRef.current);
     }
 
@@ -60,10 +61,14 @@ const Message = (props: IProps) =>{
             ref={messageRef}
         >
             <div className = {styles.message_block}>
+                {
+                    props.message.hasMedia &&
+                    <MessageMedia messageMedia={props.message.mediaUrls!}/>
+                }
                 <div className = {styles.message_content}>
                     {props.message.content}
                     <div className={styles.send_time}>
-                        {`${String(new Date(props.message.createdAt).getHours()).padStart(2, '0')}.${String(new Date(props.message.createdAt).getMinutes()).padStart(2, '0')}`}
+                        {`${String(new Date(props.message.createdAt).getHours()).padStart(2, '0')}:${String(new Date(props.message.createdAt).getMinutes()).padStart(2, '0')}`}
                         {
                             props.self && <img className={styles.read_status} src={props.message.isRead ? read : send}></img>
                         }

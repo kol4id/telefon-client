@@ -12,7 +12,6 @@
 
 .message_string{
     width: 100%;
-    transition: .2s ease;
     display: flex;
 }
 
@@ -23,46 +22,8 @@
     background-color: var(--message-string-bg-selected-color);
 }
 
-
-.message_block{
-    display: flex;
-    margin: 3px calc(100px + 20%) 2px calc(22%);
-    border-radius: 0.375rem 0.9375rem 0.9375rem 0.375rem;
-    max-width: 464px;
-    /* background-color: rgb(255, 0, 0); */
-    background-color: var(--message-bg-from-color)
-}
-
-.message_content{
-    display: flex;
-    display: block;
-    color: var(--message-text-color);
-    font-size: 16px;
-    font-weight: 500;
-    text-rendering: optimizeLegibility;
-    max-width: 448px;
-    /* border: 1px solid rgb(0, 255, 255); */
-    word-wrap: break-word;
-    white-space: pre-wrap;
-    margin: 3px 5px 3px 5px;
-    
-}
-
-.send_time{
-    position: absolute;
-    display: flex;
-    bottom: auto !important;
-    float: right;
-    position: relative;
-    font-size: 13px;
-    padding: 7px 0px 0px 10px;
-    color: var(--message-time-text-color)
-    /* border: 1px solid blue; */
-    
-}
-
-.message_string_self {
-    transition: .2s ease;
+.message_string_self{
+    width: 100%;
     display: flex;
     justify-content: right;
 }
@@ -73,6 +34,43 @@
     justify-content: right;
     backdrop-filter: blur(0.5px);
     background-color: var(--message-string-bg-selected-color);
+}
+
+.message_block{
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-width: 448px;
+    background-color: var(--message-bg-from-color);
+    margin: 3px calc(50px + 18%) 2px calc(22%);
+    border-radius: 0.375rem 0.9375rem 0.9375rem 0.375rem;
+}
+
+.message_content{
+    display: flex;
+    display: block;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    color: var(--message-text-color);
+    font-size: 16px;
+    font-weight: 500;
+    max-width: 448px;
+    margin: 3px 5px 3px 5px;
+}
+
+.send_time{
+    display: flex;
+    font-size: 13px;
+    float: right;
+    position: relative;
+    padding: 7px 10px 0px 10px;
+    color: var(--message-time-text-color)
+}
+
+.read_status {
+    margin-left: 2px;
+    width: 15px;
+    height: 15px;
 }
 
 .message_string_self .message_block, .message_string_self_selected .message_block{
@@ -86,68 +84,15 @@
     color: var(--message-time-text-self-color)
 }
 
-.read_status {
-    margin-left: 2px;
-    width: 15px;
-    height: 15px;
-}
-
-@media (max-width: 1000px)
+@media (max-width: 1280px)
 {
     .message_block{
-        margin: 3px calc(15%) 2px calc(15%);
+        margin: 3px calc(10%) 2px calc(10%);
     }
 }
 
-/* .messageStringFrom {
-    display: flex;
-    width: 100%;
+@media (max-width: 700px){
+    .message_block{
+        margin: 7.5px calc(4%) 15px calc(4%);
+    }
 }
-
-.messageStringTo {
-    display: flex;
-    justify-content: right;
-    width: 100%;
-}
-
-.messageStringFrom .messageBlock {
-    display: flex;
-    margin: 3px 0px 2px 15%;
-    max-width: 480px;
-    border-radius: 0.375rem 0.9375rem 0.9375rem 0.375rem;
-    background-color: rgb(255, 0, 0);
-}
-
-.messageStringTo .messageBlock{
-    display: flex;
-    margin: 3px 10% 2px 0px;
-    max-width: 480px;
-    border-radius: 0.375rem 0.9375rem 0.9375rem 0.375rem;
-    background-color: rgba(127, 112, 214, 0.979) !important;
-}
-
-.messageStringFrom .messageBlock .messageContent {
-    
-    max-width: 460px;
-    color: whitesmoke;
-    font-size: 16px;
-    margin: 3px 5px 3px 5px;
-    text-align: left;    
-    word-wrap: break-word;
-}
-
-.messageStringTo .messageBlock .messageContent {
-    color: whitesmoke;
-    font-size: 16px;
-    margin: 3px 5px 3px 5px;
-    text-align: left;    
-    word-wrap: break-word;
-}
-
-.send_time{
-    color: white !important;  
-}
-
-.messageStringTo .messageBlock .send_time {
-    bottom: 0;
-} */

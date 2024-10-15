@@ -5,7 +5,7 @@ import React, { useEffect } from 'react'
 import MiddlePaneBody from '../components/MiddlePaneBody'
 import { RootState, useAppDispatch } from '../../store/store'
 import { fetchLastMessages, fetchMessages } from '../../store/states/messages'
-import { fetchChannel } from '../../store/states/channels'
+import { fetchChannel, fetchChat } from '../../store/states/channels'
 import { useSelector } from 'react-redux'
 
 
@@ -14,11 +14,13 @@ const MiddlePane = React.memo(() =>{
 
     const dispatch = useAppDispatch();
     const selectedChannel = useSelector((state: RootState) => state.channelsList.currentChannelSelected);
+    const selectedChat = useSelector((state: RootState) => state.channelsList.currentChat);
 
     useEffect(()=>{
         if (selectedChannel){
             dispatch(fetchChannel(selectedChannel));
-            dispatch(fetchMessages({channelId: selectedChannel, limit: 25}))
+            dispatch(fetchChat(selectedChannel));
+            dispatch(fetchMessages({chatId: selectedChat?.id!, limit: 25}))
         }
     }, [selectedChannel])
 

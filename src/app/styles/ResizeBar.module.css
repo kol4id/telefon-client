@@ -3,7 +3,8 @@
     /* background-color: aqua; */
     /* position: absolute; */
     /* width: calc(.2% + 2px);  */
-    height: 100%;
+    height: 100vh;
+    width: 100%;
 }
 
 .resize_bar:hover{

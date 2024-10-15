@@ -10,4 +10,6 @@ export interface IUser{
     favorite: string[];
     blacklist: string[];
     lastReads: Record<string, Date>;
+    // dmChats: Record<string, string>;
+    personalChannel: string;
 }

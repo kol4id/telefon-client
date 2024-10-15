@@ -112,7 +112,7 @@ footer{
     justify-content: center;
 }
 
-footer button{
+.custom_button{
     transition: .15s ease;
     /* margin: 15px auto 0; */
     margin-left: 20px;

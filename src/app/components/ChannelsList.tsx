@@ -1,6 +1,6 @@
 import { FC, memo } from "react"
 import { IChannel } from "../global/types/Channel.dto"
-import Channel from "./Channel"
+import Channel from "./channel/Channel"
 import { useSelector } from "react-redux"
 import { RootState } from "../../store/store"
 

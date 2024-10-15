@@ -19,7 +19,7 @@ const ImageCrop:FC<IProps> = ({src, onCropComplete}) => {
     const [zoom, setZoom] = useState(1)
     const [cropedImage, setCropedImage] = useState<File>();
 
-    const cropComplete = (croppedArea: any, croppedAreaPixels: any) => {
+    const cropComplete = (croppedAreaPixels: any) => {
         (async () => {
             const img = await getCroppedImg(src, croppedAreaPixels)
             setCropedImage(img);

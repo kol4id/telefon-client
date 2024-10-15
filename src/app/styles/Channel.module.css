@@ -2,7 +2,7 @@
     --channel-text-color: white;
     --channel-hover-bg-color: rgba( 200, 200, 200, 0.05);
     --channel-selected-bg-color: rgba(127, 112, 214, 0.979) !important;
-    --channel-selected-unread-bg-color: rgba(153, 142, 216, 0.979) !important;
+    --channel-selected-unread-bg-color: rgba(152, 141, 215, 0.979) !important;
     --channel-body-bg-color: rgb(175, 175, 175);
 }
 

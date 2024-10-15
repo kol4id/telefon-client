@@ -3,7 +3,7 @@ export const createImage = (url: string):any =>
 		const image = new Image();
 		image.crossOrigin = "anonymous";
 		image.onload = () => resolve(image);
-		image.onerror = (error) => reject(new Error(`Failed to load image at ${url}`));
+		image.onerror = () => reject(new Error(`Failed to load image at ${url}`));
 		image.src = url;
 	});
 

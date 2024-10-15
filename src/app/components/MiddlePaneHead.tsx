@@ -1,9 +1,8 @@
 import { useSelector } from 'react-redux';
 
-import styles from '../styles/MiddlePaneHead.module.css'
+import styles from '../styles/MiddlePaneHead.module.css';
 import { RootState } from '../../store/store';
 import { useEffect, useState } from 'react';
-import { IChannel } from '../global/types/Channel.dto';
 
 const MiddlePaneHead = () =>{
 
@@ -11,7 +10,7 @@ const MiddlePaneHead = () =>{
 
     const currentChannel = useSelector((state:RootState) => state.channelsList.currentChannel);
     const [loading, setLoading] = useState(true);
-    const [footer, setFooter] = useState('');
+    // const [footer, setFooter] = useState('');
 
     useEffect(() => {
         setLoading(true)

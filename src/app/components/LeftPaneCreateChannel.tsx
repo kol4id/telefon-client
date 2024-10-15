@@ -1,6 +1,5 @@
-import { useContext } from "react"
-import ChannelsManager from "./ChannelsManager"
-import { LeftPaneTypeContext } from "./LeftPaneManager"
+import { useContext } from "react";
+import { LeftPaneTypeContext } from "./LeftPaneManager";
 
 const LeftPaneCreateChannel = () => {
 

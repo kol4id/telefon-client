@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IMessageCreateDto } from "../../app/global/types/Message.dto";
+import { IMessage, IMessageCreateDto } from "../../app/global/types/Message.dto";
 
 export interface ISocketState {
     isConnected: boolean;
@@ -16,13 +16,15 @@ const socketSlice = createSlice({
         socketInit(){
             return
         },
-        socketSendRead(){
+        socketSendRead(_, action: PayloadAction<IMessage[]>){
+            console.log(action)
             return
         },
         socketSendLastRead(){
             return
         },
         socketCreateMessage(_, action: PayloadAction<IMessageCreateDto>){
+            console.log(action)
             return;
         },
     }

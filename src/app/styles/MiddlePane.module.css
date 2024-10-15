@@ -5,6 +5,7 @@
 .middlePane {
     position: relative;
     display: flex;
+    width: 100%;
     flex-direction: column;
     /* display: grid;
     grid-template-columns: 1fr;

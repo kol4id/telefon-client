@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import ProtectedRoute from "./app/panes/ProtectedRoute";
 import App from "./App";
 import ErrorPage from "./app/panes/ErrorPage";

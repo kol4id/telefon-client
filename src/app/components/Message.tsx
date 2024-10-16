@@ -33,7 +33,7 @@ const Message = (props: IProps) =>{
     const handleObserve = () => {
         console.log(`message ${props.message.id} has been read`)
         dispatch(SetUserLastRead({chatId: props.message.chatId, date: props.message.createdAt}));
-        dispatch(updateUser());
+        dispatch(updateUser({}));
         if(props.self) return
         dispatch(messageLastReadsQueuePush(props.message));
     }

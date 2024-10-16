@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../../store/store";
 import Modal from "../../components/Modal";
 import ImageCrop from "./ImageCrop";
-import { getUser, updateUser, userSet } from "../../../store/states/user";
+import { getUser, updateUser } from "../../../store/states/user";
 import ProfileInputs from "./ProfileInputs";
 import PhotoEdit from "./PhotoEdit";
 

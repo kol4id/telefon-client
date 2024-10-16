@@ -49,18 +49,27 @@ const initialState: IUserLoading & IUserState = {
 
 const user = new UserApi();
 
-const debounceUpdateUser = async(data: IUser)=> {
+const debounceUpdateUser = async(data: IUser): Promise<any>=> {
     if(intervalId) clearTimeout(intervalId);
 
-    intervalId = setTimeout(()=>{
-        updateUserAPI(data);
-    }, 550)
+    return new Promise((resolve) => {
+        intervalId = setTimeout(async () => {
+            const result = await updateUserAPI(data); 
+            resolve(result); 
+        }, 550);
+    });
 }
 
 export const updateUser = createAsyncThunk(
     'user/update',
-    async function(_, {rejectWithValue}){
-        const userData = store.getState().user.userData;
+    async function(data: Partial<IUser>, {rejectWithValue}){
+        let userData = store.getState().user.userData;
+        if (data){
+            userData = {
+                ...userData,
+                ...data
+            }
+        }
         return fetchWrapper(() => debounceUpdateUser(userData), rejectWithValue);
     }
 )

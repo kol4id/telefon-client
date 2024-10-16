@@ -1,7 +1,7 @@
-import ProfileEdit from "./ProfileEdit/ProfileEdit"
+import ProfileEdit from "./ProfileEdit/ProfileEdit";
 
-import styles from '../styles/ProfileEdit.module.css'
-import { useNavigate } from "react-router-dom"
+import styles from '../styles/ProfileEdit.module.css';
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
@@ -9,12 +9,12 @@ import { RootState } from "../../store/store";
 const ProfilePane = () => {
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.user.userData)
-
+    
     useEffect(()=>{
         if (user.firstName && user.userName){
             navigate('/a')
         }
-    },[user])
+    },[user.firstName, user.userName])
 
     return(
         <main className={styles.global}>

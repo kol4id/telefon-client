@@ -19,11 +19,10 @@ const AuthPane = () => {
     }, [])
 
     useEffect(()=>{
-        console.log(user.isAuthorized)
         if (user.isAuthorized){
             navigate('/a')
         }
-    }, [user])  
+    }, [user.userData])  
 
     return(
         <article className={styles.main}>

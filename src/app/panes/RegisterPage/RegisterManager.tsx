@@ -17,7 +17,7 @@ const RegisterManager = () => {
         if (user.isAuthorized){
             navigate('data')
         }
-    }, [user])  
+    }, [user.userData])  
 
     return(
         <>

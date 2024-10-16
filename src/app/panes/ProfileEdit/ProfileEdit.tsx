@@ -38,8 +38,7 @@ const ProfileEdit = () => {
 
     const onSubmit = () =>{
         if (!isValid) return
-        dispatch(userSet(userData));
-        dispatch(updateUser());
+        dispatch(updateUser(userData));
     }
 
     const onModalClose = () =>{

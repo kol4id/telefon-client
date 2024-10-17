@@ -7,3 +7,4 @@ const topDomain = `org`
 const serverEntry = `api`
 // export const baseUrl = `${serverProtocol}://${serverAddress}:${serverPort}/${serverEntry}`;
 export const baseUrl = `${serverProtocol}://${subDomain}.${domain}.${topDomain}/${serverEntry}`
+export const socketEndpoint = `https://server-telefon.duckdns.org`

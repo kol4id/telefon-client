@@ -8,6 +8,7 @@ import { IChannel } from "../../global/types/Channel.dto";
 import { userSet } from "../../../store/states/user";
 import { IUser } from "app/global/types/User.dto";
 import { IChat } from "app/global/types/Chat.dto";
+import { socketEndpoint } from "state";
 
 let socketConnection: SocketConnection | undefined;
 
@@ -78,7 +79,7 @@ export class SocketConnection {
     }
 
     // private state: RootState = store.getState();
-    private socketEndpoint = 'http://localhost:4200';
+    private socketEndpoint = socketEndpoint;
 }
 
 class SocketFactory{

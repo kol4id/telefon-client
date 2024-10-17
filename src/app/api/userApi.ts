@@ -1,9 +1,9 @@
 import axios from "axios";
 import { IUser } from "../global/types/User.dto";
-
+import { baseUrl } from "state";
 
 export const FetchUser = async (): Promise<IUser> =>{
-    const response = await axios.get<IUser>('http://localhost:4200/api/user/self', {withCredentials: true});
+    const response = await axios.get<IUser>(`${baseUrl}/user/self`, {withCredentials: true});
     if (response.status !== 200) {
         console.log(response.status)
     }
@@ -11,7 +11,7 @@ export const FetchUser = async (): Promise<IUser> =>{
 }
 
 export const updateUserAPI = async (user: IUser): Promise<IUser>=>{
-    const response = await axios.put<IUser>('http://localhost:4200/api/user/update', user, {
+    const response = await axios.put<IUser>(`${baseUrl}/user/update`, user, {
         withCredentials: true        
     })
     

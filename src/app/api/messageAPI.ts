@@ -1,8 +1,9 @@
 import axios from "axios";
 import { IMessage } from "../global/types/Message.dto";
+import { baseUrl } from "state";
 
 export const DeleteMessageApi = async(messageId: string, channelId: string): Promise<number> =>{
-    const response = await axios.delete('http://localhost:4200/api/messages/delete', {
+    const response = await axios.delete(`${baseUrl}/messages/delete`, {
         params: {
             messageId,
             channelId,
@@ -19,13 +20,13 @@ export const PostMessage = async(channelIdArg: string, messageArg: string, hasMe
         hasMedia: hasMediaArg
     }
 
-    await axios.post('http://localhost:4200/api/messages/create', requestData, {
+    await axios.post(`${baseUrl}/messages/create`, requestData, {
         withCredentials: true,
     }); 
 }
 
 export const FetchLastMessages = async(limit: number) => {
-    const response = await axios.get<IMessage[][]>('http://localhost:4200/api/messages/lastreads', {
+    const response = await axios.get<IMessage[][]>(`${baseUrl}/messages/lastreads`, {
         params:{
             limit,
         },
@@ -35,7 +36,7 @@ export const FetchLastMessages = async(limit: number) => {
 }
 
 export const FetchOneLastMessageEach = async() => {
-    const response = await axios.get<IMessage[][]>('http://localhost:4200/api/messages/last/one', {
+    const response = await axios.get<IMessage[][]>(`${baseUrl}/messages/last/one`, {
         withCredentials: true,
     });
     return response.data;

@@ -8,7 +8,7 @@ import { IChannel } from "../../global/types/Channel.dto";
 import { userSet } from "../../../store/states/user";
 import { IUser } from "app/global/types/User.dto";
 import { IChat } from "app/global/types/Chat.dto";
-import { socketEndpoint } from "state";
+import { socketEndpoint } from "../../../state";
 
 let socketConnection: SocketConnection | undefined;
 

@@ -79,7 +79,7 @@ export class SocketConnection {
     }
 
     // private state: RootState = store.getState();
-    private socketEndpoint = socketEndpoint;
+    private socketEndpoint = `https://server-telefon.duckdns.org`;
 }
 
 class SocketFactory{

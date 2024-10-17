@@ -1,6 +1,6 @@
 // import { IChannel } from "../interfaces/IChannelState";
 import axios from "axios";
-import { baseUrl } from "state";
+import { baseUrl } from "../../state";
 const AuthUser = async(emailParam: string, passwordParam: string): Promise<number> =>{
     const response = await axios.get<void>(`${baseUrl}/auth/login`, {
         params:{

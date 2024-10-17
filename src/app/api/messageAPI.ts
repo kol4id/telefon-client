@@ -1,6 +1,6 @@
 import axios from "axios";
 import { IMessage } from "../global/types/Message.dto";
-import { baseUrl } from "state";
+import { baseUrl } from "../../state";
 
 export const DeleteMessageApi = async(messageId: string, channelId: string): Promise<number> =>{
     const response = await axios.delete(`${baseUrl}/messages/delete`, {

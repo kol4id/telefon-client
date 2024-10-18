@@ -74,6 +74,7 @@ const ProfileEdit = () => {
                 isOpen={isOpen}
                 children={<ImageCrop src={src} onCropComplete={() => setIsOpen(false)}/>}
                 onClose={()=>onModalClose()}
+                overlayClickClose={true}
             />
             <form
                 onSubmit={e => {

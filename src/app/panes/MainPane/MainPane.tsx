@@ -8,6 +8,7 @@ import CursorManager from './CursorManager';
 import styles from '../../styles/MainPane.module.css';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import EventManager from './EventManager';
 
 const MainPane: FC = () =>{
     const dispatch = useAppDispatch();
@@ -22,6 +23,7 @@ const MainPane: FC = () =>{
     }, [])
 
     return(
+        <EventManager>
         <CursorManager>
             <article className = {styles.main}
                 style={{backgroundImage: `url(${image})`}}
@@ -31,6 +33,7 @@ const MainPane: FC = () =>{
                 <Outlet/>
             </article>        
         </CursorManager>
+        </EventManager>
     )
 }
 export default MainPane;

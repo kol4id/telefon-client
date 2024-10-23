@@ -1,6 +1,6 @@
 import { AnyAction, Dispatch, MiddlewareAPI } from "redux";
 import { Socket, io } from "socket.io-client";
-import { messageClearLastReadQueue, messageShiftMessage, messageUpdateLastMessage, messageUpdateMessage } from "../../../store/states/messages";
+import { messageClearLastReadQueue, messageDeleteMessage, messagesDecUnreadCount, messageShiftMessages, messagesIncUnreadCount, messageUpdateLastMessage, messageUpdateMessages } from "../../../store/states/messages";
 import { IMessage, IMessageCreateDto } from "../../global/types/Message.dto";
 import { channelPushNew, chatPushNew, UpdateChannels } from "../../../store/states/channels";
 // import { RootState, store } from "../../../store/store";
@@ -8,7 +8,11 @@ import { IChannel } from "../../global/types/Channel.dto";
 import { userSet } from "../../../store/states/user";
 import { IUser } from "app/global/types/User.dto";
 import { IChat } from "app/global/types/Chat.dto";
+import { RootState, store } from "store/store";
+import { messageRecived } from "../customEvents";
 // import { socketEndpoint } from "../../../state";
+
+
 
 let socketConnection: SocketConnection | undefined;
 
@@ -16,6 +20,7 @@ export enum SocketEvent {
     MessageUpdate = 'messageUpdate',
     MessageCreate = 'messageCreate',
     MessagesRead = 'messagesRead',
+    MessageDelete = 'messageDelete',
     ChannelSubscribe = 'channelSubscribe',
     UpdateUser = 'updateUser'
 }
@@ -36,20 +41,39 @@ export class SocketConnection {
 
     public startListeningRedux(store: MiddlewareAPI<Dispatch<AnyAction>, any>): void {
         this.socket.on(SocketEvent.MessageUpdate, (data: IMessage) => {
-            store.dispatch(messageUpdateMessage(data));
+            store.dispatch(messageUpdateMessages([data]));
         })
 
         this.socket.on(SocketEvent.MessageCreate, (data: {message: IMessage, chat: IChat}) => {
             console.log('messageCreate')
             store.dispatch(chatPushNew(data.chat));
             store.dispatch(UpdateChannels(data.chat));
-            store.dispatch(messageShiftMessage(data.message));
+            
+            const userId = this.state.user.userData.id;
+            if (data.message.creatorId != userId) store.dispatch(messagesIncUnreadCount(data.chat.id));
+
+            store.dispatch(messageShiftMessages([data.message]));
             store.dispatch(messageUpdateLastMessage(data.message));
+            document.dispatchEvent(messageRecived);
         })
 
         this.socket.on(SocketEvent.MessagesRead, (data: IMessage[]) => {
-            store.dispatch(messageUpdateMessage(data));
+            store.dispatch(messageUpdateMessages(data));
             store.dispatch(messageClearLastReadQueue(data));
+        })
+
+        this.socket.on(SocketEvent.MessageDelete, (data: IMessage | boolean) =>{
+            if (!data || typeof data != 'object'){
+                console.log('deletion failed');
+                return;
+            }
+
+            store.dispatch(messageDeleteMessage({chatId: data.chatId, messageId: data.id}));
+
+            const userData = this.state.user.userData;
+            if (data.creatorId == userData.id) return;
+            if (new Date(data.createdAt).getTime() <= new Date(userData.lastReads[data.chatId]).getTime()) return;
+            store.dispatch(messagesDecUnreadCount(data.chatId));
         })
 
         this.socket.on(SocketEvent.UpdateUser, (data: IUser)=>{
@@ -73,13 +97,19 @@ export class SocketConnection {
         this.socket.emit(SocketEvent.MessageCreate, messageData);
     }
 
+    public messageDelete(messageId: string): void{
+        this.socket.emit(SocketEvent.MessageDelete, messageId);
+    }
+
     public async subscribeToChannel(channelId: string): Promise<IChannel[]>{
         return await this.socket.emitWithAck(SocketEvent.ChannelSubscribe, channelId)
         
     }
 
-    // private state: RootState = store.getState();
-    private socketEndpoint = `https://server-telefon.duckdns.org`;
+    private state: RootState = store.getState();
+    //private socketEndpoint = `https://server-telefon.duckdns.org`;
+    private socketEndpoint = `http://localhost:4200`;
+
 }
 
 class SocketFactory{

@@ -17,19 +17,23 @@ const socketSlice = createSlice({
             return
         },
         socketSendRead(_, action: PayloadAction<IMessage[]>){
-            console.log(action)
+            console.log(action);
             return
         },
         socketSendLastRead(){
             return
         },
         socketCreateMessage(_, action: PayloadAction<IMessageCreateDto>){
-            console.log(action)
+            console.log(action);
             return;
         },
+        socketDeleteMessage(_, action: PayloadAction<string>){
+            console.log(action);
+            return;
+        }
     }
 
 })
 
-export const {socketInit, socketSendRead, socketSendLastRead,  socketCreateMessage} = socketSlice.actions;
+export const {socketInit, socketSendRead, socketSendLastRead, socketCreateMessage, socketDeleteMessage} = socketSlice.actions;
 export default socketSlice.reducer;

@@ -10,6 +10,11 @@ export interface IMessageDeleteDto{
     messageChannelId: string,
 };
 
+export interface IUnreadMessageCount{
+    chatId: string,
+    unreadCount: number
+}
+
 export interface IMessage{
     id: string;
     chatId: string;

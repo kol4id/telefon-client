@@ -1,5 +1,5 @@
 import axios from "axios"
-import { IMessage } from "../global/types/Message.dto";
+import { IMessage, IUnreadMessageCount } from "../global/types/Message.dto";
 import { IUser } from "../global/types/User.dto";
 import { baseUrl } from "../../state";
 import { IChannel } from "../global/types/Channel.dto";
@@ -46,6 +46,13 @@ export class MessageApi{
 
     async fetchLastOneMessages(): Promise<IMessage[][]>{
         const response = await axios.get<IMessage[][]>(`${baseUrl}/messages/last`, {
+            withCredentials: true,
+        });
+        return response.data;
+    }
+
+    async fetchUnreadMessagesCount(): Promise<IUnreadMessageCount[]>{
+        const response = await axios.get<IUnreadMessageCount[]>(`${baseUrl}/messages/unreadCount`, {
             withCredentials: true,
         });
         return response.data;

@@ -12,6 +12,7 @@ import { DeleteMessageApi } from '../api/messageAPI'
 import { useDispatch } from "react-redux"
 import { messageDeleteMessage } from "../../store/states/messages"
 import { useRef } from 'react'
+import { socketDeleteMessage } from 'store/states/socket'
 
 interface IProps{
     message: IMessage,
@@ -25,11 +26,8 @@ const MessageListModalContent = (props: IProps) =>{
 
     const HandleMessageDelete = async(message: IMessage) => {
         console.log(message)
-        const responce = await DeleteMessageApi(message.id, message.chatId);
-        if (responce === 200){
-            props.close()   
-            dispatch(messageDeleteMessage({chatId: message.chatId, messageId: message.id}));
-        }
+        dispatch(socketDeleteMessage(message.id));
+        props.close();
     }
 
     return(

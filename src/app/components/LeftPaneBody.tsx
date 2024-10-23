@@ -4,7 +4,7 @@ import { fetchChannels, fetchChats } from '../../store/states/channels';
 import { RootState, useAppDispatch } from '../../store/store';
 
 import styles from '../styles/LeftPaneBody.module.css';
-import { fetchLastOneMessages } from '../../store/states/messages';
+import { fetchLastOneMessages, fetchUnreadMessagesCount } from '../../store/states/messages';
 import ChannelsManager from './ChannelsManager';
 
 const LeftPaneBody = () =>{
@@ -19,6 +19,7 @@ const LeftPaneBody = () =>{
                 await dispatch(fetchChats());
                 await dispatch(fetchChannels());
                 dispatch(fetchLastOneMessages());
+                dispatch(fetchUnreadMessagesCount());
             })()
         }        
     },[])

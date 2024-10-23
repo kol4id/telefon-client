@@ -11,7 +11,7 @@ import MessagesDateGroupList from "./MessagesDateGroupList"
 
 const MessagesManager = React.memo(() =>{
     console.log("MessageList rerender")
-    const messageRecords = useSelector((state: RootState) => state.messages.messagesRecords);
+    const messageRecords = useSelector((state: RootState) => state.messages.messageRecords);
     const currentChannelSelected = useSelector((state: RootState) => state.channelsList.currentChannelSelected);
     const currentChat = useSelector((state: RootState) => state.channelsList.currentChat);
     

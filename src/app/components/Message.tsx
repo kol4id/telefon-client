@@ -5,7 +5,7 @@ import { IMessage } from '../global/types/Message.dto';
 import send from '../../assets/send.png';
 import read from '../../assets/read.png';
 import { RootState, useAppDispatch } from '../../store/store';
-import { messageLastReadsQueuePush } from '../../store/states/messages';
+import { messagePushToLastReadsQueue, messagesDecUnreadCount } from '../../store/states/messages';
 import { SetUserLastRead, updateUser } from '../../store/states/user';
 import { useSelector } from 'react-redux';
 import MessageMedia from './MessageMedia';
@@ -33,9 +33,10 @@ const Message = (props: IProps) =>{
     const handleObserve = () => {
         console.log(`message ${props.message.id} has been read`)
         dispatch(SetUserLastRead({chatId: props.message.chatId, date: props.message.createdAt}));
+        dispatch(messagesDecUnreadCount(props.message.chatId));
         dispatch(updateUser({}));
         if(props.self) return
-        dispatch(messageLastReadsQueuePush(props.message));
+        dispatch(messagePushToLastReadsQueue(props.message));
     }
 
     const observer: IntersectionObserver = new IntersectionObserver(entries =>{

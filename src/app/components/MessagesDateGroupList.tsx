@@ -23,7 +23,7 @@ const getFormattedDate = (date: Date): string => {
 
 const MessagesDateGroupList: FC<IProps> = memo(({callback, selected}) =>{
     const dispatch = useAppDispatch();
-    const messageRecords = useSelector((state: RootState) => state.messages.messagesRecords);
+    const messageRecords = useSelector((state: RootState) => state.messages.messageRecords);
     const currentChatSelected = useSelector((state: RootState) => state.channelsList.currentChat);
 
     const messageRecordsRef = useRef(messageRecords);

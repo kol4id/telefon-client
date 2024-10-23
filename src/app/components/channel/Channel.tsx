@@ -7,6 +7,7 @@ import styles from '../../styles/Channel.module.css'
 import { IMessage } from "app/global/types/Message.dto"
 import ChannelHeader from "./ChannelHeader"
 import ChannelBody from "./ChannelBody"
+import { IChat } from "app/global/types/Chat.dto"
 
 interface IProps{
     channel: IChannel,
@@ -19,10 +20,12 @@ const Channel: FC<IProps> = React.memo(({channel, selected}) =>{
     const isLastLoading = useSelector((state: RootState) => state.messages.isLastLoading);
     const chats = useSelector((state: RootState) => state.channelsList.chats);
     const lastMessages = useSelector((state: RootState) => state.messages.lastMessages);
+    const [channelChat, setChannelChat] = useState<IChat>();
     const [lastMessage, setLastMessage] = useState<IMessage>();
 
     useEffect(()=>{ 
         const chat = chats.find(chat => chat.owner.includes(channel.id));
+        setChannelChat(chat);
         setLastMessage(lastMessages[chat?.id!])
     },[lastMessages, chats])
 
@@ -39,7 +42,7 @@ const Channel: FC<IProps> = React.memo(({channel, selected}) =>{
                     isLastLoading || 
                         <>
                             <ChannelHeader channel={channel} message={lastMessage}/>          
-                            <ChannelBody message={lastMessage}/>
+                            <ChannelBody message={lastMessage} chat={channelChat}/>
                         </>
                 }
                 

@@ -93,6 +93,6 @@
 
 @media (max-width: 700px){
     .message_block{
-        margin: 7.5px calc(4%) 15px calc(4%);
+        margin: 3px calc(4%) 2px calc(4%);
     }
 }

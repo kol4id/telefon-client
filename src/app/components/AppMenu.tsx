@@ -1,6 +1,8 @@
 
 import styles from '../styles/LeftPaneHead.module.css'
 import menuImage from '../../assets/menu.png'
+new Image().src = menuImage;
+
 import Context from './Context'
 import { useRef, useState } from 'react'
 import AppMenuContext from './AppMenuContext'

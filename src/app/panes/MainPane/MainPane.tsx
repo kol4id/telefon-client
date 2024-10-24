@@ -2,6 +2,8 @@ import { FC, useEffect } from 'react';
 import LeftPane from '../LeftPane';
 import { RootState, useAppDispatch } from '../../../store/store';
 import image from '../../../assets/chat-bg-pattern-dark.png';
+new Image().src = image;
+
 import { socketInit } from '../../../store/states/socket';
 import CursorManager from './CursorManager';
 

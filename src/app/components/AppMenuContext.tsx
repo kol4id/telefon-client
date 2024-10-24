@@ -4,6 +4,10 @@ import { LeftPaneTypeContext } from "./LeftPaneManager";
 
 import logout from '../../assets/logout.png';
 import settings from '../../assets/settings.png';
+new Image().src = logout;
+new Image().src = settings;
+
+
 import { useAppDispatch } from '../../store/store';
 import { logoutUser } from "../../store/states/user";
 

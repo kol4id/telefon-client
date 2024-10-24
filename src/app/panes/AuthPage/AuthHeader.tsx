@@ -1,5 +1,6 @@
 import styles from '../../styles/AuthPane.module.css'
 import image from '../../../assets/logo.svg'
+new Image().src = image;
 
 const AuthHeader = () => {
     return(

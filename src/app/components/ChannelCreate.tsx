@@ -1,5 +1,7 @@
 import styles from '../styles/ChannelCreate.module.css'
 import pen from '../../assets/pen.png'
+new Image().src = pen;
+
 import { FC, useEffect, useRef, useState } from 'react'
 import CreateChannelModalContent from './CreateChannelModalContent'
 import Context from './Context'

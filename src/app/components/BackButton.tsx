@@ -2,6 +2,8 @@ import { FC, useContext } from "react";
 import { LeftPaneType, LeftPaneTypeContext } from "./LeftPaneManager";
 
 import leftArrow from '../../assets/left-arrow.png'
+new Image().src = leftArrow;
+
 import styles from '../styles/BackButton.module.css'
 interface IProps{
     callback?: ()=>any,

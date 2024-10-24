@@ -6,6 +6,9 @@ import { RootState } from '../../store/store';
 
 import searchImage from '../../assets/search.png';
 import clearImage from '../../assets/close.png'
+new Image().src = searchImage;
+new Image().src = clearImage;
+
 
 const ChannelSearch = () =>{
 

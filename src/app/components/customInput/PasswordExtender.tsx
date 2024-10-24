@@ -2,6 +2,9 @@ import styles from '../../styles/CustomInput.module.css'
 
 import eye_open from '../../../assets/eye_open.png'
 import eye_closed from '../../../assets/eye_closed.png'
+new Image().src = eye_open;
+new Image().src = eye_closed;
+
 import { FC } from 'react'
 
 interface IProps{

@@ -3,6 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 
 import file_colored from '../../assets/file_colored.png';
 import file from '../../assets/file.png';
+new Image().src = file_colored;
+new Image().src = file;
+
 import Modal from './Modal';
 import MessageDropModal from '../components/messageDropModal/MessageDropModal';
 

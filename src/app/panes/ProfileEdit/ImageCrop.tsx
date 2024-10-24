@@ -4,6 +4,8 @@ import Cropper from "react-easy-crop";
 import {getCroppedImg} from "../../utils/general/cropImage";
 
 import okImg from "../../../assets/send.png";
+new Image().src = okImg;
+
 import { useAppDispatch } from "../../../store/store";
 import { updateUserPhoto } from "../../../store/states/user";
 
@@ -19,7 +21,8 @@ const ImageCrop:FC<IProps> = ({src, onCropComplete}) => {
     const [zoom, setZoom] = useState(1)
     const [cropedImage, setCropedImage] = useState<File>();
 
-    const cropComplete = (croppedAreaPixels: any) => {
+    const cropComplete = (croppedArea: any, croppedAreaPixels: any) => {
+        console.log(croppedArea);
         (async () => {
             const img = await getCroppedImg(src, croppedAreaPixels)
             setCropedImage(img);

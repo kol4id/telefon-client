@@ -2,6 +2,8 @@ import { FC, useState } from "react";
 import styles from '../../styles/MessageDropModal.module.css'
 
 import trash from '../../../assets/trash.png'
+new Image().src = trash;
+
 interface IProps{
     file: File,
     handleDelete?: () => void,

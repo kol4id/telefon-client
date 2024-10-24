@@ -2,6 +2,8 @@ import { FC, memo, useState } from "react"
 
 
 import close from '../../../assets/close.png'
+new Image().src = close;
+
 import styles from '../../styles/MessageDropModal.module.css'
 import MessageDropModalBottom from "./MessageDropModalBottom"
 import MessageDropImg from "./MessageDropImg"

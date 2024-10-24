@@ -4,13 +4,16 @@ import push_pin from '../../assets/push-pin.png'
 import forward_img from '../../assets/forward.png'
 import select_message from '../../assets/select.png'
 import trash_box_img from '../../assets/trash.png'
+new Image().src = reply_img;
+new Image().src = copy_text;
+new Image().src = push_pin;
+new Image().src = forward_img;
+new Image().src = select_message;
+new Image().src = trash_box_img;
 
 import ModalMenuButton from "./ModalMenuButton"
 import { IMessage } from "../global/types/Message.dto"
-
-import { DeleteMessageApi } from '../api/messageAPI'
 import { useDispatch } from "react-redux"
-import { messageDeleteMessage } from "../../store/states/messages"
 import { useRef } from 'react'
 import { socketDeleteMessage } from 'store/states/socket'
 

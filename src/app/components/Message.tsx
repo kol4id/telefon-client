@@ -4,6 +4,10 @@ import { IMessage } from '../global/types/Message.dto';
 
 import send from '../../assets/send.png';
 import read from '../../assets/read.png';
+new Image().src = send;
+new Image().src = read;
+
+
 import { RootState, useAppDispatch } from '../../store/store';
 import { messagePushToLastReadsQueue, messagesDecUnreadCount } from '../../store/states/messages';
 import { SetUserLastRead, updateUser } from '../../store/states/user';

@@ -19,7 +19,7 @@ const ProfilePane = () => {
     return(
         <main className={styles.global}>
             <article className={styles.wraper}>
-                <h1>Edit profile</h1>
+                <h1 className={styles.h1_custom}>Edit profile</h1>
                 <ProfileEdit/>
             </article>
         </main>

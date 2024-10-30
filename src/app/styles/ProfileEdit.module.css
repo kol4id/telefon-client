@@ -31,10 +31,10 @@
     width: 100%;
 }
 
-h1{
+.h1_custom{
     font-size: 20pt;
     align-self: center;
-    color: white;
+    color: white !important;
 }
 
 p{

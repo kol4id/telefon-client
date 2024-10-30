@@ -2,7 +2,7 @@ import { AnyAction, Dispatch, MiddlewareAPI } from "redux";
 import { Socket, io } from "socket.io-client";
 import { messageClearLastReadQueue, messageDeleteMessage, messagesDecUnreadCount, messageShiftMessages, messagesIncUnreadCount, messageUpdateLastMessage, messageUpdateMessages } from "../../../store/states/messages";
 import { IMessage, IMessageCreateDto } from "../../global/types/Message.dto";
-import { channelPushNew, chatPushNew, UpdateChannels } from "../../../store/states/channels";
+import { channelPushNew, channelSetOnlineStatus, chatPushNew, UpdateChannels } from "../../../store/states/channels";
 // import { RootState, store } from "../../../store/store";
 import { IChannel } from "../../global/types/Channel.dto";
 import { userSet } from "../../../store/states/user";
@@ -22,7 +22,9 @@ export enum SocketEvent {
     MessagesRead = 'messagesRead',
     MessageDelete = 'messageDelete',
     ChannelSubscribe = 'channelSubscribe',
-    UpdateUser = 'updateUser'
+    UpdateUser = 'updateUser',
+    UserOnlineStatus = 'userOnlineStatus',
+    SubsOnlineStatus = 'subsOnlineStatus'
 }
 
 /*
@@ -45,16 +47,15 @@ export class SocketConnection {
         })
 
         this.socket.on(SocketEvent.MessageCreate, (data: {message: IMessage, chat: IChat}) => {
-            console.log('messageCreate')
             store.dispatch(chatPushNew(data.chat));
             store.dispatch(UpdateChannels(data.chat));
-            
             const userId = this.state.user.userData.id;
-            if (data.message.creatorId != userId) store.dispatch(messagesIncUnreadCount(data.chat.id));
-
+            if (data.message.creatorId != userId) {
+                store.dispatch(messagesIncUnreadCount(data.chat.id));
+                document.dispatchEvent(messageRecived);
+            }
             store.dispatch(messageShiftMessages([data.message]));
             store.dispatch(messageUpdateLastMessage(data.message));
-            document.dispatchEvent(messageRecived);
         })
 
         this.socket.on(SocketEvent.MessagesRead, (data: IMessage[]) => {
@@ -86,6 +87,16 @@ export class SocketConnection {
             console.log('channelSubscrbe');
             store.dispatch(channelPushNew(data));
         })
+
+        this.socket.on(SocketEvent.UserOnlineStatus, (data: {channelId: string, status: boolean}) => {
+            console.log('UserOnlineStatus');
+            store.dispatch(channelSetOnlineStatus([data]));
+        })
+
+        this.socket.on(SocketEvent.SubsOnlineStatus, (data: {channelId: string, status: boolean}[]) => {
+            console.log('SubsOnlineStatus');
+            store.dispatch(channelSetOnlineStatus(data));
+        })
     }
 
     public sendReadMessages(messages: IMessage[]): void {
@@ -104,6 +115,10 @@ export class SocketConnection {
     public async subscribeToChannel(channelId: string): Promise<IChannel[]>{
         return await this.socket.emitWithAck(SocketEvent.ChannelSubscribe, channelId)
         
+    }
+
+    public setOnlineStatus(status: boolean): void{
+        this.socket.emit(SocketEvent.UserOnlineStatus, status);
     }
 
     private state: RootState = store.getState();

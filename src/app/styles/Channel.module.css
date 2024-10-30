@@ -3,7 +3,9 @@
     --channel-hover-bg-color: rgba( 200, 200, 200, 0.05);
     --channel-selected-bg-color: rgba(127, 112, 214, 0.979) !important;
     --channel-selected-unread-bg-color: rgba(152, 141, 215, 0.979) !important;
-    --channel-body-bg-color: rgb(175, 175, 175);
+    --channel-selected-bg-color: rgba(127, 112, 214, 0.979) !important;
+    --channel-body-bg-color: rgb(175, 175, 175) !important;
+    --online-icon-default-bg-color: rgba(30, 30, 30, 1) !important;
 }
 
 .channel {
@@ -42,7 +44,34 @@
 }
 
 .channelImg {
-    
+    position: relative;
+    /* background-color: aqua; */
+}
+
+.channelSelected .online_icon{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    bottom: 0;
+    right: 0;
+    margin-right: 1.5px;
+    margin-bottom: 1.5px;
+    border-radius: 50%;
+    border: 2px solid var(--channel-selected-bg-color);
+    background-color: aliceblue;
+}
+
+.channel .online_icon{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    bottom: 0;
+    right: 0;
+    margin-right: 1.5px;
+    margin-bottom: 1.5px;
+    border-radius: 50%;
+    border: 2px solid var(--online-icon-default-bg-color);
+    background-color: green;
 }
 
 .channelImg img {

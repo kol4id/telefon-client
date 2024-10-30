@@ -17,11 +17,16 @@ interface IProps{
 const Channel: FC<IProps> = React.memo(({channel, selected}) =>{
     console.log(`channel ${channel.id} rerender`) 
     const navigate = useNavigate();
+
     const isLastLoading = useSelector((state: RootState) => state.messages.isLastLoading);
     const chats = useSelector((state: RootState) => state.channelsList.chats);
+    const channelOnlineStatus = useSelector((state: RootState) => state.channelsList.channelsOnlineStatus);
     const lastMessages = useSelector((state: RootState) => state.messages.lastMessages);
+
     const [channelChat, setChannelChat] = useState<IChat>();
     const [lastMessage, setLastMessage] = useState<IMessage>();
+    const [isOnline, setIsOnline] = useState(false);
+    
 
     useEffect(()=>{ 
         const chat = chats.find(chat => chat.owner.includes(channel.id));
@@ -29,23 +34,29 @@ const Channel: FC<IProps> = React.memo(({channel, selected}) =>{
         setLastMessage(lastMessages[chat?.id!])
     },[lastMessages, chats])
 
+    useEffect(()=>{
+        setIsOnline(channelOnlineStatus[channel.id] ?? false)  
+    },[channelOnlineStatus])
+
     return(
         <div className = {selected ? styles.channelSelected : styles.channel}
             onClick={() => navigate(`${channel.id}`)}
         >
             <div className = {styles.channelImg}>
-                <img src = {channel.imgUrl}/>
+                {
+                    isOnline && <div className={styles.online_icon}/>
+                }
+                <img src = {channel.imgUrl}/>    
             </div>
 
             <div className = {styles.channelContent}>
-                {
-                    isLastLoading || 
-                        <>
-                            <ChannelHeader channel={channel} message={lastMessage}/>          
-                            <ChannelBody message={lastMessage} chat={channelChat}/>
-                        </>
-                }
-                
+            {
+                isLastLoading || 
+                    <>
+                        <ChannelHeader channel={channel} message={lastMessage}/>          
+                        <ChannelBody message={lastMessage} chat={channelChat}/>
+                    </>
+            }
             </div>
         </div>
     )

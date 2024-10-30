@@ -5,37 +5,43 @@ import AppMenuProfileEdit from "./AppMenuProfileEdit";
 
 export type LeftPaneType = |'channels'|'settings'|'channel-create';
 
-enum LeftPaneT {
-    channels = 'channels',
-    settings = 'settings',
-    channelCreate = 'channel-create'
-}
+import { AnimatePresence, motion } from "framer-motion";
 
 export const LeftPaneTypeContext = createContext<{
     paneType: LeftPaneType;
     setPaneType: (value: LeftPaneType) => void;
 }>({
-    paneType: 'channels', // Укажите значение по умолчанию
-    setPaneType: () => {}, // Пустая реализация для инициализации контекста
+    paneType: 'channels', 
+    setPaneType: () => {}, 
 });
 
 const LeftPaneManager = () =>{
     const [paneType, setType] = useState<LeftPaneType>('channels');
-    const [component, setComponent] = useState<React.ReactNode>(<LeftPaneChannels/>);
 
     const setPaneType = (value: LeftPaneType) => setType(value);
 
-    useEffect(()=>{
-        switch(paneType){
-            case LeftPaneT.channels: setComponent(<LeftPaneChannels/>); break 
-            case LeftPaneT.channelCreate: setComponent(<LeftPaneCreateChannel/>); break 
-            case LeftPaneT.settings: setComponent(<AppMenuProfileEdit/>); break
+    const renderPane = () => {
+        switch (paneType) {
+            case 'channels': return <LeftPaneChannels />;
+            case 'channel-create': return <LeftPaneCreateChannel />;
+            case 'settings': return <AppMenuProfileEdit />;
+            default: return null;
         }
-    },[paneType])
+    };
 
     return(
         <LeftPaneTypeContext.Provider value={{paneType, setPaneType}}>
-            {component}
+            <AnimatePresence mode="wait">
+            <motion.div
+                key={paneType}
+                initial={{ x: 300, opacity: 0 }} 
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ scale: 0.85, opacity: 0 }}
+                transition={{ duration: 0.12, ease: 'easeIn'}}
+            >
+                {renderPane()}
+            </motion.div>
+            </AnimatePresence>
         </LeftPaneTypeContext.Provider>
     )
 }

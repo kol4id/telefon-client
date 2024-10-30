@@ -20,10 +20,15 @@ const Modal: FC<IProps> = ({isOpen, onClose, position, overlayClickClose, childr
         // transform: position !== undefined || position.y !== undefined ? 'translate(0, 0)' : 'translate(-50%, -50%)',
     };
 
+    const handleContext = (event: React.MouseEvent) =>{
+        event.preventDefault();
+        overlayClickClose && onClose?.()
+    }
+
     return (
         <>
         {isOpen && ReactDOM.createPortal(
-            <div className={styles.modal_overlay} onClick={overlayClickClose ? onClose : ()=>{}}>
+            <div className={styles.modal_overlay} onContextMenu={e => handleContext(e)} onClick={overlayClickClose ? onClose : ()=>{}}>
                 <div className={styles.modal_content} style={modalStyle} onClick={(e) => e.stopPropagation()}>
                 {/* <button className="modal-close" onClick={closeModal}>×</button> */}
                 {children}

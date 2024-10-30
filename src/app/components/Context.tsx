@@ -21,11 +21,16 @@ const Context: FC<IProps> = ({isOpen, onClose, position, children, overlay, anco
         // transform: position !== undefined || position.y !== undefined ? 'translate(0, 0)' : 'translate(-50%, -50%)',
     };
 
+    const handleContext = (event: React.MouseEvent) =>{
+        event.preventDefault();
+        onClose?.()
+    }
+
     return (
         <>
         {isOpen && ReactDOM.createPortal(
             <>
-                <div className={styles.context_overlay} onClick={onClose} onContextMenu={onClose} style={{display: overlay ? undefined : "none"}}/>
+                <div className={styles.context_overlay} onClick={onClose} onContextMenu={e => handleContext(e)} style={{display: overlay ? undefined : "none"}}/>
                 <div className={styles.context_content} style={contextStyle} onClick={(e) => e.stopPropagation()}>
                     {children}
                 </div>

@@ -6,17 +6,32 @@ import { socketSetOnlineStatus } from "store/states/socket";
 interface IProps{
     children: React.ReactNode
 }
+
 const EventManager: FC<IProps> = ({children}) => {
 
     const dispatch = useAppDispatch();
 
     const [originalTitle] = useState('telefon');
     const notification = useRef<HTMLAudioElement>(new Audio(notification_sound))
+    const updateOnline = useRef<NodeJS.Timeout>();
 
     const playNotificationSound = async() => {
         notification.current.play().catch((error) => {
             console.error('Ошибка воспроизведения звука:', error);
         });
+    }
+
+    const updateOnlineStatus = async(status: boolean) =>{
+        if (updateOnline.current) clearTimeout(updateOnline.current); 
+
+        if (status) {
+            dispatch(socketSetOnlineStatus(status));
+            return;
+        }
+
+        updateOnline.current = setTimeout(()=>{
+            dispatch(socketSetOnlineStatus(status));
+        }, 5000)
     }
 
     const showNotification = () => {
@@ -31,7 +46,8 @@ const EventManager: FC<IProps> = ({children}) => {
 
     const handleVisibilityChange = () => {
         if(!document.hidden) resetNotification();
-        dispatch(socketSetOnlineStatus(!document.hidden));
+        // dispatch(socketSetOnlineStatus(!document.hidden));
+        updateOnlineStatus(!document.hidden)
     };
 
     const resetNotification = () => {

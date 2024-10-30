@@ -16,6 +16,7 @@
     "axios": "^1.6.2",
     "browser-image-compression": "^2.0.2",
     "fast-sort": "^3.4.0",
+    "framer-motion": "^11.11.10",
     "nat-upnp": "^1.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -1,30 +1,37 @@
 import { useContext } from "react";
 import { LeftPaneTypeContext } from "./LeftPaneManager";
 
+import leftArrow from '../../assets/left-arrow.png'
+new Image().src = leftArrow;
+
+import styles from '../styles/LeftPaneCreateChannel.module.css'
+import { useAppDispatch } from "store/store";
+import { setChannelCreationType } from "store/states/appEvents";
+
 const LeftPaneCreateChannel = () => {
 
+    const dispatch = useAppDispatch();
     const paneType = useContext(LeftPaneTypeContext);
+
+    const handleBack = () => {
+        paneType.setPaneType('channels');
+        dispatch(setChannelCreationType('none'));
+    }
 
     return(
         <>
-            {/* <ChannelsManager/> */}
-            <header>    
-                <section style={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
-                    <section style={{display: 'flex'}}>
-                        <button style={{height: '40px', width: '40px', borderRadius: '50%'}}
-                            onClick={()=> paneType.setPaneType('channels')}
-                        >{'<-'}</button>
-                        <h1 style={{margin: '0'}}>Add members</h1>
-                    </section>
-                    <input style={{background: 'none', marginTop: '15px', height: '30px', outline: 'none', border: 'none'}}
-                        placeholder="Who would you like to add"
-                    />
-                    <section style={{height: 'auto', overflow: 'auto'}}>
-                        {/* <ChannelsManager/>   */}
-                        
-                    </section>
+            <article className={styles.main}>
+                <section className={styles.header}>
+                    <div className={styles.header_top}>
+                        <button className={styles.back_button} onClick={handleBack}>
+                            <img className={styles.back_button_img} src={leftArrow}></img>
+                        </button>
+                        <h1 className={styles.h1_header}>Add Members</h1>
+                    </div>
                 </section>
-            </header>
+                <section className={styles.body}>
+                </section>
+            </article>
         </>
     )
 }

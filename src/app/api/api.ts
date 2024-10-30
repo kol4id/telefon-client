@@ -92,6 +92,11 @@ export class UserApi{
         return response.data;
     }
 
+    async getForUser():Promise<IUser[]>{
+        const response = await axios.get<IUser[]>(`${baseUrl}/user/all`, {withCredentials: true});
+        return response.data || [];
+    }
+
     async updatePhoto(img: File): Promise<IUser>{
         const formData = new FormData();
         formData.append('file', img);

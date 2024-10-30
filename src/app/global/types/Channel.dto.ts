@@ -1,4 +1,5 @@
 import { IChat } from "./Chat.dto";
+import { IUser } from "./User.dto";
 
 interface IChannelSelected{
     currentChannelSelected: string,
@@ -27,6 +28,8 @@ export interface ICreateChannel{
 export interface IChannelState extends IChannelSelected{
     currentChannel: IChannel;
     currentChat: IChat | undefined;
+    channelsOwner: Record<string, IUser>;
+    channelsOnlineStatus: Record<string, boolean>
     userChannels: IChannel[];
     filteredChannels: IChannel[],
     chats: IChat[],

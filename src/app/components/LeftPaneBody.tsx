@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { fetchChannels, fetchChats } from '../../store/states/channels';
+import { fetchChannels, fetchChannelsOwners, fetchChats } from '../../store/states/channels';
 import { RootState, useAppDispatch } from '../../store/store';
 
 import styles from '../styles/LeftPaneBody.module.css';
@@ -18,6 +18,7 @@ const LeftPaneBody = () =>{
             (async () =>{
                 await dispatch(fetchChats());
                 await dispatch(fetchChannels());
+                await dispatch(fetchChannelsOwners());
                 dispatch(fetchLastOneMessages());
                 dispatch(fetchUnreadMessagesCount());
             })()

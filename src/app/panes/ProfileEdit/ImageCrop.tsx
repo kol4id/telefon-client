@@ -15,7 +15,7 @@ interface IProps{
 }
 
 const ImageCrop:FC<IProps> = ({src, onCropComplete}) => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
     const [crop, setCrop] = useState({ x: 0, y: 0 })
     const [zoom, setZoom] = useState(1)
@@ -33,7 +33,7 @@ const ImageCrop:FC<IProps> = ({src, onCropComplete}) => {
         dispatch(updateUserPhoto(cropedImage!));
 
         onCropComplete();
-        setCrop({ x: 0, y: 0 }) // Makes crop preview update between images.
+        setCrop({ x: 0, y: 0 });
     }
 
     return(

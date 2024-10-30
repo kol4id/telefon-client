@@ -57,6 +57,7 @@ const ProfileEdit = () => {
         )
         reader.readAsDataURL(file)
         setIsOpen(true)
+        event.target.value = '';
     };
 
     return(

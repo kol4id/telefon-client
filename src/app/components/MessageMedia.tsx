@@ -2,12 +2,15 @@ import { FC, memo } from "react";
 
 import styles from '../styles/MessageMedia.module.css';
 interface IProps{
+    hasMedia: boolean
     messageMedia: string[];
 }
 
-const MessageMedia: FC<IProps> = memo(({messageMedia}) =>{
+const MessageMedia: FC<IProps> = memo(({hasMedia, messageMedia}) =>{
     return(
         <>
+        {
+            hasMedia &&
             <section className={styles.media_base}>
                 <div className={styles.image_grid}>
                     {messageMedia?.length == 1 
@@ -21,6 +24,7 @@ const MessageMedia: FC<IProps> = memo(({messageMedia}) =>{
                     )}
                 </div>
             </section>
+        }
         </>
     )
 })

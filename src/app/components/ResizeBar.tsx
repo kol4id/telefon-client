@@ -8,7 +8,7 @@ import { SetCursorStyle } from "../../store/states/cursorStyle";
 import styles from "../styles/ResizeBar.module.css"
 
 const ResizeBar: FC = React.memo(() => {
-    console.log('ResizeBar rerender')
+    // console.log('ResizeBar rerender')
     
     const dispatch = useAppDispatch();
     const [isEntered, setIsEntered] = useState(false);

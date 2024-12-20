@@ -2,14 +2,16 @@ import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "store/store";
 import InfiniteScroll from "./InfiniteScroll";
 import { FC, memo, useCallback, useRef } from "react";
-import { fetchMessages } from "store/states/messages";
+import { fetchMessages, IMessageDateGroup } from "store/states/messages";
 import MessagesList from "./MessagesList";
 
-import styles from '../styles/MessageList.module.css'
+import styles from '../styles/MessageList.module.css';
+import { IChannel } from "app/global/types/Channel.dto";
+import MessagesListGroup from "./MessageListGroup";
 
 interface IProps{
-    callback: (p1: any, p2: any, p3: any, p4: any)=>void,
-    selected: string
+    // // callback: (p1: any, p2: any, p3: any, p4: any)=>void,
+    // selected: string
 }
 
 const getFormattedDate = (date: Date): string => {
@@ -20,11 +22,12 @@ const getFormattedDate = (date: Date): string => {
       ? date.toLocaleDateString(undefined, optionsThisYear)
       : date.toLocaleDateString(undefined, optionsOtherYear);
 };
-
-const MessagesDateGroupList: FC<IProps> = memo(({callback, selected}) =>{
+// callback, 
+const MessagesDateGroupList: FC<IProps> = () =>{
     const dispatch = useAppDispatch();
     const messageRecords = useSelector((state: RootState) => state.messages.messageRecords);
     const currentChatSelected = useSelector((state: RootState) => state.channelsList.currentChat);
+    const currentChannel = useSelector((state: RootState) => state.channelsList.currentChannel);
 
     const messageRecordsRef = useRef(messageRecords);
     const currentChatSelectedRef = useRef(currentChatSelected!);
@@ -33,6 +36,15 @@ const MessagesDateGroupList: FC<IProps> = memo(({callback, selected}) =>{
     messageRecordsRef.current = messageRecords;
     currentChatSelectedRef.current = currentChatSelected!;
     messageListRef.current = messageRecordsRef.current[currentChatSelectedRef.current.id];
+
+    // callback={SelectGroup(index)}
+    // selected={selected}
+    const getProperMessageList = (channel: IChannel, group: IMessageDateGroup, index: number) =>{
+        switch(channel.channelType){
+            case 'user': return <MessagesList messages={group.messages}  />
+            case 'group': return <MessagesListGroup messages={group.messages}/>
+        }
+    }
 
     const fetchMessagesIScroll = async(startD?: Date, endD?: Date) =>{
         const startDate = startD ? new Date(new Date(startD).getTime() + 1) : undefined;
@@ -43,14 +55,6 @@ const MessagesDateGroupList: FC<IProps> = memo(({callback, selected}) =>{
             startDate,
             endDate 
         }))
-    }
-
-    const SelectGroup = (groupIndex: number): (p1: any, p2: any, p3: any) =>void  =>{
-        const gIndex = groupIndex;
-        const selectMessage = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string, index: number) =>{
-            callback(event, id, index, gIndex);
-        }
-        return selectMessage
     }
 
     const handleFetchMessagesBottom = useCallback(() => {
@@ -65,21 +69,23 @@ const MessagesDateGroupList: FC<IProps> = memo(({callback, selected}) =>{
 
     return(
         <>
-        <section id="message_list_main" className={styles.message_list_main}>
-            <InfiniteScroll direction="bottom" callback={handleFetchMessagesBottom}/> 
-            {
-                messageListRef.current.map((group, index) =>
-                    <section className={styles.message_list_main}>
-                        <MessagesList messages={group.messages} selected={selected} callback={SelectGroup(index)}/>
-                        <div className={styles.date_string}>
-                            <div className={styles.date_box}>{getFormattedDate(group.date)}</div>
-                        </div>
-                    </section>
-                )
-            }
-            <InfiniteScroll direction="top" callback={handleFetchMessagesTop}/>
-        </section>
+            <section id="message_list_main" className={styles.message_list_main}>
+                <InfiniteScroll direction="bottom" callback={handleFetchMessagesBottom}/>
+                {/*NOTE(@kol4id): inf scroll reversed because list is reversed */}
+                
+                {
+                    messageListRef.current.map((group, index) =>
+                        <section className={styles.message_list_main}>
+                            {getProperMessageList(currentChannel, group, index)}
+                            <div className={styles.date_string}>
+                                <div className={styles.date_box}>{getFormattedDate(group.date)}</div>
+                            </div>
+                        </section>
+                    )
+                }
+                <InfiniteScroll direction="top" callback={handleFetchMessagesTop}/>
+            </section>
         </>
     )
-})
+}
 export default MessagesDateGroupList;

@@ -16,6 +16,7 @@ const MessageInput = () =>{
 
     return(
         <TextareaAutosize className={styles.textarea}
+            placeholder='Message'
             onKeyDown = {(event) => {preventEnter(event)}}
             onChange={(e) => dispatch(SetMessageInput(e.target.value))}
             onHeightChange = {(height) => dispatch(SetMessageInputHeight(height))}

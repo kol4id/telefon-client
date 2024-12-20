@@ -16,9 +16,7 @@ const MiddlePaneBody = () =>{
                 <section className={styles.messages_transition}>
                     <MessagesManager/>
                 </section>
-                {/* <section className={styles.input}> */}
                     <InputContainer/>
-                {/* </section> */}
             </div>
         </article>
     )

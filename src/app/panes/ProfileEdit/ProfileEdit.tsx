@@ -3,20 +3,15 @@ import { useCallback, useEffect, useState } from "react";
 import styles from "../../styles/ProfileEdit.module.css";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../../store/store";
-import Modal from "../../components/Modal";
-import ImageCrop from "./ImageCrop";
-import { getUser, updateUser } from "../../../store/states/user";
+import { getUser, updateUser, updateUserPhoto } from "../../../store/states/user";
 import ProfileInputs from "./ProfileInputs";
-import PhotoEdit from "./PhotoEdit";
+import PhotoChange from "./PhotoChange";
 
 const ProfileEdit = () => {
     const dispatch = useAppDispatch();
 
-    const acceptedTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'];
-    const user = useSelector((state: RootState) => state.user.userData);
-    const [userData, setUserData] = useState({firstName: user.firstName, lastName: user.lastName, userName: user.userName})
-    const [isOpen, setIsOpen] = useState(false);
-    const [src, setSrc] = useState('');
+    const user = useSelector((state: RootState) => state.user);
+    const [userData, setUserData] = useState({firstName: user.userData.firstName, lastName: user.userData.lastName, userName: user.userData.userName})
     const [isValid, setIsValid] = useState(true);
 
     useEffect(() => {
@@ -41,41 +36,12 @@ const ProfileEdit = () => {
         dispatch(updateUser(userData));
     }
 
-    const onModalClose = () =>{
-        setSrc('')
-        setIsOpen(false);
-    }
-    
-    const handleFileChange = async(event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (!file) return;
-        if (!acceptedTypes.includes(file.type)) return;
-            
-        const reader = new FileReader()
-        reader.addEventListener('load', () =>
-            setSrc(reader.result?.toString() || ''),
-        )
-        reader.readAsDataURL(file)
-        setIsOpen(true)
-        event.target.value = '';
-    };
-
     return(
         <main className={styles.main}>
-            <PhotoEdit/>
-            <input
-                type="file"
-                accept=".jpg, .jpeg, .png, .webp"
-                id="file-upload"
-                style={{ display: 'none' }}
-                draggable
-                onChange={handleFileChange}
-            />
-            <Modal 
-                isOpen={isOpen}
-                children={<ImageCrop src={src} onCropComplete={() => setIsOpen(false)}/>}
-                onClose={()=>onModalClose()}
-                overlayClickClose={true}
+            <PhotoChange
+                handleCropped={(file: File) => {dispatch(updateUserPhoto(file))}}
+                image={user.userData.photoUrl}
+                isImageLoading={user.isUserDataLoading}
             />
             <form
                 onSubmit={e => {

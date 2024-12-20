@@ -6,6 +6,7 @@ import { RootState, useAppDispatch } from '../../store/store';
 import styles from '../styles/InputContainer.module.css';
 import { socketCreateMessage } from '../../store/states/socket';
 
+import send_img from '../../assets/send-img.png'
 
 const InputContainer = () =>{
     console.log("InputContainer rerender")
@@ -42,6 +43,7 @@ const InputContainer = () =>{
                 <button className = {styles.send_message_button}
                     onClick={() => sendMessage()}
                 >
+                    <img src={send_img} style={{width: '30px', height: '30px', paddingTop: '4px'}}></img>
                 </button>
             </section>
         </footer>

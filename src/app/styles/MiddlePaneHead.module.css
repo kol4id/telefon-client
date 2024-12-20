@@ -4,6 +4,8 @@
     --middle-head-text-color: rgb(255, 255, 255) !important;
     --middle-head-subs-text-color: rgb(145, 145, 145);
     --middle-head-img-box-shadow: rgb(15, 15, 15);
+    --online-color: rgba(127, 112, 214, 0.979) !important;
+    --last-seen-text-color: rgb(170, 170, 170);
 }
 
 .head{
@@ -12,10 +14,37 @@
     height: 3.5rem;
     min-height: 3.5rem;
     align-items: center;
+    z-index: 2;
     border-bottom: 1px solid var(--middle-border-bottom);
     background-color: var(--middle-head-bg-color);
     box-sizing: border-box;
     /* color: var(--middle-head-text-color);     */
+}
+
+.button_container{
+    height: 3.5rem;
+    width: 60px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.channel_list_button{
+    transition: .1s ease-out;
+    display: inherit;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    border-radius: 50%;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+.channel_list_button:hover{
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .img {
@@ -42,7 +71,27 @@
     color: var(--middle-head-text-color) !important;
 }
 
+.channel_last_seen, .channel_online{
+    margin: 0px;
+    font-weight: 400;
+    font-size: 11pt;
+}
+
+.channel_last_seen{
+    color: var(--last-seen-text-color);
+}
+
+.channel_online{   
+    color: var(--online-color);
+}
+
 .channel_subscribers{
     font-size: 15px;   
     color: var(--middle-head-subs-text-color) !important;
+}
+
+@media(max-width: 700px){
+    .button_container{
+        display: flex;
+    }
 }

@@ -1,22 +1,19 @@
 import { FC, useState } from "react";
 import styles from "../../styles/ProfileEdit.module.css";
 import Cropper from "react-easy-crop";
-import {getCroppedImg} from "../../utils/general/cropImage";
+import { getCroppedImg } from "../../utils/general/cropImage";
 
 import okImg from "../../../assets/send.png";
 new Image().src = okImg;
 
-import { useAppDispatch } from "../../../store/store";
-import { updateUserPhoto } from "../../../store/states/user";
 
 interface IProps{
-    src: string;
-    onCropComplete: ()=>void;
+    src: string,
+    onCropComplete: ()=>void,
+    handleCropped?: (file: File) => void
 }
 
-const ImageCrop:FC<IProps> = ({src, onCropComplete}) => {
-    const dispatch = useAppDispatch();
-
+const ImageCrop:FC<IProps> = ({src, onCropComplete, handleCropped}) => {
     const [crop, setCrop] = useState({ x: 0, y: 0 })
     const [zoom, setZoom] = useState(1)
     const [cropedImage, setCropedImage] = useState<File>();
@@ -30,7 +27,7 @@ const ImageCrop:FC<IProps> = ({src, onCropComplete}) => {
     }
 
     const onSubmit = async() => {
-        dispatch(updateUserPhoto(cropedImage!));
+        handleCropped?.(cropedImage!);
 
         onCropComplete();
         setCrop({ x: 0, y: 0 });

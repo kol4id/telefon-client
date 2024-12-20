@@ -10,6 +10,9 @@ export interface IUser{
     favorite: string[];
     blacklist: string[];
     lastReads: Record<string, Date>;
-    // dmChats: Record<string, string>;
     personalChannel: string;
+    lastLogin?: Date;
 }
+
+
+export type IUserExternal = Omit<IUser, 'email' | 'subscriptions' | 'favorite' | 'blacklist' | 'lastReads'>

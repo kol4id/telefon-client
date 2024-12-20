@@ -10,3 +10,4 @@ export const localUrl = `${serverProtocol}://${subDomain}.${domain}.${topDomain}
 export const baseUrl = `http://localhost:4200/api`//`${serverProtocol}://${subDomain}.${domain}.${topDomain}/${serverEntry}`
 export const socketEndpoint = `http://localhost:4200` 
 export const socketLocal = `https://server-telefon.duckdns.org`
+export const baseAppUrl = `http://localhost:5173/a`

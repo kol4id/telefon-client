@@ -1,16 +1,18 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import LeftPaneChannels from "./LeftPaneChannels";
-import LeftPaneCreateChannel from "./LeftPaneCreateChannel";
+import LeftPaneCreateChannel from "./leftPaneCreateChannel/LeftPaneCreateChannel";
 import AppMenuProfileEdit from "./AppMenuProfileEdit";
 
 export type LeftPaneType = |'channels'|'settings'|'channel-create';
 
 import { AnimatePresence, motion } from "framer-motion";
 
-export const LeftPaneTypeContext = createContext<{
+interface LeftPaneContextType {
     paneType: LeftPaneType;
     setPaneType: (value: LeftPaneType) => void;
-}>({
+}
+
+export const LeftPaneTypeContext = createContext<LeftPaneContextType>({
     paneType: 'channels', 
     setPaneType: () => {}, 
 });

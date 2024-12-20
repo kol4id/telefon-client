@@ -4,7 +4,7 @@ import styles from '../styles/MiddlePane.module.css'
 import React, { useEffect } from 'react'
 import MiddlePaneBody from '../components/MiddlePaneBody'
 import { RootState, useAppDispatch } from '../../store/store'
-import { fetchLastMessages, fetchMessages } from '../../store/states/messages'
+import { fetchMessages } from '../../store/states/messages'
 import { fetchChannel, fetchChat } from '../../store/states/channels'
 import { useSelector } from 'react-redux'
 
@@ -25,7 +25,7 @@ const MiddlePane = React.memo(() =>{
     }, [selectedChannel])
 
     useEffect(()=>{
-        dispatch(fetchLastMessages());
+        // dispatch(fetchLastMessages());
     },[])
 
     return(

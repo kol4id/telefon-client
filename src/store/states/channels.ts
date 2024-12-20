@@ -3,13 +3,16 @@ import { IChannel, IChannelState } from "../../app/global/types/Channel.dto";
 import { fetchWrapper } from "../../app/utils/fetch/fetchWrapper";
 import { ChannelApi, ChatApi, UserApi } from "../../app/api/api";
 import { IChat } from "app/global/types/Chat.dto";
-import { IUser } from "app/global/types/User.dto";
+import { IUser, IUserExternal } from "app/global/types/User.dto";
 
 interface IChannelsLoading{
     isDataLoading: boolean;
+    isParticipantsLoading: boolean;
 }
 
 const initialState: IChannelsLoading & IChannelState = {
+    currentChannelGroupParticipants: new Map(),
+    isParticipantsLoading: false,
     isDataLoading: true,
     currentChannelSelected: '',
     userChannels: [],
@@ -67,6 +70,13 @@ export const fetchChat = createAsyncThunk(
     }
 )
 
+export const fetchParticipants = createAsyncThunk(
+    'channels/Participants',
+    async (channelId: string, {rejectWithValue}) =>{
+        return fetchWrapper(() => channels.getParticipants(channelId), rejectWithValue);
+    }
+)
+
 const sortDates = (date1: any, date2: any) =>{
     const newDate1 = new Date(date1).getTime();
     const newDate2 = new Date(date2).getTime();
@@ -83,15 +93,23 @@ const channelSlice = createSlice({
         channelSetFiltered(state, action){
             state.filteredChannels = action.payload
         },
-        channelPushNew(state, action : PayloadAction<IChannel>){
+        channelPushNew(state, action: PayloadAction<IChannel>){
             if (!state.userChannels.find(channel => channel.id == action.payload.id)){
                 state.userChannels.push(action.payload);
             }
+        },
+        channelRemoveOne(state, action: PayloadAction<IChannel>){
+            const channel = action.payload;
+            state.userChannels = state.userChannels.filter(oldChannel => oldChannel.id != channel.id);
         },
         chatPushNew(state, action : PayloadAction<IChat>){
             if (!state.chats.find(chat => chat.id == action.payload.id)){
                 state.chats.push(action.payload);
             }
+        },
+        chatRemoveOne(state, action: PayloadAction<IChat>){
+            const chat = action.payload;
+            state.chats = state.chats.filter(oldChat => oldChat.id != chat.id);
         },
         SetChannelSelected(state, action: PayloadAction<{id: string, personalChannel: string}>){
             const id = action.payload.id;
@@ -151,6 +169,11 @@ const channelSlice = createSlice({
             action.payload.forEach(status => {
                 state.channelsOnlineStatus[status.channelId] = status.status ?? false;
             })
+        },
+        channelSetOwner(state, action: PayloadAction<{channelId: string, user: Partial<IUser>}>){
+            const channelId = action.payload.channelId!;
+            const oldData = state.channelsOwner?.[channelId];
+            state.channelsOwner[channelId] = {...oldData, ...action.payload.user}
         }
     },
     extraReducers: (builder) => {
@@ -217,10 +240,22 @@ const channelSlice = createSlice({
             .addCase(fetchChannelsOwners.rejected, () => {
                 // state.isDataLoading = false;
             })
+            .addCase(fetchParticipants.pending, (state) => {
+                state.isParticipantsLoading = true;
+            })
+            .addCase(fetchParticipants.fulfilled, (state, action: PayloadAction<IUserExternal[]>) => {
+                const participants = action.payload;
+                state.currentChannelGroupParticipants = new Map(participants.map(part => [part.id, part]));
+                console.log(state.currentChannelGroupParticipants);
+                state.isParticipantsLoading = false;
+            })
+            .addCase(fetchParticipants.rejected, (state) => {
+                state.isParticipantsLoading = false;
+            })
             
             
     }
 })
 
-export const {SetChannels, SetChannelSelected, SetDataLoading, SetChatSelected, UpdateChannels, channelSetFiltered, channelPushNew, chatPushNew, channelSetOnlineStatus} = channelSlice.actions;
+export const {SetChannels, SetChannelSelected, SetDataLoading, SetChatSelected, UpdateChannels, channelSetFiltered, channelPushNew, chatPushNew, channelSetOnlineStatus, channelSetOwner, channelRemoveOne, chatRemoveOne} = channelSlice.actions;
 export default channelSlice.reducer;

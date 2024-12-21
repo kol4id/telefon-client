@@ -26,10 +26,6 @@ const MiddlePane = React.memo(() =>{
         }
     }, [selectedChannel, selectedChat?.id])
     
-    useEffect(()=>{
-        // dispatch(fetchLastMessages());
-    },[])
-
     return(
         <React.Fragment>
             <div className={styles.middlePane}>

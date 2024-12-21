@@ -26,7 +26,7 @@ const MessagesManager = React.memo(() =>{
                         
                     </>
 
-                :  !isLoading && <EmptyMessageList/> 
+                :  (!isLoading || !currentChat) && <EmptyMessageList/> 
             }
         </div>
     )

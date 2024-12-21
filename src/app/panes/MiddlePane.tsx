@@ -20,10 +20,12 @@ const MiddlePane = React.memo(() =>{
         if (selectedChannel){
             dispatch(fetchChannel(selectedChannel));
             dispatch(fetchChat(selectedChannel));
+        }
+        if(selectedChat?.id){
             dispatch(fetchMessages({chatId: selectedChat?.id!, limit: 25}))
         }
-    }, [selectedChannel])
-
+    }, [selectedChannel, selectedChat?.id])
+    
     useEffect(()=>{
         // dispatch(fetchLastMessages());
     },[])

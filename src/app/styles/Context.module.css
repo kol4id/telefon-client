@@ -1,5 +1,5 @@
 :root{
-    --context-bg-color: rgba(40, 40, 40, .85) !important;
+    --context-bg-color: rgba(40, 40, 40, .9) !important;
 }
 
 .context_overlay {
@@ -26,7 +26,7 @@
     overflow-x: hidden;
     overflow-y: auto !important;
     min-height: 50px;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(8px);
     background-color: var(--context-bg-color);
     border-radius: 10px;
     box-sizing: border-box;

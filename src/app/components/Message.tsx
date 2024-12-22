@@ -27,15 +27,14 @@ const Message = memo((props: IProps) =>{
 
     const [messageStyle] = useState(
         props.self
-        ? {default: styles.message_string_self, selected: styles.message_string_self_selected}
-        : {default: styles.message_string, selected: styles.message_string_selected}
+        ?   {default: styles.message_string_self, selected: styles.message_string_self_selected}
+        :   {default: styles.message_string, selected: styles.message_string_selected}
     );
      
     return(
         <div className = {props.selected ? messageStyle.selected : messageStyle.default }
             onContextMenu={e => handleContext(e)}
             ref={messageRef}
-            id={props.message.id}
         >
             <MessageBlock message={props.message} self={props.self}/>
         </div>

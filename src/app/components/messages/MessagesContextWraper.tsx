@@ -33,8 +33,7 @@ const MessagesContextWraper: FC<IProps> = ({children}) =>{
                     dispatch(messageSetSelectedMessage(''))
                 }}
                 position={modalPos}
-                // ancor={document.getElementById(selectedMessageId)}
-                // overlay={true}
+                overlay={true}
             >
                 <MessageListModalContent close={()=>{setIsOpen(false)}}/>
             </Context>

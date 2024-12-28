@@ -4,13 +4,7 @@
 
 .middlePane {
     position: relative;
-    display: flex;
-    width: 100%;
+    flex: 1;
+    /* width: 100%; */
     flex-direction: column;
-    /* display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 3.5rem 1fr;
-    height: 100vh;
-    max-height: 100vh;
-    flex: 1; */
 }

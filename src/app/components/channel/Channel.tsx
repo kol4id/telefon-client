@@ -1,6 +1,6 @@
 import { IChannel } from "app/global/types/Channel.dto"
 import { useSelector } from "react-redux"
-import { RootState } from "store/store"
+import { RootState, useAppDispatch } from "store/store"
 import React, { FC, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import styles from '../../styles/Channel.module.css'
@@ -9,6 +9,7 @@ import { IChat } from "app/global/types/Chat.dto"
 import ChannelImg from "./ChannelImg"
 import ChannelContent from "./ChannelContent"
 import { IPosition } from "app/global/types/MousePos"
+import { setLeftDisplayed, setMiddleDisplayed, setWidth } from "store/states/width"
 
 interface IProps{
     channel: IChannel,
@@ -20,6 +21,7 @@ const Channel: FC<IProps> = React.memo(({channel, selected, handleContext}) =>{
     console.log(`channel ${channel.id} rerender`) 
     const navigate = useNavigate();
 
+    const dispatch = useAppDispatch();
     const isLastLoading = useSelector((state: RootState) => state.messages.isLastLoading);
     const chats = useSelector((state: RootState) => state.channelsList.chats);
     const channelOnlineStatus = useSelector((state: RootState) => state.channelsList.channelsOnlineStatus);
@@ -34,6 +36,20 @@ const Channel: FC<IProps> = React.memo(({channel, selected, handleContext}) =>{
         handleContext({x: event.clientX, y: event.clientY}, channel.id);
     }
 
+    const windowSizeAction = () => {
+        const bodyRect = document.body.getBoundingClientRect()!;
+        if (bodyRect?.width < 700){
+            dispatch(setLeftDisplayed(false));
+            dispatch(setMiddleDisplayed(true));
+        }
+    }
+
+    const handleClick = () =>{
+        if (selected) return;
+        navigate(`${channel.id}`);
+        windowSizeAction();
+    }
+
     useEffect(()=>{ 
         const chat = chats.find(chat => chat.owner.includes(channel.id));
         setChannelChat(chat);
@@ -46,7 +62,7 @@ const Channel: FC<IProps> = React.memo(({channel, selected, handleContext}) =>{
 
     return(
         <div className = {selected ? styles.channelSelected : styles.channel}
-            onClick={() => navigate(`${channel.id}`)}
+            onClick={handleClick}
             onContextMenu={_handleContext}
         >
             <ChannelImg channel={channel} isOnline={isOnline}/>

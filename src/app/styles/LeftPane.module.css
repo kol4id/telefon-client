@@ -5,10 +5,10 @@
 }
 
 .leftPane {
+    min-width: 230px;
+    display: none;
     position: relative;
-    flex: 1;
     user-select: none;
-    width: 100%;
     background-color: var(--left-body-bg-color);
     border-right: 0.25px solid var(--border-color);
     overflow: hidden;
@@ -26,9 +26,19 @@
     grid-template-rows: 3.5rem 1fr;
 }
 
-@media (max-width: 700px)
-{
+
+@media (min-width: 768px)
+{   
     .leftPane{
-        max-width: 0px;
+        display: block !important;
+    }
+}
+
+@media (max-width: 600px)
+{   
+    .leftPane{
+        display: none;
+        max-width: 100vw;
+        width: 100vw;
     }
 }

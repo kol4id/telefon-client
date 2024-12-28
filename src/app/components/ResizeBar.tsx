@@ -6,12 +6,14 @@ import React from "react";
 import { SetCursorStyle } from "../../store/states/cursorStyle";
 
 import styles from "../styles/ResizeBar.module.css"
+import useWindowSize from "../utils/hooks/useWindowSize";
 
 const ResizeBar: FC = React.memo(() => {
     // console.log('ResizeBar rerender')
     
     const dispatch = useAppDispatch();
     const [isEntered, setIsEntered] = useState(false);
+    const windowSize = useWindowSize();
 
     const resizeParams: ResizeParams = {
         defaultWindowWidth: 300,
@@ -19,7 +21,9 @@ const ResizeBar: FC = React.memo(() => {
         maxWindowWidth: 3.3,
     }
 
-    const {windowWidth, currentlyResizing} = useResize(isEntered, resizeParams);
+    const isActive = windowSize.width > 768;
+
+    const {windowWidth, currentlyResizing} = useResize(isActive && isEntered, resizeParams, true);
 
     useEffect(() => {
         dispatch(Resize(windowWidth));
@@ -30,11 +34,16 @@ const ResizeBar: FC = React.memo(() => {
     }, [currentlyResizing])
 
     return(
-        <div className={styles.resize_bar}
-            onMouseEnter={() => setIsEntered(true)}
-            onMouseLeave={() => setIsEntered(false)}
-        >
-        </div>
+        <>
+        {
+            isActive && 
+            <div className={styles.resize_bar}
+                onMouseEnter={() => setIsEntered(true)}
+                onMouseLeave={() => setIsEntered(false)}
+            >
+            </div>
+        }
+        </>
     )
 })
 

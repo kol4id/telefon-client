@@ -21,8 +21,10 @@ const MiddlePaneHead = () =>{
     },[currentChannel])
 
     return(
-        <header className = {styles.head}>            
-            <HeadMenuButton/>
+        <header className = {styles.head}>
+            <div key={currentChannel.id}>
+                <HeadMenuButton/>
+            </div>            
             <HeadChannelInfo isLoading={loading} channel={currentChannel}/>
         </header>
     )

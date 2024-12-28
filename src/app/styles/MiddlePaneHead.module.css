@@ -23,7 +23,7 @@
 
 .button_container{
     height: 3.5rem;
-    width: 60px;
+    width: 50px;
     display: none;
     align-items: center;
     justify-content: center;
@@ -57,7 +57,6 @@
 }
 
 .channel_info{
-    /* display: flex; */
     align-items: center;
     display: grid;
     grid-template-columns: 80px auto;
@@ -90,8 +89,20 @@
     color: var(--middle-head-subs-text-color) !important;
 }
 
-@media(max-width: 700px){
+/*  leave this value as it is, wo fraction
+    button show up 1px early */
+@media(max-width: 767.5px){
     .button_container{
         display: flex;
+    }
+
+    .img{
+        margin-left: 5px;
+        margin-right: 0px;
+    }
+
+    .channel_info{
+        grid-template-columns: 55px auto;
+        /* margin: 0px; */
     }
 }

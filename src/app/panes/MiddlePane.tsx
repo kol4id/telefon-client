@@ -15,6 +15,7 @@ const MiddlePane = React.memo(() =>{
     const dispatch = useAppDispatch();
     const selectedChannel = useSelector((state: RootState) => state.channelsList.currentChannelSelected);
     const selectedChat = useSelector((state: RootState) => state.channelsList.currentChat);
+    const middleDisplayed = useSelector((state: RootState) => state.width.middleDisplayed);
 
     useEffect(()=>{
         if (selectedChannel){
@@ -25,10 +26,14 @@ const MiddlePane = React.memo(() =>{
             dispatch(fetchMessages({chatId: selectedChat?.id!, limit: 25}))
         }
     }, [selectedChannel, selectedChat?.id])
-    
+        
     return(
         <React.Fragment>
-            <div className={styles.middlePane}>
+            <div className={styles.middlePane} id='middle_pane'
+                style={{
+                    display: middleDisplayed ? 'flex' : 'none'
+                }}
+            >
                 <div id="middle-portal"></div>
                 <MiddlePaneHead/>
                 <MiddlePaneBody/>

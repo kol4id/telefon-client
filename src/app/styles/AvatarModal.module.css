@@ -1,0 +1,54 @@
+
+.main{
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.overlay{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+}
+
+.header{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: end;
+    flex-direction: row;
+    color: white;
+}
+
+.body{
+    margin-top: 35px;
+    height: 100%;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+}
+
+.avatar{
+    width: 550px; 
+    height: auto;
+}
+
+.func_buttons{
+    gap: 10px;
+    width: min-content;
+    z-index: 3;
+    margin: 0px 20px;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 768px){
+    .avatar{
+        max-height: 85%;
+        width: 100% ;
+    }
+}

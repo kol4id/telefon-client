@@ -7,6 +7,7 @@ import MessageGroupBlock from './message/MessageGroupBlock';
 import MessageAvatar from './message/MessageAvatar';
 import { useAppDispatch } from 'store/store';
 import { messageSetSelectedMessage } from 'store/states/messages';
+import { useNavigate } from 'react-router-dom';
 
 interface IProps{
     message: IMessage,
@@ -21,6 +22,7 @@ const MessageGroup = memo((props: IProps) =>{
     console.log(`message ${props.message.id} rerender`) 
     const messageRef = useRef<HTMLDivElement>(null!);
     const dispatch = useAppDispatch();
+    
 
     useObserveMessage(props.message, props.self, messageRef); 
 
@@ -43,7 +45,7 @@ const MessageGroup = memo((props: IProps) =>{
             style={{marginBottom: props.index == 0 ? '8px' : ''}}
             ref={messageRef}
         >
-            {isLast && !props.self && <MessageAvatar photoUrl={props.user?.photoUrl} className={styles.user_img}/>}
+            {isLast && !props.self && <MessageAvatar photoUrl={props.user?.photoUrl} className={styles.user_img} userChannel={props.user?.personalChannel}/>}
             <MessageGroupBlock message={props.message} self={props.self} user={props.user} showName={props.index == props.lastIndex}/>
             {isLast && props.self && <MessageAvatar photoUrl={props.user?.photoUrl} className={styles.user_img_self}/>}
         </div>

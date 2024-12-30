@@ -7,7 +7,6 @@ import MessageGroupBlock from './message/MessageGroupBlock';
 import MessageAvatar from './message/MessageAvatar';
 import { useAppDispatch } from 'store/store';
 import { messageSetSelectedMessage } from 'store/states/messages';
-import { useNavigate } from 'react-router-dom';
 
 interface IProps{
     message: IMessage,

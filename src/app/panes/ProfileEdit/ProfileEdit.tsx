@@ -37,7 +37,7 @@ const ProfileEdit = () => {
     }
 
     return(
-        <main className={styles.main}>
+        <main className={styles.main} style={{height: 'calc(100vh - 50px)'}}>
             <PhotoChange
                 handleCropped={(file: File) => {dispatch(updateUserPhoto(file))}}
                 image={user.userData.photoUrl}
@@ -49,6 +49,7 @@ const ProfileEdit = () => {
                     e.stopPropagation(); 
                     onSubmit()
                 }}
+                style={{height: '100%'}}
             >
                 <ProfileInputs isLoading={false} userData={userData} isValid={isValid} setUserData={_setUserData} validCheck={validCheck} />
                 <footer style={{marginBottom: '30px'}}>

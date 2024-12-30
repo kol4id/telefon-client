@@ -9,7 +9,7 @@ interface IDeleteMessageDTO{
     messageId: string,
 };
 
-interface IMessageDateGroup{
+export interface IMessageDateGroup{
     date: Date,
     messages: IMessage[]
 }
@@ -93,10 +93,12 @@ const messageSlice = createSlice({
             const chatId = action.payload[0].chatId;
             state.messageRecords[chatId] ??= [];
             groupedMessages.forEach(group =>{
-                if (group.date.getTime() == state.messageRecords[chatId][0].date.getTime()){
-                    state.messageRecords[chatId][0].messages.unshift(...group.messages);
-                    return;
-                } 
+                try{
+                    if (group.date.getTime() == state.messageRecords[chatId][0].date.getTime()){
+                        state.messageRecords[chatId][0].messages.unshift(...group.messages);
+                        return;
+                    } 
+                } catch {}
                 state.messageRecords[chatId].unshift(group);
             })
         },
@@ -112,6 +114,9 @@ const messageSlice = createSlice({
                 ...group,
                 messages: group.messages.filter((msg) => msg.id !== messageId),
             }));
+        },
+        messagesDeleteByChat(state, action: PayloadAction<string>){
+            delete state.messageRecords[action.payload]; 
         },
         messagePushToLastReadsQueue(state, action: PayloadAction<IMessage>) {
             state.lastReadsQueue.push(action.payload);
@@ -262,7 +267,7 @@ const messageSlice = createSlice({
 export const {
     messageSetSelectedMessage, messageSetIsLoading, messagePushMessages, 
     messageShiftMessages, messageUpdateLastMessage, messageDeleteMessage, messagePushToLastReadsQueue,
-    messageClearLastReadQueue, messageUpdateMessages, messagesIncUnreadCount, messagesDecUnreadCount} = messageSlice.actions;
+    messageClearLastReadQueue, messageUpdateMessages, messagesIncUnreadCount, messagesDecUnreadCount, messagesDeleteByChat} = messageSlice.actions;
 export default messageSlice.reducer;
 
 const groupMessagesByDate = (messages: IMessage[]): IMessageDateGroup[] => {

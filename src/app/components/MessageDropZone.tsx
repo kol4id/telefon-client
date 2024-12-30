@@ -108,7 +108,7 @@ const MessageDropZone = () =>{
     return(
         <section className={styles.main}
             style={{
-                zIndex: dragging ? 1 : -1,
+                zIndex: dragging ? 3 : -1,
                 backgroundColor: dragging ? 'rgba(10, 10, 10, 0.7)' : ''
             }}
         >

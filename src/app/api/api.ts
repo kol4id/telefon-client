@@ -1,6 +1,6 @@
 import axios from "axios"
 import { IMessage, IUnreadMessageCount } from "../global/types/Message.dto";
-import { IUser } from "../global/types/User.dto";
+import { IUser, IUserExternal } from "../global/types/User.dto";
 import { baseUrl } from "../../state";
 import { IChannel } from "../global/types/Channel.dto";
 import { IChat } from "app/global/types/Chat.dto";
@@ -97,6 +97,16 @@ export class UserApi{
         return response.data || [];
     }
 
+    async getMany(users: string[]): Promise<IUserExternal[]>{
+        const response = await axios.get<IUserExternal[]>(`${baseUrl}/user/many`, {
+            params: {
+                users: JSON.stringify(users)
+            },
+            withCredentials: true
+        });
+        return response.data || [];
+    }
+
     async updatePhoto(img: File): Promise<IUser>{
         const formData = new FormData();
         formData.append('file', img);
@@ -129,6 +139,16 @@ export class ChannelApi{
 
     async getForUser():Promise<IChannel[]>{
         const response = await axios.get<IChannel[]>(`${baseUrl}/channels/all`, {withCredentials: true});
+        return response.data || [];
+    }
+
+    async getParticipants(channelId: string):Promise<IUserExternal[]>{
+        const response = await axios.get<IUserExternal[]>(`${baseUrl}/channels/participants`, {
+            params: {
+                channelId
+            },
+            withCredentials: true
+        });
         return response.data || [];
     }
 

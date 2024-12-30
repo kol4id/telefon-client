@@ -13,12 +13,13 @@ new Image().src = trash_box_img;
 
 import ModalMenuButton from "./ModalMenuButton"
 import { IMessage } from "../global/types/Message.dto"
-import { useDispatch } from "react-redux"
-import { useRef } from 'react'
+import { useDispatch, useSelector } from "react-redux"
+import { useMemo, useRef } from 'react'
 import { socketDeleteMessage } from 'store/states/socket'
+import ModalMenuSeparator from './ModalMenuSeparator'
+import { RootState } from 'store/store'
 
 interface IProps{
-    message: IMessage,
     close: () => void,
 }
 
@@ -27,6 +28,16 @@ const MessageListModalContent = (props: IProps) =>{
     const dispatch = useDispatch();
     const ref = useRef(null);
 
+    const records = useSelector((state: RootState) => state.messages.messageRecords);
+    const selectedMessageId = useSelector((state: RootState) => state.messages.selectedMessageId);
+    const currentChat = useSelector((state: RootState) => state.channelsList.currentChat);
+
+    const message = useMemo(()=>{
+        const messages = records[currentChat?.id!].flat().flatMap((group) => group.messages);
+        const messagesMap = new Map(messages.map(message => [message.id, message]));
+        return messagesMap.get(selectedMessageId);
+    }, [selectedMessageId])    
+    
     const HandleMessageDelete = async(message: IMessage) => {
         console.log(message)
         dispatch(socketDeleteMessage(message.id));
@@ -34,13 +45,14 @@ const MessageListModalContent = (props: IProps) =>{
     }
 
     return(
-        <section style={{padding: '5px', boxSizing: 'border-box'}} ref={ref}>
+        <section style={{padding: '5px 3px', boxSizing: 'border-box'}} ref={ref}>
             <ModalMenuButton text={'Reply'} img_url={reply_img} callback={()=>{}}/>
             <ModalMenuButton text={'Copy Text'} img_url={copy_text} callback={()=>{}}/>
             <ModalMenuButton text={'Pin'} img_url={push_pin} callback={()=>{}}/>
             <ModalMenuButton text={'Forward'} img_url={forward_img} callback={()=>{}}/> 
             <ModalMenuButton text={'Select'} img_url={select_message} callback={()=>{}}/>
-            <ModalMenuButton text={'Delete'} img_url={trash_box_img} style={{color: 'rgb(255, 50, 50)'}} callback={()=>{HandleMessageDelete(props.message)}}/>
+            <ModalMenuSeparator/>
+            <ModalMenuButton text={'Delete'} img_url={trash_box_img} style={{color: 'rgb(255, 50, 50)'}} callback={()=>{HandleMessageDelete(message!)}}/>
         </section>
     )
 }

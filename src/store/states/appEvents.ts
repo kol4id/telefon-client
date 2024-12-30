@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type creationType = | 'channel' | 'group' | 'none';
+export type creationType = | 'channel' | 'group' | 'none';
 
 interface IAppEvents {
     channelCreationType: creationType

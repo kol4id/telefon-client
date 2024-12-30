@@ -1,18 +1,29 @@
 import { AnyAction, Dispatch, MiddlewareAPI } from "redux";
 import { Socket, io } from "socket.io-client";
-import { messageClearLastReadQueue, messageDeleteMessage, messagesDecUnreadCount, messageShiftMessages, messagesIncUnreadCount, messageUpdateLastMessage, messageUpdateMessages } from "../../../store/states/messages";
+import { messageClearLastReadQueue, messageDeleteMessage, messagesDecUnreadCount, messagesDeleteByChat, messageShiftMessages, messagesIncUnreadCount, messageUpdateLastMessage, messageUpdateMessages } from "../../../store/states/messages";
 import { IMessage, IMessageCreateDto } from "../../global/types/Message.dto";
-import { channelPushNew, channelSetOnlineStatus, chatPushNew, UpdateChannels } from "../../../store/states/channels";
+import { channelPushNew, channelRemoveOne, channelSetOnlineStatus, channelSetOwner, chatPushNew, chatRemoveOne, UpdateChannels } from "../../../store/states/channels";
 // import { RootState, store } from "../../../store/store";
-import { IChannel } from "../../global/types/Channel.dto";
+import { IChannel} from "../../global/types/Channel.dto";
 import { userSet } from "../../../store/states/user";
 import { IUser } from "app/global/types/User.dto";
 import { IChat } from "app/global/types/Chat.dto";
 import { RootState, store } from "store/store";
 import { messageRecived } from "../customEvents";
+import { ICreateChannel } from "store/states/socket";
+import { baseAppUrl } from "../../../state";
 // import { socketEndpoint } from "../../../state";
 
 
+export type SocketConnectionMethods = Pick<
+    SocketConnection,
+    "sendReadMessages" 
+    | "messageCreate" 
+    | "messageDelete" 
+    | "setOnlineStatus" 
+    | "channelCreate" 
+    | "channelLeave"
+>;
 
 let socketConnection: SocketConnection | undefined;
 
@@ -22,6 +33,8 @@ export enum SocketEvent {
     MessagesRead = 'messagesRead',
     MessageDelete = 'messageDelete',
     ChannelSubscribe = 'channelSubscribe',
+    ChannelCreate = 'channelCreate',
+    ChannelLeave = 'channelLeave',
     UpdateUser = 'updateUser',
     UserOnlineStatus = 'userOnlineStatus',
     SubsOnlineStatus = 'subsOnlineStatus'
@@ -47,6 +60,8 @@ export class SocketConnection {
         })
 
         this.socket.on(SocketEvent.MessageCreate, (data: {message: IMessage, chat: IChat}) => {
+            console.log('messageCreate');
+
             store.dispatch(chatPushNew(data.chat));
             store.dispatch(UpdateChannels(data.chat));
             const userId = this.state.user.userData.id;
@@ -71,6 +86,7 @@ export class SocketConnection {
 
             store.dispatch(messageDeleteMessage({chatId: data.chatId, messageId: data.id}));
 
+            this.updateStore()
             const userData = this.state.user.userData;
             if (data.creatorId == userData.id) return;
             if (new Date(data.createdAt).getTime() <= new Date(userData.lastReads[data.chatId]).getTime()) return;
@@ -83,14 +99,31 @@ export class SocketConnection {
             console.log(data);
         })
 
-        this.socket.on(SocketEvent.ChannelSubscribe, (data: IChannel)=>{
+        this.socket.on(SocketEvent.ChannelSubscribe, (data: {channel: IChannel, chat: IChat})=>{
             console.log('channelSubscrbe');
-            store.dispatch(channelPushNew(data));
+            store.dispatch(channelPushNew(data.channel));
+            store.dispatch(chatPushNew(data.chat));
+        })
+
+        this.socket.on(SocketEvent.ChannelLeave, (data: {channel: IChannel, chat: IChat})=>{
+            console.log('channelLeave');
+
+            this.updateStore()
+            store.dispatch(channelRemoveOne(data.channel));
+            store.dispatch(chatRemoveOne(data.chat));
+            
+            store.dispatch(messagesDeleteByChat(data.chat.id));
+            const currentChannel = this.state.channelsList.currentChannelSelected;
+            if (currentChannel == data.channel.id){
+                window.location.replace(baseAppUrl);
+            }
+            currentChannel
         })
 
         this.socket.on(SocketEvent.UserOnlineStatus, (data: {channelId: string, status: boolean}) => {
             console.log('UserOnlineStatus');
             store.dispatch(channelSetOnlineStatus([data]));
+            store.dispatch(channelSetOwner({channelId: data.channelId, user: {lastLogin: new Date()}}))
         })
 
         this.socket.on(SocketEvent.SubsOnlineStatus, (data: {channelId: string, status: boolean}[]) => {
@@ -119,6 +152,18 @@ export class SocketConnection {
 
     public setOnlineStatus(status: boolean): void{
         this.socket.emit(SocketEvent.UserOnlineStatus, status);
+    }
+
+    public channelCreate(channelData: ICreateChannel): void{
+        this.socket.emit(SocketEvent.ChannelCreate, channelData);
+    }
+
+    public channelLeave(channelId: string): void{
+        this.socket.emit(SocketEvent.ChannelLeave, channelId);
+    }
+
+    private updateStore(){
+        this.state = store.getState();
     }
 
     private state: RootState = store.getState();

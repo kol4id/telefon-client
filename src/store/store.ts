@@ -9,6 +9,8 @@ import user from "./states/user";
 import { useDispatch } from "react-redux";
 import socket from "./states/socket";
 import socketMiddleware from "./middleware/socketMiddleware";
+import appEvents from "./states/appEvents";
+import externalUsers from './states/externalUsers'
 
 export const store = configureStore({
     reducer:{
@@ -20,6 +22,8 @@ export const store = configureStore({
         messageInput: messageInput,
         user: user,
         socket: socket,
+        appEvents: appEvents, 
+        externalUsers: externalUsers,
     },
     middleware(getDefaultMiddleware) {
         return getDefaultMiddleware().concat([socketMiddleware]);

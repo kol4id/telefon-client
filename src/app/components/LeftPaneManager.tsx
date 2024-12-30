@@ -1,16 +1,18 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import LeftPaneChannels from "./LeftPaneChannels";
-import LeftPaneCreateChannel from "./LeftPaneCreateChannel";
+import LeftPaneCreateChannel from "./leftPaneCreateChannel/LeftPaneCreateChannel";
 import AppMenuProfileEdit from "./AppMenuProfileEdit";
 
 export type LeftPaneType = |'channels'|'settings'|'channel-create';
 
 import { AnimatePresence, motion } from "framer-motion";
 
-export const LeftPaneTypeContext = createContext<{
+interface LeftPaneContextType {
     paneType: LeftPaneType;
     setPaneType: (value: LeftPaneType) => void;
-}>({
+}
+
+export const LeftPaneTypeContext = createContext<LeftPaneContextType>({
     paneType: 'channels', 
     setPaneType: () => {}, 
 });
@@ -32,15 +34,15 @@ const LeftPaneManager = () =>{
     return(
         <LeftPaneTypeContext.Provider value={{paneType, setPaneType}}>
             <AnimatePresence mode="wait">
-            <motion.div
-                key={paneType}
-                initial={{ x: 300, opacity: 0 }} 
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ scale: 0.85, opacity: 0 }}
-                transition={{ duration: 0.12, ease: 'easeIn'}}
-            >
-                {renderPane()}
-            </motion.div>
+                <motion.div
+                    key={paneType}
+                    initial={{ x: 300, opacity: 0 }} 
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ scale: 0.85, opacity: 0 }}
+                    transition={{ duration: 0.12, ease: 'easeIn'}}
+                >
+                    {renderPane()}
+                </motion.div>
             </AnimatePresence>
         </LeftPaneTypeContext.Provider>
     )

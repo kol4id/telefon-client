@@ -2,7 +2,7 @@
     --searchline-focused-color: rgba(127, 112, 214, 0.979) !important;
     --searchline-default-color: rgba(201, 201, 201, 0.35) !important;
     --searchline-hover-color: rgba(148, 138, 206, 0.6) !important;
-    --message-text-color: rgba(255, 255, 255, 0.9);
+    --message-text-color: rgba(255, 255, 255, 1);
     --message-bg-from-color: rgb(45, 45, 45) !important;
     --message-bg-self-color:  rgba(127, 112, 214, 0.979) !important;
     --message-time-text-color: rgb(120, 120, 120) !important;
@@ -10,40 +10,72 @@
     --message-string-bg-selected-color: rgba(0, 0, 0, 0.6);
 }
 
-.message_string{
+.message_sender{
     width: 100%;
-    display: flex;
 }
 
-.message_string_selected{
-    transition: .2s ease;
+.name, .name_self{
+    font-weight: 500;
+    padding: 0px;
+    margin: 1px 10px 3px 5px;
+    font-size: 10pt;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.name_self{
+    margin: 2px 15px 0px 5px;
+    justify-self: right;
+    color: white !important;
+}
+
+.message_string, .message_string_self{
+    /* width: 100%; */
+    display: flex;
+    padding: 3px calc(50px + 18%) 2px calc(22%);
+}
+.message_string_selected, .message_string_self_selected{
+    padding: 3px calc(50px + 18%) 2px calc(22%);
+    /* transition: .2s ease; */
     display: flex;
     backdrop-filter: blur(0.5px);
     background-color: var(--message-string-bg-selected-color);
 }
-
-.message_string_self{
-    width: 100%;
-    display: flex;
+.message_string_self, .message_string_self_selected{
+    padding: 3px calc(10px + 18%) 2px 0px !important;
     justify-content: right;
 }
 
-.message_string_self_selected{
-    transition: .2s ease;
+
+.message_string_group, .message_string_group_self{
     display: flex;
-    justify-content: right;
+    padding: 2px calc(50px + 18%) 2px calc(22%);
+}
+.message_string_group_selected, .message_string_group_self_selected{
+    padding: 2px calc(50px + 18%) 2px calc(22%);
+    /* transition: .2s ease; */
+    display: flex;
     backdrop-filter: blur(0.5px);
     background-color: var(--message-string-bg-selected-color);
 }
+.message_string_group_self, .message_string_group_self_selected{
+    padding: 2px calc(18%) 2px 0px !important;
+    justify-content: right;
+}
 
-.message_block{
+.message_block, .message_block_group{
     overflow: hidden;
     display: flex;
     flex-direction: column;
     max-width: 448px;
     background-color: var(--message-bg-from-color);
-    margin: 3px calc(50px + 18%) 2px calc(22%);
     border-radius: 0.375rem 0.9375rem 0.9375rem 0.375rem;
+}
+
+.message_block_group{
+    justify-self: flex-end;
+    max-width: 418px !important;
 }
 
 .message_content{
@@ -56,6 +88,7 @@
     font-weight: 500;
     max-width: 448px;
     margin: 3px 5px 3px 5px;
+    letter-spacing: 0px;
 }
 
 .send_time{
@@ -73,26 +106,94 @@
     height: 15px;
 }
 
-.message_string_self .message_block, .message_string_self_selected .message_block{
+.message_string_self .message_block, .message_string_self_selected .message_block,
+.message_string_group_self .message_block_group, .message_string_group_self_selected .message_block_group
+{
     display: flex;
     background-color: var(--message-bg-self-color);
     border-radius: 0.9375rem 0.375rem 0.375rem 0.9375rem;
     
 }
 
-.message_string_self .send_time, .message_string_self_selected .send_time{
+.message_string_self .send_time, .message_string_self_selected .send_time,
+.message_string_group_self .send_time, .message_string_group_self_selected .send_time
+{
     color: var(--message-time-text-self-color)
+}
+
+.user_img, .user_img_self{
+    align-self: flex-end;
+    margin-left: -40px;
+    margin-right: 5px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+.user_img_self{
+    margin-left: 5px;
+    margin-right: -40px;
 }
 
 @media (max-width: 1280px)
 {
-    .message_block{
-        margin: 3px calc(10%) 2px calc(10%);
+    .message_string, .message_string_selected{
+        padding: 2px calc(10%) 2px calc(10%);
+    }
+    .message_string_self, .message_string_self_selected{
+        padding: 2px calc(10%) 2px 0px !important;
+    }
+
+    .message_string_group, .message_string_group_selected{
+        padding: 2px calc(10%) 2px calc(10%) !important;
+    }
+    .message_string_group_self, .message_string_group_self_selected{
+        padding: 2px calc(10%) 2px 0px !important;
     }
 }
 
 @media (max-width: 700px){
+    .message_string, .message_string_selected{
+        padding: 2px calc(4%) 2px calc(4%);
+    }
+    .message_string_self, .message_string_self_selected{
+        padding: 2px calc(4%) 2px 0px !important;
+    }
+
+    .message_string_group_self, .message_string_group_self_selected{
+        padding: 2px calc(10%) 2px 0px !important;
+    }
+}
+
+@media (max-width: 500px){
+    .message_block_group{
+        max-width: 320px !important;
+    }
     .message_block{
-        margin: 3px calc(4%) 2px calc(4%);
+        max-width: 370px !important;
+    }
+}
+
+@media (max-width: 420px){
+
+    .message_string, .message_string_selected{
+        padding: 2px calc(4%) 2px calc(4%);
+    }
+    .message_string_self, .message_string_self_selected{
+        padding: 2px calc(4%) 2px 0px !important;
+    }
+
+    .message_string_group, .message_string_group_selected{
+        padding: 2px calc(10%) 2px calc(10% + 15px) !important;
+    }
+    .message_string_group_self, .message_string_group_self_selected{
+        padding: 2px calc(10% + 12px) 2px 0px !important;
+    }
+
+    .message_block_group{
+        max-width: 95% !important;
+    }
+    .message_block{
+        max-width: 99% !important;
     }
 }

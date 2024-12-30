@@ -29,7 +29,7 @@ const AppMenuContext:FC<IProps> = ({close}) => {
     }
 
     return(
-        <section style={{margin: '4px', boxSizing: 'border-box'}}>
+        <section style={{margin: '4px 4px 5px', boxSizing: 'border-box'}}>
             <ModalMenuButton text="settings" callback={()=>openSettings()} img_url={settings}/>
             <ModalMenuButton text="logout" callback={()=>_logoutUser()} style={{color: 'red'}} img_url={logout}/>
         </section>

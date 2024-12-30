@@ -9,7 +9,7 @@ export interface ResizeParams{
     maxWindowWidth: number,
 }
 
-const useResize = (enabled: boolean, params: ResizeParams) => {
+const useResize = (enabled: boolean, params: ResizeParams, activeResize: boolean = false) => {
     const windowInnerWidth: number = useWindowWidth().width;
     const [currentlyResizing, setCurrentlyResizing] = useState<boolean>(false);
     const [windowWidth, setWindowWidth] = useState<number>(params.defaultWindowWidth);
@@ -39,7 +39,9 @@ const useResize = (enabled: boolean, params: ResizeParams) => {
         ResizeHandle();
     }, [position, enabled])
 
-    useEffect(() =>{
+    const _activeResize = () =>{
+        if (!activeResize) return;
+
         let newWidth = Math.ceil(windowInnerWidth / params.maxWindowWidth);
         
         if (newWidth < params.minWindowWidth){
@@ -50,6 +52,10 @@ const useResize = (enabled: boolean, params: ResizeParams) => {
         }
 
         setMaxWindowWidth(newWidth);
+    }
+
+    useEffect(() =>{
+        _activeResize()
     }, [windowInnerWidth])
 
     return {windowWidth, currentlyResizing} 

@@ -22,7 +22,7 @@ const ChannelsManager = memo(() =>{
     const personalChannel = useSelector((state: RootState) => state.user.userData.personalChannel);
 
     useEffect(()=>{
-        dispatch(SetChannelSelected({id: channelId!, personalChannel}))
+        dispatch(SetChannelSelected({id: channelId ?? '', personalChannel}))
     }, [channelId])
 
     const debouncedSearch = useCallback(async (value: string)=>{      

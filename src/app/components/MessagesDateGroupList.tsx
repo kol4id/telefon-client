@@ -1,85 +1,69 @@
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "store/store";
 import InfiniteScroll from "./InfiniteScroll";
-import { FC, memo, useCallback, useRef } from "react";
-import { fetchMessages } from "store/states/messages";
+import { FC, useCallback, useRef, useEffect } from "react";
+import { fetchMessages, IMessageDateGroup } from "store/states/messages";
 import MessagesList from "./MessagesList";
 
-import styles from '../styles/MessageList.module.css'
+import styles from '../styles/MessageList.module.css';
+import MessagesListGroup from "./MessageListGroup";
+import { IChannel } from "app/global/types/Channel.dto";
+import { getFormattedDate } from "../utils/general/getFormatedDate";
 
-interface IProps{
-    callback: (p1: any, p2: any, p3: any, p4: any)=>void,
-    selected: string
-}
-
-const getFormattedDate = (date: Date): string => {
-    const optionsThisYear: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' };
-    const optionsOtherYear: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  
-    return date.getFullYear() === new Date().getFullYear()
-      ? date.toLocaleDateString(undefined, optionsThisYear)
-      : date.toLocaleDateString(undefined, optionsOtherYear);
-};
-
-const MessagesDateGroupList: FC<IProps> = memo(({callback, selected}) =>{
+const MessagesDateGroupList: FC = () => {
     const dispatch = useAppDispatch();
+
     const messageRecords = useSelector((state: RootState) => state.messages.messageRecords);
     const currentChatSelected = useSelector((state: RootState) => state.channelsList.currentChat);
+    const currentChannel = useSelector((state: RootState) => state.channelsList.currentChannel);
 
     const messageRecordsRef = useRef(messageRecords);
-    const currentChatSelectedRef = useRef(currentChatSelected!);
-    const messageListRef = useRef(messageRecordsRef.current[currentChatSelectedRef.current.id]);
+    const currentChatSelectedRef = useRef(currentChatSelected);
 
-    messageRecordsRef.current = messageRecords;
-    currentChatSelectedRef.current = currentChatSelected!;
-    messageListRef.current = messageRecordsRef.current[currentChatSelectedRef.current.id];
+    useEffect(() => {
+        messageRecordsRef.current = messageRecords;
+        currentChatSelectedRef.current = currentChatSelected;
+    }, [messageRecords, currentChatSelected]);
 
-    const fetchMessagesIScroll = async(startD?: Date, endD?: Date) =>{
+    const getProperMessageList = (channel: IChannel, group: IMessageDateGroup) =>{
+        switch(channel.channelType){
+            case 'user': return <MessagesList messages={group.messages}  />
+            case 'group': return <MessagesListGroup messages={group.messages}/>
+        }
+    }
+
+    const fetchMessagesIScroll = useCallback(async (startD?: Date, endD?: Date) => {
         const startDate = startD ? new Date(new Date(startD).getTime() + 1) : undefined;
         const endDate = endD ? new Date(new Date(endD).getTime() - 1) : undefined;
-        await dispatch(fetchMessages({
-            chatId: currentChatSelectedRef.current ? currentChatSelectedRef.current.id : '',
-            limit: 25,
-            startDate,
-            endDate 
-        }))
-    }
+        const chatId = currentChatSelectedRef.current?.id || "";
 
-    const SelectGroup = (groupIndex: number): (p1: any, p2: any, p3: any) =>void  =>{
-        const gIndex = groupIndex;
-        const selectMessage = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string, index: number) =>{
-            callback(event, id, index, gIndex);
-        }
-        return selectMessage
-    }
+        await dispatch(fetchMessages({chatId, limit: 25, startDate, endDate}));
+    }, []);
 
-    const handleFetchMessagesBottom = useCallback(() => {
-        fetchMessagesIScroll(messageListRef.current[0].messages[0].createdAt);
-    }, [currentChatSelectedRef.current]);
+    const handleFetchMessage = useCallback ((position: | 'top' | 'bottom')=>{
+        const message = messageRecordsRef.current[currentChatSelectedRef.current?.id || ""];
+        position == 'top'
+        ?   fetchMessagesIScroll(undefined, message.at(-1)?.messages.at(-1)?.createdAt)
+        :   fetchMessagesIScroll(message[0].messages[0].createdAt)
+    }, []) 
 
-    const handleFetchMessagesTop = useCallback(() => {
-        const length = messageListRef.current.length - 1;
-        const messagesLength = messageListRef.current[length].messages.length - 1;
-        fetchMessagesIScroll(undefined, messageListRef.current?.[length].messages[messagesLength].createdAt);
-    }, [currentChatSelectedRef.current]);
-
-    return(
-        <>
+    return (
         <section id="message_list_main" className={styles.message_list_main}>
-            <InfiniteScroll direction="bottom" callback={handleFetchMessagesBottom}/> 
+            <InfiniteScroll direction="bottom" callback={() => handleFetchMessage('bottom')} />
+            {/*NOTE(@kol4id): inf scroll reversed because list is reversed */}   
             {
-                messageListRef.current.map((group, index) =>
-                    <section className={styles.message_list_main}>
-                        <MessagesList messages={group.messages} selected={selected} callback={SelectGroup(index)}/>
+                messageRecords[currentChatSelected?.id || ""].map((group) =>
+                    <section className={styles.message_list_main} key={group.date.toISOString()}>
+                        {getProperMessageList(currentChannel, group)}
                         <div className={styles.date_string}>
                             <div className={styles.date_box}>{getFormattedDate(group.date)}</div>
                         </div>
                     </section>
                 )
             }
-            <InfiniteScroll direction="top" callback={handleFetchMessagesTop}/>
+            <InfiniteScroll direction="top" callback={() =>handleFetchMessage('top')} />
         </section>
-        </>
-    )
-})
+    );
+};
+
 export default MessagesDateGroupList;

@@ -13,7 +13,6 @@
     background-color: var(--left-head-bg-color);
     box-shadow: -1px 1px 5px var(--left-head-box-shadow);
     z-index: 999;
-   
 }
 
 .header_menu_button{

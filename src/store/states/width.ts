@@ -9,6 +9,9 @@ interface Width {
     searchWidth: number;
     channelWidth: number;
     channelWrapWidth: number;
+    isNarrow: boolean;
+    middleDisplayed: boolean;
+    leftDisplayed: boolean;
 };
 
 const initialState: Width = {
@@ -16,12 +19,27 @@ const initialState: Width = {
     searchWidth: 190,
     channelWidth: 273,
     channelWrapWidth: 200,
+    isNarrow: false,
+    middleDisplayed: true,
+    leftDisplayed: true,
 }
 
 const widthSlice = createSlice({
     name: 'width',
     initialState,
     reducers: {
+        setWidth(state, action){
+            state.leftPaneWidth = action.payload;
+        },
+        setIsNarrow(state, action){
+           state.isNarrow = action.payload;
+        },
+        setLeftDisplayed(state, action){
+            state.leftDisplayed = action.payload;
+        },
+        setMiddleDisplayed(state, action){
+            state.middleDisplayed = action.payload;
+        },
         Resize(state, action){
             state.leftPaneWidth = action.payload;
             state.searchWidth = action.payload - SEARCH_RESIZE_OFFSET;
@@ -31,5 +49,5 @@ const widthSlice = createSlice({
     }
 })
 
-export const {Resize} = widthSlice.actions;
+export const {Resize, setWidth, setIsNarrow, setLeftDisplayed, setMiddleDisplayed} = widthSlice.actions;
 export default widthSlice.reducer;

@@ -4,6 +4,8 @@
     --middle-head-text-color: rgb(255, 255, 255) !important;
     --middle-head-subs-text-color: rgb(145, 145, 145);
     --middle-head-img-box-shadow: rgb(15, 15, 15);
+    --online-color: rgba(127, 112, 214, 0.979) !important;
+    --last-seen-text-color: rgb(170, 170, 170);
 }
 
 .head{
@@ -12,10 +14,37 @@
     height: 3.5rem;
     min-height: 3.5rem;
     align-items: center;
+    z-index: 2;
     border-bottom: 1px solid var(--middle-border-bottom);
     background-color: var(--middle-head-bg-color);
     box-sizing: border-box;
     /* color: var(--middle-head-text-color);     */
+}
+
+.button_container{
+    height: 3.5rem;
+    width: 50px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.channel_list_button{
+    transition: .1s ease-out;
+    display: inherit;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    border-radius: 50%;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+.channel_list_button:hover{
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .img {
@@ -25,10 +54,10 @@
     border-radius: 50%; 
     box-shadow: 0px 0px 5px var(--middle-head-img-box-shadow) !important;
     margin-left: 30px;
+    cursor: pointer;
 }
 
 .channel_info{
-    /* display: flex; */
     align-items: center;
     display: grid;
     grid-template-columns: 80px auto;
@@ -42,7 +71,39 @@
     color: var(--middle-head-text-color) !important;
 }
 
+.channel_last_seen, .channel_online{
+    margin: 0px;
+    font-weight: 400;
+    font-size: 11pt;
+}
+
+.channel_last_seen{
+    color: var(--last-seen-text-color);
+}
+
+.channel_online{   
+    color: var(--online-color);
+}
+
 .channel_subscribers{
     font-size: 15px;   
     color: var(--middle-head-subs-text-color) !important;
+}
+
+/*  leave this value as it is, wo fraction
+    button show up 1px early */
+@media(max-width: 767.5px){
+    .button_container{
+        display: flex;
+    }
+
+    .img{
+        margin-left: 5px;
+        margin-right: 0px;
+    }
+
+    .channel_info{
+        grid-template-columns: 55px auto;
+        /* margin: 0px; */
+    }
 }

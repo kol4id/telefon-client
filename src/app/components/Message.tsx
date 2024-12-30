@@ -1,18 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import styles from '../styles/Message.module.css';
 import { IMessage } from '../global/types/Message.dto';
 
-import send from '../../assets/send.png';
-import read from '../../assets/read.png';
-new Image().src = send;
-new Image().src = read;
-
-
-import { RootState, useAppDispatch } from '../../store/store';
-import { messagePushToLastReadsQueue, messagesDecUnreadCount } from '../../store/states/messages';
-import { SetUserLastRead, updateUser } from '../../store/states/user';
-import { useSelector } from 'react-redux';
-import MessageMedia from './MessageMedia';
+import MessageBlock from './MessageBlock';
+import useObserveMessage from '../utils/hooks/useObserve';
+import { useAppDispatch } from 'store/store';
+import { messageSetSelectedMessage } from 'store/states/messages';
 
 interface IProps{
     message: IMessage,
@@ -20,67 +13,31 @@ interface IProps{
     selected: boolean,
 };
 
-const Message = (props: IProps) =>{
+const Message = memo((props: IProps) =>{
     console.log(`message ${props.message.id} rerender`) 
     const messageRef = useRef<HTMLDivElement>(null!);
 
     const dispatch = useAppDispatch();
+    useObserveMessage(props.message, props.self, messageRef); 
 
-    const userLastRead = useSelector((state: RootState) => state.user.userData.lastReads);
+    const handleContext = (e: React.MouseEvent) => {
+        e.preventDefault();
+        dispatch(messageSetSelectedMessage(props.selected ? '' : props.message.id));
+    }
 
     const [messageStyle] = useState(
         props.self
-        ? {default: styles.message_string_self, selected: styles.message_string_self_selected}
-        : {default: styles.message_string, selected: styles.message_string_selected}
+        ?   {default: styles.message_string_self, selected: styles.message_string_self_selected}
+        :   {default: styles.message_string, selected: styles.message_string_selected}
     );
-
-    const handleObserve = () => {
-        console.log(`message ${props.message.id} has been read`)
-        dispatch(SetUserLastRead({chatId: props.message.chatId, date: props.message.createdAt}));
-        dispatch(messagesDecUnreadCount(props.message.chatId));
-        dispatch(updateUser({}));
-        if(props.self) return
-        dispatch(messagePushToLastReadsQueue(props.message));
-    }
-
-    const observer: IntersectionObserver = new IntersectionObserver(entries =>{
-        if(entries[0].isIntersecting){
-            handleObserve();
-            observer.unobserve(messageRef.current);
-        }
-    });
-
-    const startObserving = () =>{
-        if(userLastRead?.[props.message.chatId] >= props.message.createdAt) return
-        observer.observe(messageRef.current);
-    }
-
-    useEffect(()=>{
-        startObserving();
-        return () => observer.disconnect();
-    }, [])
      
     return(
         <div className = {props.selected ? messageStyle.selected : messageStyle.default }
-            onContextMenu={(e) => {e.preventDefault()}}
+            onContextMenu={e => handleContext(e)}
             ref={messageRef}
         >
-            <div className = {styles.message_block}>
-                {
-                    props.message.hasMedia &&
-                    <MessageMedia messageMedia={props.message.mediaUrls!}/>
-                }
-                <div className = {styles.message_content}>
-                    {props.message.content}
-                    <div className={styles.send_time}>
-                        {`${String(new Date(props.message.createdAt).getHours()).padStart(2, '0')}:${String(new Date(props.message.createdAt).getMinutes()).padStart(2, '0')}`}
-                        {
-                            props.self && <img className={styles.read_status} src={props.message.isRead ? read : send}></img>
-                        }
-                    </div>
-                </div>
-            </div>
+            <MessageBlock message={props.message} self={props.self}/>
         </div>
     )
-};
+});
 export default Message;

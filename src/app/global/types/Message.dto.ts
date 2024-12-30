@@ -20,7 +20,7 @@ export interface IMessage{
     chatId: string;
     creatorId: string;
     content: string;
-    isRead: string;
+    isRead: boolean;
     readTime: Date;
     edited: boolean;
     createdAt: Date;

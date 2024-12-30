@@ -6,23 +6,20 @@ import styles from '../styles/MessageList.module.css';
 import { IMessage } from "app/global/types/Message.dto";
 
 interface IProps{
-    callback: (p1: any, p2: any, p3: any)=>void;
     messages: IMessage[],
-    selected: string
 }
 
 const MessagesList: FC<IProps> = memo((props) => {   
     const user = useSelector((state: RootState) => state.user.userData);
+    const selectedMessageId = useSelector((state: RootState)=> state.messages.selectedMessageId);
 
-  
-    //NOTE(@kol4id): inf scroll reversed because list is reversed
     return(
         <section id="message_list_main" className={styles.message_list_main}>
-            <>
+            <>  
             {
                 props.messages.map((message, index)=>
-                    <div onContextMenu={(event) => props.callback(event, message.id, index)} key={message.id}>
-                        <Message message={message} self={message.creatorId === user.id} selected={props.selected === message.id} />
+                    <div onContextMenu={(event) => event.preventDefault()} key={message.id} id={message.id}>
+                        <Message message={message} self={message.creatorId === user.id} selected={selectedMessageId === message.id} />
                     </div>                               
                 )
             }

@@ -1,6 +1,6 @@
 import { Middleware } from "redux";
 import SocketFactory, { SocketConnection } from "../../app/utils/socket/Socket";
-import { socketCreateMessage, socketDeleteMessage, socketSetOnlineStatus, socketInit, socketSendRead } from "../states/socket";
+import { socketCreateMessage, socketDeleteMessage, socketSetOnlineStatus, socketInit, socketSendRead, socketCreateChannel, socketLeaveChannel } from "../states/socket";
 
 const socketMiddleware: Middleware = (store) => {
     let socket: SocketConnection;
@@ -13,12 +13,29 @@ const socketMiddleware: Middleware = (store) => {
             }
         }
 
-        if (socket){
-            if (socketSendRead.match(action)) socket.sendReadMessages(action.payload);
-            if (socketCreateMessage.match(action)) socket.messageCreate(action.payload);
-            if (socketDeleteMessage.match(action)) socket.messageDelete(action.payload);
-            if (socketSetOnlineStatus.match(action)) socket.setOnlineStatus(action.payload);
-            // if (socketSubscribeToChannel.match(action)) socket.subscribeToChannel(action.payload);
+        if (socket) {
+            switch (action.type) {
+                case socketSendRead.type:
+                    socket.sendReadMessages(action.payload); // IMessage[]
+                    break;
+                case socketCreateMessage.type:
+                    socket.messageCreate(action.payload); // IMessageCreateDto
+                    break;
+                case socketDeleteMessage.type:
+                    socket.messageDelete(action.payload); // string
+                    break;
+                case socketSetOnlineStatus.type:
+                    socket.setOnlineStatus(action.payload); // boolean
+                    break;
+                case socketCreateChannel.type:
+                    socket.channelCreate(action.payload); // ICreateChannel
+                    break;
+                case socketLeaveChannel.type:
+                    socket.channelLeave(action.payload); // string
+                    break;
+                default:
+                    break;
+            }
         }
 
         next(action);

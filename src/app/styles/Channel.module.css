@@ -5,6 +5,7 @@
     --channel-selected-unread-bg-color: rgba(152, 141, 215, 0.979) !important;
     --channel-selected-bg-color: rgba(127, 112, 214, 0.979) !important;
     --channel-body-bg-color: rgb(175, 175, 175) !important;
+    --channel-time-color: rgb(130, 130, 130) !important;
     --online-icon-default-bg-color: rgba(30, 30, 30, 1) !important;
 }
 
@@ -108,8 +109,8 @@
     display: flex;
     padding-bottom: 5px;
     align-items: center;
-    color: var(--channel-body-bg-color);
-    font-size: 12px;
+    color: var(--channel-time-color);
+    font-size: 12.5px;
     display: flex;
     justify-self: end;
 }
@@ -129,10 +130,9 @@
 }
 
 .channel_body_unread_count{
-    align-content: center;
     display: flex;
     justify-self: end;
     background-color: rgb(141, 141, 141);
     border-radius: 50px;
-    padding: 0px 9px 0px 8px;
+    padding: 1px 9px 0px 8px;
 }

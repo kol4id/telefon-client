@@ -1,5 +1,7 @@
 import { IChat } from "./Chat.dto";
-import { IUser } from "./User.dto";
+import { IUser, IUserExternal } from "./User.dto";
+
+export type IChannelType = | 'user' | 'group' | 'channel';
 
 interface IChannelSelected{
     currentChannelSelected: string,
@@ -18,7 +20,7 @@ export interface IChannel {
     creatorId: string,
     description: string,
     isPrivate: boolean,
-    channelType: string,
+    channelType: IChannelType,
 }
 
 export interface ICreateChannel{
@@ -26,6 +28,7 @@ export interface ICreateChannel{
 }
 
 export interface IChannelState extends IChannelSelected{
+    currentChannelGroupParticipants: Map<string, IUserExternal>,
     currentChannel: IChannel;
     currentChat: IChat | undefined;
     channelsOwner: Record<string, IUser>;

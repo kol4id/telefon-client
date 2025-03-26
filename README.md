@@ -42,6 +42,20 @@ npm run build
 npm run preview
 ```
 
+## 📸 Gallery 
+<p align="center">
+  <table>
+    <tr>
+      <td><img src="preview_images/main.png" width="375" /></td>
+      <td><img src="preview_images/auth.png" width="375" /></td>
+    </tr>
+    <tr>
+      <td><img src="preview_images/profile change.png" width="375" /></td>
+      <td><img src="preview_images/profile.png" width="375" /></td>
+    </tr>
+  </table>
+</p>
+
 ## 📬 Contact
 Author: Nagulin Kirill  
 Email: over90006at9@gmail.com  

@@ -12,7 +12,7 @@ import { RootState, store } from "store/store";
 import { messageRecived } from "../customEvents";
 import { ICreateChannel } from "store/states/socket";
 import { baseAppUrl } from "../../../state";
-// import { socketEndpoint } from "../../../state";
+import { socketEndpoint } from "../../../state";
 
 
 export type SocketConnectionMethods = Pick<
@@ -168,9 +168,9 @@ export class SocketConnection {
 
     private state: RootState = store.getState();
     //private socketEndpoint = `https://server-telefon.duckdns.org`;
-    private socketEndpoint = `http://localhost:4200`;
-
-}
+    // private socketEndpoint = `http://localhost:4200`;
+    private socketEndpoint = socketEndpoint
+}   
 
 class SocketFactory{
     public static create(): SocketConnection {

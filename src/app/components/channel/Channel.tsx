@@ -9,7 +9,7 @@ import { IChat } from "app/global/types/Chat.dto"
 import ChannelImg from "./ChannelImg"
 import ChannelContent from "./ChannelContent"
 import { IPosition } from "app/global/types/MousePos"
-import { setLeftDisplayed, setMiddleDisplayed, setWidth } from "store/states/width"
+import { setLeftDisplayed, setMiddleDisplayed } from "store/states/width"
 
 interface IProps{
     channel: IChannel,

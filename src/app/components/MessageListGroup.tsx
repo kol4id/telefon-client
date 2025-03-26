@@ -49,7 +49,7 @@ const MessagesListGroup: FC<IProps> = memo((props) => {
         <section id="message_list_main" className={styles.message_list_main}>
             <>
             {
-                Array.from(grouped.entries()).map(([startIndex, messages]) => 
+                Array.from(grouped.entries()).map(([_, messages]) => 
                     messages.map((message, index) => (
                         <div
                             onContextMenu={(event) => 

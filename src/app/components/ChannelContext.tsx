@@ -4,10 +4,11 @@ import trash_box_img from '../../assets/trash.png';
 import new_tab from '../../assets/new-tab.png';
 import ModalMenuSeparator from "./ModalMenuSeparator";
 import { FC } from "react";
+import { baseAppUrl } from "../../state";
 new Image().src = trash_box_img;
 new Image().src = new_tab;
 
-const url = 'http://localhost:5173/a/'
+const url = baseAppUrl //'http://localhost:5173/a/'
 
 interface IProps{
     channelId: string

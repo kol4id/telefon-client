@@ -12,6 +12,11 @@
   <img src="preview_images/main.png" width="700" height="auto" />
 </p>
 
+## 📣 Use right now
+ 
+go to 👉 https://telefonn.duckdns.org/
+
+find me: kol4id
 
 ## 🚀 Quick Start  
 

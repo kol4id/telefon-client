@@ -5,14 +5,14 @@
     display: flex;
     flex-direction: column;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     background-color: rgba(0, 0, 0, 0.7);
 }
 
 .overlay{
     position: absolute;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
 }
 
 .header{

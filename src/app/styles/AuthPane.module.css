@@ -14,7 +14,7 @@
 .main{
     position: relative;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     display: grid;
     grid-template-rows: 220px 90px 300px 80px;
     flex: 1;

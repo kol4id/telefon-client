@@ -17,7 +17,7 @@ const MessagesList: FC<IProps> = memo((props) => {
         <section id="message_list_main" className={styles.message_list_main}>
             <>  
             {
-                props.messages.map((message, index)=>
+                props.messages.map((message)=>
                     <div onContextMenu={(event) => event.preventDefault()} key={message.id} id={message.id}>
                         <Message message={message} self={message.creatorId === user.id} selected={selectedMessageId === message.id} />
                     </div>                               

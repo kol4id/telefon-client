@@ -28,7 +28,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100dvh;
     width: 100%;
 }
 
@@ -108,7 +108,8 @@ p{
     /* flex: 1; */
 }
 
-footer{
+.profile_footer{
+    margin-bottom: 30px;
     padding-bottom: 50px;
     display: flex;
     justify-content: center;

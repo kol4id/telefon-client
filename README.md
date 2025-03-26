@@ -1,30 +1,50 @@
-# React + TypeScript + Vite
+# 📞 **Telefon — A Local Messenger Inspired by Telegram**  
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Description  
+**Telefon** is a pet project aimed at exploring a specific technology stack while replicating the core functionality of Telegram. The application enables real-time messaging, photo sharing, group creation, profile editing, and more.  
 
-Currently, two official plugins are available:
+### 🔧 Tech Stack  
+- **Frontend**: React 18.2, TypeScript, Vite, Redux Toolkit (with Async Thunk & Middleware), React Router  
+- **Networking**: Axios, Socket.IO  
+- **Animations**: Framer Motion, Lottie React  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<p align="center">
+  <img src="git_assets/main.png" width="700" height="auto" />
+</p>
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 🚀 Quick Start  
 
-- Configure the top-level `parserOptions` property like this:
+### 1. Clone the repository  
+```bash
+git clone https://github.com/kol4id/telefon-client
+cd telefon
+```
+### 2. Install dependencies
+```bash
+npm install 
+```
+### 3. Start the server
+```bash
+npm run dev
+```
+### 4. Open in browser
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+The application will be available at:
+```bash
+http://localhost:5173
+```
+### 5. Compile and Run the application
+If you want to build the production version of the app, run:
+
+```bash
+npm run build
+npm run preview
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## 📬 Contact
+Author: Nagulin Kirill  
+Email: over90006at9@gmail.com  
+GitHub: github.com/kol4id  
+telegram: @youngbr1ck  
+telefon: telefonAdmin

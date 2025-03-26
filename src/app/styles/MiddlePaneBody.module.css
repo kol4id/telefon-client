@@ -7,8 +7,8 @@
     box-sizing: border-box;
     width: 100%;
     position: relative;
-    height: calc(100vh - 3.5rem) !important;
-    max-height: calc(100vh - 3.5rem);
+    height: calc(100dvh - 3.5rem) !important;
+    max-height: calc(100dvh - 3.5rem);
 }
 
 .re_bar {

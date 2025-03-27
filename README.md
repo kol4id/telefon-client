@@ -66,4 +66,4 @@ Author: Nagulin Kirill
 Email: over90006at9@gmail.com  
 GitHub: github.com/kol4id  
 telegram: @youngbr1ck  
-telefon: telefonAdmin
+telefon: kol4id
